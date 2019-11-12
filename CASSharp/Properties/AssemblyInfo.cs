@@ -32,7 +32,7 @@ using System.Runtime.InteropServices;
 // La información general de un ensamblado se controla mediante el siguiente 
 // conjunto de atributos. Cambie estos valores de atributo para modificar la información
 // asociada con un ensamblado.
-[assembly: AssemblyTitle("CASSharp Edition Nieblita")]
+[assembly: AssemblyTitle("CAS Sharp Edition Nieblita")]
 [assembly: AssemblyDescription("Software free CAS")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]

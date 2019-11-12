@@ -43,16 +43,6 @@ namespace CASSharp.UI
         public CASSharpForm()
         {
             InitializeComponent();
-            InitFrmName();
-        }
-
-        private void InitFrmName()
-        {
-            var pAssembly = Assembly.GetExecutingAssembly();
-            var pName = pAssembly.GetCustomAttribute<AssemblyTitleAttribute>().Title;
-            var pVersion = pAssembly.GetName().Version.ToString();
-
-            Text = $"{pName} {pVersion}";
         }
     }
 }

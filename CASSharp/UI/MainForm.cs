@@ -31,6 +31,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -42,6 +43,21 @@ namespace CASSharp.UI
         public MainForm()
         {
             InitializeComponent();
+            InitFrmName();
+        }
+
+        private void InitFrmName()
+        {
+            var pAssembly = Assembly.GetExecutingAssembly();
+            var pName = pAssembly.GetCustomAttribute<AssemblyTitleAttribute>().Title;
+            var pVersion = pAssembly.GetName().Version.ToString();
+
+            Text = $"{pName} {pVersion}";
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }
