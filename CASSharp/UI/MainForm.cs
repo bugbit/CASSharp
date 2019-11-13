@@ -40,6 +40,8 @@ namespace CASSharp.UI
 {
     public partial class MainForm : Form
     {
+        private PromptControl mPrompt;
+
         public MainForm()
         {
             InitializeComponent();
@@ -58,6 +60,13 @@ namespace CASSharp.UI
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void test1ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            mPrompt = new PromptControl();
+
+            boardControl1.Controls.Add(mPrompt);
         }
     }
 }
