@@ -16,5 +16,12 @@ namespace CASSharp.UI
         {
             InitializeComponent();
         }
+
+        public void SetPrompt(string[] argLines)
+        {
+            txtPrompt.Clear();
+            foreach (var l in argLines)
+                txtPrompt.AppendText($"{l}\n");
+        }
     }
 }

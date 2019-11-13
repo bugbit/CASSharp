@@ -30,16 +30,18 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PromptControl));
-            this.fastColoredTextBox1 = new FastColoredTextBoxNS.FastColoredTextBox();
-            ((System.ComponentModel.ISupportInitialize)(this.fastColoredTextBox1)).BeginInit();
+            this.txtPrompt = new FastColoredTextBoxNS.FastColoredTextBox();
+            ((System.ComponentModel.ISupportInitialize)(this.txtPrompt)).BeginInit();
             this.SuspendLayout();
             // 
-            // fastColoredTextBox1
+            // txtPrompt
             // 
-            this.fastColoredTextBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.txtPrompt.AllowMacroRecording = false;
+            this.txtPrompt.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.fastColoredTextBox1.AutoCompleteBracketsList = new char[] {
+            this.txtPrompt.AutoCompleteBrackets = true;
+            this.txtPrompt.AutoCompleteBracketsList = new char[] {
         '(',
         ')',
         '{',
@@ -50,41 +52,51 @@
         '\"',
         '\'',
         '\''};
-            this.fastColoredTextBox1.AutoScrollMinSize = new System.Drawing.Size(154, 14);
-            this.fastColoredTextBox1.BackBrush = null;
-            this.fastColoredTextBox1.CharHeight = 14;
-            this.fastColoredTextBox1.CharWidth = 8;
-            this.fastColoredTextBox1.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.fastColoredTextBox1.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.fastColoredTextBox1.Font = new System.Drawing.Font("Courier New", 9.75F);
-            this.fastColoredTextBox1.IsReplaceMode = false;
-            this.fastColoredTextBox1.Language = FastColoredTextBoxNS.Language.CSharp;
-            this.fastColoredTextBox1.Location = new System.Drawing.Point(0, 0);
-            this.fastColoredTextBox1.Name = "fastColoredTextBox1";
-            this.fastColoredTextBox1.Paddings = new System.Windows.Forms.Padding(0);
-            this.fastColoredTextBox1.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
-            this.fastColoredTextBox1.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("fastColoredTextBox1.ServiceColors")));
-            this.fastColoredTextBox1.ShowLineNumbers = false;
-            this.fastColoredTextBox1.Size = new System.Drawing.Size(562, 78);
-            this.fastColoredTextBox1.TabIndex = 0;
-            this.fastColoredTextBox1.Text = "fastColoredTextBox1";
-            this.fastColoredTextBox1.Zoom = 100;
+            this.txtPrompt.AutoIndentCharsPatterns = "\r\n^\\s*[\\w\\.]+(\\s\\w+)?\\s*(?<range>=)\\s*(?<range>[^;]+);\r\n^\\s*(case|default)\\s*[^:]" +
+    "*(?<range>:)\\s*(?<range>[^;]+);\r\n";
+            this.txtPrompt.AutoScrollMinSize = new System.Drawing.Size(162, 14);
+            this.txtPrompt.AutoSize = true;
+            this.txtPrompt.BackBrush = null;
+            this.txtPrompt.BracketsHighlightStrategy = FastColoredTextBoxNS.BracketsHighlightStrategy.Strategy2;
+            this.txtPrompt.CharHeight = 14;
+            this.txtPrompt.CharWidth = 8;
+            this.txtPrompt.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtPrompt.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.txtPrompt.IsReplaceMode = false;
+            this.txtPrompt.Language = FastColoredTextBoxNS.Language.CSharp;
+            this.txtPrompt.LeftBracket = '(';
+            this.txtPrompt.LeftBracket2 = '{';
+            this.txtPrompt.Location = new System.Drawing.Point(0, 0);
+            this.txtPrompt.Name = "txtPrompt";
+            this.txtPrompt.Paddings = new System.Windows.Forms.Padding(0);
+            this.txtPrompt.RightBracket = ')';
+            this.txtPrompt.RightBracket2 = '}';
+            this.txtPrompt.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
+            this.txtPrompt.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("txtPrompt.ServiceColors")));
+            this.txtPrompt.ShowCaretWhenInactive = true;
+            this.txtPrompt.ShowLineNumbers = false;
+            this.txtPrompt.ShowScrollBars = false;
+            this.txtPrompt.Size = new System.Drawing.Size(10, 10);
+            this.txtPrompt.TabIndex = 0;
+            this.txtPrompt.Text = "/* aadddsdsd \\n\\n */";
+            this.txtPrompt.Zoom = 100;
             // 
             // PromptControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.Controls.Add(this.fastColoredTextBox1);
+            this.Controls.Add(this.txtPrompt);
             this.Name = "PromptControl";
-            this.Size = new System.Drawing.Size(565, 150);
-            ((System.ComponentModel.ISupportInitialize)(this.fastColoredTextBox1)).EndInit();
+            this.Size = new System.Drawing.Size(72, 72);
+            ((System.ComponentModel.ISupportInitialize)(this.txtPrompt)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
-        private FastColoredTextBoxNS.FastColoredTextBox fastColoredTextBox1;
+        private FastColoredTextBoxNS.FastColoredTextBox txtPrompt;
     }
 }

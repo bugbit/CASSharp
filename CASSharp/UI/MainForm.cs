@@ -46,6 +46,9 @@ namespace CASSharp.UI
         {
             InitializeComponent();
             InitFrmName();
+#if DEBUG
+            InitMenuTest();
+#endif
         }
 
         private void InitFrmName()
@@ -57,6 +60,27 @@ namespace CASSharp.UI
             Text = $"{pName} {pVersion}";
         }
 
+#if DEBUG
+        private void InitMenuTest()
+        {
+            var pMenuTests = new System.Windows.Forms.ToolStripMenuItem
+            {
+                Name = "test1ToolStripMenuItem",
+                Alignment = System.Windows.Forms.ToolStripItemAlignment.Right,
+                Text="&Test"
+            };
+            var pMenuTest1 = new System.Windows.Forms.ToolStripMenuItem
+            {
+                Name = "test1ToolStripMenuItem",
+                Text = "Test1"
+            };
+
+            pMenuTest1.Click += new System.EventHandler(test1ToolStripMenuItem_Click);
+            pMenuTests.DropDownItems.AddRange(new[] { pMenuTest1 });
+            mnuMain.Items.Add(pMenuTests);
+        }
+#endif
+
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
@@ -66,6 +90,21 @@ namespace CASSharp.UI
         {
             mPrompt = new PromptControl();
 
+            //mPrompt.SetPrompt
+            //(
+            //    new[]
+            //    {
+            //        "/*",
+            //        "comentario1",
+            //        "comentario2",
+            //        "comentario3",
+            //        "comentario4",
+            //        "comentario5",
+            //        "comentario6",
+            //        "comentario7",
+            //        "*/"
+            //    }
+            //);
             boardControl1.Controls.Add(mPrompt);
         }
     }
