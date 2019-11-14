@@ -22,6 +22,8 @@ namespace CASSharp.UI
             txtPrompt.Clear();
             foreach (var l in argLines)
                 txtPrompt.AppendText($"{l}\n");
+
+            var pHeight = txtPrompt.GetAllLinesHeight();
         }
     }
 }

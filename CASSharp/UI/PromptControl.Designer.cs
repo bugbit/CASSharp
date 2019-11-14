@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PromptControl));
-            this.txtPrompt = new FastColoredTextBoxNS.FastColoredTextBox();
+            this.txtPrompt = new FastColoredTextBoxEx();
             ((System.ComponentModel.ISupportInitialize)(this.txtPrompt)).BeginInit();
             this.SuspendLayout();
             // 
@@ -97,6 +97,6 @@
 
         #endregion
 
-        private FastColoredTextBoxNS.FastColoredTextBox txtPrompt;
+        private FastColoredTextBoxEx txtPrompt;
     }
 }

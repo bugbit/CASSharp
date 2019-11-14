@@ -90,21 +90,21 @@ namespace CASSharp.UI
         {
             mPrompt = new PromptControl();
 
-            //mPrompt.SetPrompt
-            //(
-            //    new[]
-            //    {
-            //        "/*",
-            //        "comentario1",
-            //        "comentario2",
-            //        "comentario3",
-            //        "comentario4",
-            //        "comentario5",
-            //        "comentario6",
-            //        "comentario7",
-            //        "*/"
-            //    }
-            //);
+            mPrompt.SetPrompt
+            (
+                new[]
+                {
+                    "/*",
+                    "comentario1",
+                    "comentario2",
+                    "comentario3",
+                    "comentario4",
+                    "comentario5",
+                    "comentario6",
+                    "comentario7",
+                    "*/"
+                }
+            );
             boardControl1.Controls.Add(mPrompt);
         }
     }
