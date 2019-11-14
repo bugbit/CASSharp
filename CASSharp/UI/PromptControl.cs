@@ -12,24 +12,38 @@ namespace CASSharp.UI
 {
     public partial class PromptControl : UserControl
     {
-        FastColoredTextBoxEx txtPrompt = new FastColoredTextBoxEx();
+        private FastColoredTextBoxEx mTxtPrompt = new FastColoredTextBoxEx
+        {
+            Name = "txtPrompt",
+            Language = FastColoredTextBoxNS.Language.CSharp,
+            ShowLineNumbers = false
+        };
+        private LaTex mLaTexIn;
+        private LaTex mLaTexOut;
 
         public PromptControl()
         {
-            this.Controls.Add(txtPrompt);
+            mTxtPrompt.TextChanged += (s, e) => CalcSize();
+
+            this.Controls.Add(mTxtPrompt);
             InitializeComponent();
         }
 
         public void SetPrompt(string[] argLines)
         {
-            txtPrompt.Clear();
+            mTxtPrompt.Clear();
             foreach (var l in argLines)
-                txtPrompt.AppendText($"{l}\n");
+                mTxtPrompt.AppendText($"{l}\n");
+        }
 
-            var pSize = txtPrompt.GetSizeOfAllLines();
+        private void CalcSize()
+        {
+            var pSize = mTxtPrompt.GetSizeOfAllLines();
 
-            if (pSize.Width > txtPrompt.Size.Width || pSize.Height > txtPrompt.Size.Height)
-                txtPrompt.Size = pSize;
+            if (pSize.Width > mTxtPrompt.Size.Width || pSize.Height > mTxtPrompt.Size.Height)
+                mTxtPrompt.Size = pSize;
+
+            Size = pSize;
         }
     }
 }
