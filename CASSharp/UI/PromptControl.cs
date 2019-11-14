@@ -12,8 +12,11 @@ namespace CASSharp.UI
 {
     public partial class PromptControl : UserControl
     {
+        FastColoredTextBoxEx txtPrompt = new FastColoredTextBoxEx();
+
         public PromptControl()
         {
+            this.Controls.Add(txtPrompt);
             InitializeComponent();
         }
 
@@ -23,7 +26,10 @@ namespace CASSharp.UI
             foreach (var l in argLines)
                 txtPrompt.AppendText($"{l}\n");
 
-            var pHeight = txtPrompt.GetAllLinesHeight();
+            var pSize = txtPrompt.GetSizeOfAllLines();
+
+            if (pSize.Width > txtPrompt.Size.Width || pSize.Height > txtPrompt.Size.Height)
+                txtPrompt.Size = pSize;
         }
     }
 }
