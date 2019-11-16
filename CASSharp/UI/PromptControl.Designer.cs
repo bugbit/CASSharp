@@ -28,18 +28,31 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.laTex1 = new CASSharp.UI.LaTex();
             this.SuspendLayout();
+            // 
+            // laTex1
+            // 
+            this.laTex1.LaTexStr = null;
+            this.laTex1.Location = new System.Drawing.Point(0, 0);
+            this.laTex1.Name = "laTex1";
+            this.laTex1.Size = new System.Drawing.Size(127, 97);
+            this.laTex1.TabIndex = 0;
+            this.laTex1.Text = "\\frac{1}{\\sqrt{x}}";
             // 
             // PromptControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
+            this.Controls.Add(this.laTex1);
             this.Name = "PromptControl";
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        private LaTex laTex1;
     }
 }

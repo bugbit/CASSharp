@@ -18,14 +18,15 @@ namespace CASSharp.UI
             Language = FastColoredTextBoxNS.Language.CSharp,
             ShowLineNumbers = false
         };
-        private LaTex mLaTexIn;
-        private LaTex mLaTexOut;
+        private LaTex mLaTex = new LaTex();
+        //6private SkiaSharp.Views.Desktop.SKControl m
 
         public PromptControl()
         {
             mTxtPrompt.TextChanged += (s, e) => CalcSize();
 
-            this.Controls.Add(mTxtPrompt);
+            //this.Controls.Add(mTxtPrompt);
+            //this.Controls.Add(mLaTex);
             InitializeComponent();
         }
 
@@ -36,12 +37,25 @@ namespace CASSharp.UI
                 mTxtPrompt.AppendText($"{l}\n");
         }
 
+        public void SetLaTex(string argLaTex)
+        {
+            mLaTex.LaTexStr = argLaTex;
+
+            CalcSize();
+        }
+
         private void CalcSize()
         {
             var pSize = mTxtPrompt.GetSizeOfAllLines();
 
             if (pSize.Width > mTxtPrompt.Size.Width || pSize.Height > mTxtPrompt.Size.Height)
                 mTxtPrompt.Size = pSize;
+            else
+                pSize = mTxtPrompt.Size;
+
+            mLaTex.Location = new Point(mTxtPrompt.Location.X, mTxtPrompt.Location.Y + mTxtPrompt.Height);
+
+            pSize = new Size(Math.Max(pSize.Width, mLaTex.Width), mTxtPrompt.Height + mLaTex.Height);
 
             Size = pSize;
         }

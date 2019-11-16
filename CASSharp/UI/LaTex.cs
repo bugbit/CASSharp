@@ -16,11 +16,19 @@ namespace CASSharp.UI
     {
         private MathPainter mPainter = new MathPainter(12);
 
+        public LaTex()
+        {
+            DoubleBuffered = true;
+        }
+
         public string LaTexStr
         {
             get => mPainter.LaTeX;
             set
             {
+                if (value == null)
+                    return;
+
                 mPainter.LaTeX = value;
 
                 var pM = mPainter.Measure;
@@ -51,6 +59,12 @@ namespace CASSharp.UI
 
                 e.Graphics.DrawImage(pBmp, new Rectangle(0, 0, Width, Height));
             }
+        }
+
+        protected override void OnClientSizeChanged(EventArgs e)
+        {
+            base.OnClientSizeChanged(e);
+            Invalidate();
         }
     }
 }
