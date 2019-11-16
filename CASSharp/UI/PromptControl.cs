@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SkiaSharp.Views.Desktop;
+using CSharpMath.SkiaSharp;
 
 namespace CASSharp.UI
 {
@@ -18,15 +20,17 @@ namespace CASSharp.UI
             Language = FastColoredTextBoxNS.Language.CSharp,
             ShowLineNumbers = false
         };
-        private LaTex mLaTex = new LaTex();
-        //6private SkiaSharp.Views.Desktop.SKControl m
+        //private LaTex mLaTex = new LaTex();
+        private SKControl mLaTex = new SKControl();
+        private MathPainter mPainter = new MathPainter(12);
 
         public PromptControl()
         {
             mTxtPrompt.TextChanged += (s, e) => CalcSize();
+            mLaTex.PaintSurface += LaTex_PaintSurface;
 
-            //this.Controls.Add(mTxtPrompt);
-            //this.Controls.Add(mLaTex);
+            this.Controls.Add(mTxtPrompt);
+            this.Controls.Add(mLaTex);
             InitializeComponent();
         }
 
@@ -39,7 +43,12 @@ namespace CASSharp.UI
 
         public void SetLaTex(string argLaTex)
         {
-            mLaTex.LaTexStr = argLaTex;
+            mPainter.LaTeX = argLaTex;
+
+            var pM = mPainter.Measure;
+
+            if (pM.HasValue)
+                mLaTex.Size = pM.Value.Size.ToSize();
 
             CalcSize();
         }
@@ -58,6 +67,11 @@ namespace CASSharp.UI
             pSize = new Size(Math.Max(pSize.Width, mLaTex.Width), mTxtPrompt.Height + mLaTex.Height);
 
             Size = pSize;
+        }
+
+        private void LaTex_PaintSurface(object sender, SkiaSharp.Views.Desktop.SKPaintSurfaceEventArgs e)
+        {
+            mPainter.Draw(e.Surface.Canvas, alignment: CSharpMath.Rendering.TextAlignment.Left);
         }
     }
 }

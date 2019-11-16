@@ -287,9 +287,6 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UI\FastColoredTextBox\VisualMarker.cs" />
-    <Compile Include="UI\LaTex.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="UI\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
