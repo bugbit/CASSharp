@@ -28,18 +28,34 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.tbMain = new System.Windows.Forms.TableLayoutPanel();
             this.SuspendLayout();
+            // 
+            // tbMain
+            // 
+            this.tbMain.ColumnCount = 2;
+            this.tbMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
+            this.tbMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tbMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbMain.Location = new System.Drawing.Point(0, 0);
+            this.tbMain.Name = "tbMain";
+            this.tbMain.RowCount = 1;
+            this.tbMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tbMain.Size = new System.Drawing.Size(150, 150);
+            this.tbMain.TabIndex = 0;
             // 
             // PromptControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSize = true;
+            this.Controls.Add(this.tbMain);
             this.Name = "PromptControl";
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        private System.Windows.Forms.TableLayoutPanel tbMain;
     }
 }

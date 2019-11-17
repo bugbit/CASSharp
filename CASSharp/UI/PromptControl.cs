@@ -16,9 +16,10 @@ namespace CASSharp.UI
     {
         private FastColoredTextBoxEx mTxtPrompt = new FastColoredTextBoxEx
         {
-            Name = "txtPrompt",
+            //Name = "txtPrompt",
             Language = FastColoredTextBoxNS.Language.CSharp,
-            ShowLineNumbers = false
+            ShowLineNumbers = false,
+            Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
         };
         //private LaTex mLaTex = new LaTex();
         private SKControl mLaTex = new SKControl();
@@ -26,19 +27,20 @@ namespace CASSharp.UI
 
         public PromptControl()
         {
-            mTxtPrompt.TextChanged += (s, e) => CalcSize();
-            mLaTex.PaintSurface += LaTex_PaintSurface;
+            //mTxtPrompt.TextChanged += (s, e) => CalcSize();
+            //mLaTex.PaintSurface += LaTex_PaintSurface;
 
-            this.Controls.Add(mTxtPrompt);
-            this.Controls.Add(mLaTex);
+            //this.Controls.Add(mTxtPrompt);
+            //this.Controls.Add(mLaTex);
             InitializeComponent();
+            mTxtPrompt.Width = Width;
+            tbMain.Controls.Add(mTxtPrompt, 1, 0);            
         }
 
-        public void SetPrompt(string[] argLines)
+        public void SetPrompt(string argLine)
         {
             mTxtPrompt.Clear();
-            foreach (var l in argLines)
-                mTxtPrompt.AppendText($"{l}\n");
+            mTxtPrompt.AppendText(argLine);
         }
 
         public void SetLaTex(string argLaTex)
@@ -58,7 +60,7 @@ namespace CASSharp.UI
             var pSize = mTxtPrompt.GetSizeOfAllLines();
 
             if (pSize.Width > mTxtPrompt.Size.Width || pSize.Height > mTxtPrompt.Size.Height)
-                mTxtPrompt.Size = pSize;
+                pSize = mTxtPrompt.Size = new Size(Math.Max(pSize.Width, Size.Width), pSize.Height);
             else
                 pSize = mTxtPrompt.Size;
 

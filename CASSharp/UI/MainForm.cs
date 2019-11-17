@@ -60,6 +60,29 @@ namespace CASSharp.UI
             Text = $"{pName} {pVersion}";
         }
 
+        private void AddHeader()
+        {
+            var pAssembly = Assembly.GetExecutingAssembly();
+            var pName = pAssembly.GetCustomAttribute<AssemblyTitleAttribute>().Title;
+            var pVersion = pAssembly.GetName().Version.ToString();
+            var pDescription = pAssembly.GetCustomAttribute<AssemblyDescriptionAttribute>().Description;
+            var pLicense = pAssembly.GetCustomAttribute<AssemblyCopyrightAttribute>().Copyright;
+
+            boardControl1.AddLegend
+            (
+                $@"/*
+    {pName} Version {pVersion}
+    {pDescription}
+    https://github.com/bugbit/CASSharp
+
+    {pLicense}
+    MIT License
+*/
+                "
+            );
+            boardControl1.AddPrompt();
+        }
+
 #if DEBUG
         private void InitMenuTest()
         {
@@ -88,25 +111,27 @@ namespace CASSharp.UI
 
         private void test1ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            mPrompt = new PromptControl();
+            mPrompt = new PromptControl { Width = Width, Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top };
 
             mPrompt.SetPrompt
             (
-                new[]
-                {
-                    "/*",
-                    "comentario1",
-                    "comentario2",
-                    "comentario3",
-                    "comentario4",
-                    "comentario5",
-                    "comentario6",
-                    "comentario7",
-                    "*/"
-                }
+                @"/*
+                comentario1
+                comentario2
+                comentario3
+                comentario4
+                comentario5
+                comentario6
+                comentario7
+                */"
             );
             mPrompt.SetLaTex(@"\frac{1}{\sqrt{x}}");
             boardControl1.Controls.Add(mPrompt);
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            AddHeader();
         }
     }
 }
