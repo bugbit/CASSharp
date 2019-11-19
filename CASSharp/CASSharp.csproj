@@ -217,76 +217,6 @@
     <Compile Include="UI\BoardControl.Designer.cs">
       <DependentUpon>BoardControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\FastColoredTextBoxEx.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\FastColoredTextBox\AutocompleteItem.cs" />
-    <Compile Include="UI\FastColoredTextBox\AutocompleteMenu.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="UI\FastColoredTextBox\Bookmarks.cs" />
-    <Compile Include="UI\FastColoredTextBox\Char.cs" />
-    <Compile Include="UI\FastColoredTextBox\CommandManager.cs" />
-    <Compile Include="UI\FastColoredTextBox\Commands.cs" />
-    <Compile Include="UI\FastColoredTextBox\DocumentMap.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="UI\FastColoredTextBox\EncodingDetector.cs" />
-    <Compile Include="UI\FastColoredTextBox\ExportToHTML.cs" />
-    <Compile Include="UI\FastColoredTextBox\ExportToRTF.cs" />
-    <Compile Include="UI\FastColoredTextBox\FastColoredTextBox.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\FastColoredTextBox\FileTextSource.cs" />
-    <Compile Include="UI\FastColoredTextBox\FindForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\FastColoredTextBox\FindForm.designer.cs">
-      <DependentUpon>FindForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\FastColoredTextBox\GoToForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\FastColoredTextBox\GoToForm.designer.cs">
-      <DependentUpon>GoToForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\FastColoredTextBox\Hints.cs" />
-    <Compile Include="UI\FastColoredTextBox\Hotkeys.cs" />
-    <Compile Include="UI\FastColoredTextBox\HotkeysEditorForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\FastColoredTextBox\HotkeysEditorForm.designer.cs">
-      <DependentUpon>HotkeysEditorForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\FastColoredTextBox\LimitedStack.cs" />
-    <Compile Include="UI\FastColoredTextBox\Line.cs" />
-    <Compile Include="UI\FastColoredTextBox\LineNumberFormatting.cs" />
-    <Compile Include="UI\FastColoredTextBox\LinesAccessor.cs" />
-    <Compile Include="UI\FastColoredTextBox\MacrosManager.cs" />
-    <Compile Include="UI\FastColoredTextBox\Place.cs" />
-    <Compile Include="UI\FastColoredTextBox\PlatformType.cs" />
-    <Compile Include="UI\FastColoredTextBox\Range.cs" />
-    <Compile Include="UI\FastColoredTextBox\ReplaceForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\FastColoredTextBox\ReplaceForm.designer.cs">
-      <DependentUpon>ReplaceForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\FastColoredTextBox\Ruler.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\FastColoredTextBox\Ruler.designer.cs">
-      <DependentUpon>Ruler.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\FastColoredTextBox\Style.cs" />
-    <Compile Include="UI\FastColoredTextBox\SyntaxDescriptor.cs" />
-    <Compile Include="UI\FastColoredTextBox\SyntaxHighlighter.cs" />
-    <Compile Include="UI\FastColoredTextBox\TextSource.cs" />
-    <Compile Include="UI\FastColoredTextBox\TypeDescriptor.cs" />
-    <Compile Include="UI\FastColoredTextBox\UnfocusablePanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\FastColoredTextBox\VisualMarker.cs" />
     <Compile Include="UI\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -310,21 +240,6 @@
     </Compile>
     <EmbeddedResource Include="UI\BoardControl.resx">
       <DependentUpon>BoardControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\FastColoredTextBox\FastColoredTextBox.resx">
-      <DependentUpon>FastColoredTextBox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\FastColoredTextBox\FindForm.resx">
-      <DependentUpon>FindForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\FastColoredTextBox\GoToForm.resx">
-      <DependentUpon>GoToForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\FastColoredTextBox\HotkeysEditorForm.resx">
-      <DependentUpon>HotkeysEditorForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\FastColoredTextBox\ReplaceForm.resx">
-      <DependentUpon>ReplaceForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\MainForm.es.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -351,7 +266,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="UI\FastColoredTextBox\FastColoredTextBox.csproj" />
+    <ProjectReference Include="..\FastColoredTextBox\FastColoredTextBox\FastColoredTextBox.csproj">
+      <Project>{6dd14a85-ccfc-4774-bd26-0f5772512319}</Project>
+      <Name>FastColoredTextBox</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

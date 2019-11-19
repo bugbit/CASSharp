@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using FastColoredTextBoxNS;
 
 namespace CASSharp.UI
 {
@@ -24,7 +25,7 @@ namespace CASSharp.UI
 
             try
             {
-                var pEdit = new FastColoredTextBoxEx
+                var pEdit = new FastColoredTextBox
                 {
                     //Name = "txtPrompt",
                     Language = FastColoredTextBoxNS.Language.CSharp,

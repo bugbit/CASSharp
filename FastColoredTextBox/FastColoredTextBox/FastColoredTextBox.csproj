@@ -59,6 +59,9 @@
     <Compile Include="EncodingDetector.cs" />
     <Compile Include="ExportToHTML.cs" />
     <Compile Include="ExportToRTF.cs" />
+    <Compile Include="FastColoredTextBox.ex.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="GoToForm.cs">
       <SubType>Form</SubType>
     </Compile>

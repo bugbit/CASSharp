@@ -9,12 +9,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using SkiaSharp.Views.Desktop;
 using CSharpMath.SkiaSharp;
+using FastColoredTextBoxNS;
 
 namespace CASSharp.UI
 {
     public partial class PromptControl : UserControl
     {
-        private FastColoredTextBoxEx mTxtPrompt = new FastColoredTextBoxEx
+        private FastColoredTextBox mTxtPrompt = new FastColoredTextBox
         {
             //Name = "txtPrompt",
             Language = FastColoredTextBoxNS.Language.CSharp,
@@ -34,7 +35,7 @@ namespace CASSharp.UI
             //this.Controls.Add(mLaTex);
             InitializeComponent();
             mTxtPrompt.Width = Width;
-            tbMain.Controls.Add(mTxtPrompt, 1, 0);            
+            tbMain.Controls.Add(mTxtPrompt, 1, 0);
         }
 
         public void SetPrompt(string argLine)
