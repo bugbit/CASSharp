@@ -36,13 +36,13 @@
             this.ssMain = new System.Windows.Forms.StatusStrip();
             this.boardControl1 = new CASSharp.UI.BoardControl();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.fastColoredTextBox1 = new FastColoredTextBoxNS.FastColoredTextBox();
+            this.txtPrompt = new FastColoredTextBoxNS.FastColoredTextBox();
             this.mnuMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.fastColoredTextBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtPrompt)).BeginInit();
             this.SuspendLayout();
             // 
             // mnuMain
@@ -86,11 +86,12 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.fastColoredTextBox1);
+            this.splitContainer1.Panel2.Controls.Add(this.txtPrompt);
             // 
-            // fastColoredTextBox1
+            // txtPrompt
             // 
-            this.fastColoredTextBox1.AutoCompleteBracketsList = new char[] {
+            this.txtPrompt.AllowMacroRecording = false;
+            this.txtPrompt.AutoCompleteBracketsList = new char[] {
         '(',
         ')',
         '{',
@@ -101,27 +102,27 @@
         '\"',
         '\'',
         '\''};
-            this.fastColoredTextBox1.AutoIndentCharsPatterns = "\r\n^\\s*[\\w\\.]+(\\s\\w+)?\\s*(?<range>=)\\s*(?<range>[^;=]+);\r\n^\\s*(case|default)\\s*[^:" +
+            this.txtPrompt.AutoIndentCharsPatterns = "\r\n^\\s*[\\w\\.]+(\\s\\w+)?\\s*(?<range>=)\\s*(?<range>[^;=]+);\r\n^\\s*(case|default)\\s*[^:" +
     "]*(?<range>:)\\s*(?<range>[^;]+);\r\n";
-            resources.ApplyResources(this.fastColoredTextBox1, "fastColoredTextBox1");
-            this.fastColoredTextBox1.BackBrush = null;
-            this.fastColoredTextBox1.BracketsHighlightStrategy = FastColoredTextBoxNS.BracketsHighlightStrategy.Strategy2;
-            this.fastColoredTextBox1.CharHeight = 14;
-            this.fastColoredTextBox1.CharWidth = 8;
-            this.fastColoredTextBox1.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.fastColoredTextBox1.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.fastColoredTextBox1.IsReplaceMode = false;
-            this.fastColoredTextBox1.Language = FastColoredTextBoxNS.Language.CSharp;
-            this.fastColoredTextBox1.LeftBracket = '(';
-            this.fastColoredTextBox1.LeftBracket2 = '{';
-            this.fastColoredTextBox1.Name = "fastColoredTextBox1";
-            this.fastColoredTextBox1.Paddings = new System.Windows.Forms.Padding(0);
-            this.fastColoredTextBox1.RightBracket = ')';
-            this.fastColoredTextBox1.RightBracket2 = '}';
-            this.fastColoredTextBox1.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
-            this.fastColoredTextBox1.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("fastColoredTextBox1.ServiceColors")));
-            this.fastColoredTextBox1.ShowLineNumbers = false;
-            this.fastColoredTextBox1.Zoom = 100;
+            resources.ApplyResources(this.txtPrompt, "txtPrompt");
+            this.txtPrompt.BackBrush = null;
+            this.txtPrompt.BracketsHighlightStrategy = FastColoredTextBoxNS.BracketsHighlightStrategy.Strategy2;
+            this.txtPrompt.CharHeight = 14;
+            this.txtPrompt.CharWidth = 8;
+            this.txtPrompt.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtPrompt.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.txtPrompt.IsReplaceMode = false;
+            this.txtPrompt.Language = FastColoredTextBoxNS.Language.CSharp;
+            this.txtPrompt.LeftBracket = '(';
+            this.txtPrompt.LeftBracket2 = '{';
+            this.txtPrompt.Name = "txtPrompt";
+            this.txtPrompt.Paddings = new System.Windows.Forms.Padding(0);
+            this.txtPrompt.RightBracket = ')';
+            this.txtPrompt.RightBracket2 = '}';
+            this.txtPrompt.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
+            this.txtPrompt.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("txtPrompt.ServiceColors")));
+            this.txtPrompt.ShowLineNumbers = false;
+            this.txtPrompt.Zoom = 100;
             // 
             // MainForm
             // 
@@ -139,7 +140,7 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.fastColoredTextBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtPrompt)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -153,6 +154,6 @@
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private BoardControl boardControl1;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private FastColoredTextBoxNS.FastColoredTextBox fastColoredTextBox1;
+        private FastColoredTextBoxNS.FastColoredTextBox txtPrompt;
     }
 }

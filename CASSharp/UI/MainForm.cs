@@ -132,6 +132,8 @@ namespace CASSharp.UI
         private void MainForm_Load(object sender, EventArgs e)
         {
             //AddHeader();
+            txtPrompt.Select();
+            txtPrompt.Focus();
         }
     }
 }

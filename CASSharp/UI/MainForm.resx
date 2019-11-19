@@ -121,6 +121,18 @@
     <value>17, 17</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="exitToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>93, 22</value>
+  </data>
+  <data name="exitToolStripMenuItem.Text" xml:space="preserve">
+    <value>Ex&amp;it</value>
+  </data>
+  <data name="fileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>37, 20</value>
+  </data>
+  <data name="fileToolStripMenuItem.Text" xml:space="preserve">
+    <value>&amp;File</value>
+  </data>
   <data name="mnuMain.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
@@ -145,18 +157,6 @@
   </data>
   <data name="&gt;&gt;mnuMain.ZOrder" xml:space="preserve">
     <value>2</value>
-  </data>
-  <data name="fileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>37, 20</value>
-  </data>
-  <data name="fileToolStripMenuItem.Text" xml:space="preserve">
-    <value>&amp;File</value>
-  </data>
-  <data name="exitToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>93, 22</value>
-  </data>
-  <data name="exitToolStripMenuItem.Text" xml:space="preserve">
-    <value>Ex&amp;it</value>
   </data>
   <metadata name="ssMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>132, 17</value>
@@ -234,19 +234,19 @@
   <data name="&gt;&gt;splitContainer1.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="fastColoredTextBox1.AutoScrollMinSize" type="System.Drawing.Size, System.Drawing">
+  <data name="txtPrompt.AutoScrollMinSize" type="System.Drawing.Size, System.Drawing">
     <value>2, 14</value>
   </data>
-  <data name="fastColoredTextBox1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="txtPrompt.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="fastColoredTextBox1.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="txtPrompt.Font" type="System.Drawing.Font, System.Drawing">
     <value>Courier New, 9.75pt</value>
   </data>
-  <data name="fastColoredTextBox1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="txtPrompt.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="fastColoredTextBox1.ServiceColors" mimetype="application/x-microsoft.net.object.binary.base64">
+  <data name="txtPrompt.ServiceColors" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdGYXN0Q29sb3JlZFRleHRCb3gsIFZlcnNpb249Mi4xNi4yNi4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWZiOGFhMTJiOTk0ZWY2MWIMAwAAAFFTeXN0
@@ -264,22 +264,22 @@
         CgAAAAAAAAAAjQABAAH4/////P///woAAAAAAAAAAKQAAQAB9/////z///8KAAAAAAAAAACWAAEACw==
 </value>
   </data>
-  <data name="fastColoredTextBox1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="txtPrompt.Size" type="System.Drawing.Size, System.Drawing">
     <value>800, 49</value>
   </data>
-  <data name="fastColoredTextBox1.TabIndex" type="System.Int32, mscorlib">
+  <data name="txtPrompt.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;fastColoredTextBox1.Name" xml:space="preserve">
-    <value>fastColoredTextBox1</value>
+  <data name="&gt;&gt;txtPrompt.Name" xml:space="preserve">
+    <value>txtPrompt</value>
   </data>
-  <data name="&gt;&gt;fastColoredTextBox1.Type" xml:space="preserve">
+  <data name="&gt;&gt;txtPrompt.Type" xml:space="preserve">
     <value>FastColoredTextBoxNS.FastColoredTextBox, FastColoredTextBox, Version=2.16.26.0, Culture=neutral, PublicKeyToken=fb8aa12b994ef61b</value>
   </data>
-  <data name="&gt;&gt;fastColoredTextBox1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;txtPrompt.Parent" xml:space="preserve">
     <value>splitContainer1.Panel2</value>
   </data>
-  <data name="&gt;&gt;fastColoredTextBox1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;txtPrompt.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="&gt;&gt;splitContainer1.Panel2.Name" xml:space="preserve">
