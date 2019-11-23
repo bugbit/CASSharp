@@ -59,5 +59,32 @@ namespace CASSharp.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a show help.
+        /// </summary>
+        internal static string HelpParamDescr {
+            get {
+                return ResourceManager.GetString("HelpParamDescr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a I don&apos;t recognize the parameter &apos;{0}&apos;.
+        /// </summary>
+        internal static string NoRecognizeParamError {
+            get {
+                return ResourceManager.GetString("NoRecognizeParamError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Test.
+        /// </summary>
+        internal static string TestParamDescr {
+            get {
+                return ResourceManager.GetString("TestParamDescr", resourceCulture);
+            }
+        }
     }
 }
