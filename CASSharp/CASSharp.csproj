@@ -57,8 +57,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Console\STFormater.cs" />
+    <Compile Include="Console\TextFormat.cs" />
     <Compile Include="Core\Sintaxis\ESTType.cs" />
     <Compile Include="Core\Sintaxis\STBase.cs" />
+    <Compile Include="Core\Sintaxis\STError.cs" />
     <Compile Include="Core\Sintaxis\STTokenizer.cs" />
     <Compile Include="Main\Tests\ITest.cs" />
     <Compile Include="Main\Param.cs" />

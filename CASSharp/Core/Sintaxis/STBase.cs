@@ -38,5 +38,28 @@ namespace CASSharp.Core.Sintaxis
         public int PosIni { get; set; }
         public int PosFin { get; set; }
         public string Text { get; set; }
+
+        public STBase() { }
+
+        public STBase(ESTType argType)
+        {
+            Type = argType;
+        }
+
+        public void SetText(int argPosIni, int argPosFin, string argTheText)
+        {
+            PosIni = argPosIni;
+            PosFin = argPosFin;
+            Text = argTheText.Substring(argPosIni, argPosFin - argPosIni + 1);
+        }
+
+        public static STBase CreateByTheText(ESTType argType, int argPosIni, int argPosFin, string argTheText)
+        {
+            var pSt = new STBase(argType);
+
+            pSt.SetText(argPosIni, argPosFin, argTheText);
+
+            return pSt;
+        }
     }
 }

@@ -79,6 +79,24 @@ namespace CASSharp.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a I don&apos;t recognize &apos;{0}&apos;.
+        /// </summary>
+        internal static string NoRecognizeStError {
+            get {
+                return ResourceManager.GetString("NoRecognizeStError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a In position {0} : {1}.
+        /// </summary>
+        internal static string StError {
+            get {
+                return ResourceManager.GetString("StError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Test.
         /// </summary>
         internal static string TestParamDescr {

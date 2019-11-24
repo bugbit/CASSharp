@@ -31,6 +31,8 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
+using static System.Console;
+
 namespace CASSharp.Main
 {
     static class Program
@@ -49,7 +51,7 @@ namespace CASSharp.Main
         static int Main(string[] args)
         {
             Header();
-            Console.WriteLine();
+            WriteLine();
             try
             {
                 ParseCommandLine(args, out bool pExit);
@@ -58,12 +60,12 @@ namespace CASSharp.Main
             }
             catch (Exception ex)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"Error: {ex.Message}");
+                ForegroundColor = ConsoleColor.Red;
+                WriteLine($"Error: {ex.Message}");
 
                 return -1;
             }
-            Console.ReadLine();
+            ReadLine();
 
             return 0;
         }
@@ -77,7 +79,7 @@ namespace CASSharp.Main
             var pDescription = pAttrs.OfType<AssemblyDescriptionAttribute>().First().Description;
             var pLicense = pAttrs.OfType<AssemblyCopyrightAttribute>().First().Copyright;
 
-            Console.WriteLine
+            WriteLine
             (
                  $@"
 {pName} Version {pVersion}
@@ -112,14 +114,14 @@ MIT LICENSE"
         private static void Help(string argKey, string[] args, ref int i, out bool argExit)
         {
             argExit = true;
-            Console.WriteLine("Usage:\nCASSharp [flags]\nFlags:\n");
+            WriteLine("Usage:\nCASSharp [flags]\nFlags:\n");
 
             foreach (var pParam in mParams)
             {
                 var pKeys = string.Join("|", pParam.Keys);
                 var pTabs = new string('\t', 4 - (pKeys.Length / 8));
 
-                Console.WriteLine($"  {pKeys}{pTabs}{pParam.IRDescription}");
+                WriteLine($"  {pKeys}{pTabs}{pParam.IRDescription}");
             }
         }
 

@@ -41,7 +41,7 @@ namespace CASSharp.Main.Tests
         public void Run()
         {
             var pTokernizer = new Core.Sintaxis.STTokenizer();
-            var pTokens = pTokernizer.Parse("10 20");
+            var pTokens = pTokernizer.Parse("10 20+ 30");
         }
     }
 }

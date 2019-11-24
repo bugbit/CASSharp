@@ -123,6 +123,12 @@
   <data name="NoRecognizeParamError" xml:space="preserve">
     <value>I don't recognize the parameter '{0}'</value>
   </data>
+  <data name="NoRecognizeStError" xml:space="preserve">
+    <value>I don't recognize '{0}'</value>
+  </data>
+  <data name="StError" xml:space="preserve">
+    <value>In position {0} : {1}</value>
+  </data>
   <data name="TestParamDescr" xml:space="preserve">
     <value>Test</value>
   </data>

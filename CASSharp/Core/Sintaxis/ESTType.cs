@@ -34,6 +34,6 @@ namespace CASSharp.Core.Sintaxis
 {
     enum ESTType
     {
-        None, Numeric
+        None, Error, Numeric
     }
 }

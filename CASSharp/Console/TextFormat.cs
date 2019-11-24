@@ -30,45 +30,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CASSharp.Core.Sintaxis
+namespace CASSharp.Console
 {
-    class STTokenizer
+    class TextFormat
     {
-        public LinkedList<STBase> Parse(string argText)
-        {
-            var pSTs = new LinkedList<STBase>();
-            var i = 0;
-
-            while (i < argText.Length)
-                ParseToken(pSTs, argText, ref i);
-
-            return pSTs;
-        }
-
-        private void ParseToken(LinkedList<STBase> argSts, string argText, ref int i)
-        {
-            while (i < argText.Length && char.IsWhiteSpace(argText[i]))
-                i++;
-
-            if (i >= argText.Length)
-                return;
-
-            int pIni, pFin;
-
-            pIni = pFin = i;
-
-            if (char.IsDigit(argText[i]))
-            {
-                do pFin = i++; while (i < argText.Length && char.IsDigit(argText[i]));
-
-                argSts.AddLast(STBase.CreateByTheText(ESTType.Numeric, pIni, pFin, argText));
-            }
-            else
-            {
-                do pFin = i++; while (i < argText.Length && !char.IsWhiteSpace(argText[i]));
-
-                argSts.AddLast(STError.CreateByTheText(pIni, pFin, argText, Properties.Resources.NoRecognizeStError));
-            }
-        }
+        public int PosIni { get; set; }
+        public int PosFin { get; set; }
+        public int Priority { get; set; }
+        public ConsoleColor ForeColor { get; set; }
+        public ConsoleColor BackColor { get; set; }
     }
 }

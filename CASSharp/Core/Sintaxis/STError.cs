@@ -32,43 +32,19 @@ using System.Text;
 
 namespace CASSharp.Core.Sintaxis
 {
-    class STTokenizer
+    class STError : STBase
     {
-        public LinkedList<STBase> Parse(string argText)
+        public string Error { get; set; }
+
+        public STError() : base(ESTType.Error) { }
+
+        public static STError CreateByTheText(int argPosIni, int argPosFin, string argTheText, string argError)
         {
-            var pSTs = new LinkedList<STBase>();
-            var i = 0;
+            var pSt = new STError { Error = string.Format(Properties.Resources.StError, argPosIni, argError) };
 
-            while (i < argText.Length)
-                ParseToken(pSTs, argText, ref i);
+            pSt.SetText(argPosIni, argPosFin, argTheText);
 
-            return pSTs;
-        }
-
-        private void ParseToken(LinkedList<STBase> argSts, string argText, ref int i)
-        {
-            while (i < argText.Length && char.IsWhiteSpace(argText[i]))
-                i++;
-
-            if (i >= argText.Length)
-                return;
-
-            int pIni, pFin;
-
-            pIni = pFin = i;
-
-            if (char.IsDigit(argText[i]))
-            {
-                do pFin = i++; while (i < argText.Length && char.IsDigit(argText[i]));
-
-                argSts.AddLast(STBase.CreateByTheText(ESTType.Numeric, pIni, pFin, argText));
-            }
-            else
-            {
-                do pFin = i++; while (i < argText.Length && !char.IsWhiteSpace(argText[i]));
-
-                argSts.AddLast(STError.CreateByTheText(pIni, pFin, argText, Properties.Resources.NoRecognizeStError));
-            }
+            return pSt;
         }
     }
 }
