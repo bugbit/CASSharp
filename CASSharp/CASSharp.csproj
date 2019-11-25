@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Comun\PositionRange.cs" />
     <Compile Include="Console\STFormater.cs" />
     <Compile Include="Console\TextFormat.cs" />
     <Compile Include="Core\Sintaxis\ESTType.cs" />
