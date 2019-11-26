@@ -67,6 +67,7 @@
     <Compile Include="Main\Tests\ITest.cs" />
     <Compile Include="Main\Param.cs" />
     <Compile Include="Main\Program.cs" />
+    <Compile Include="Main\Tests\PositionRangeIntersectionTest.cs" />
     <Compile Include="Main\Tests\TestAttribute.cs" />
     <Compile Include="Main\Tests\TokernizerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -81,7 +82,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

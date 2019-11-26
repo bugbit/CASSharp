@@ -36,8 +36,7 @@ namespace CASSharp.Console
     {
         public int PosIni { get; set; }
         public int PosFin { get; set; }
-        public int Priority { get; set; }
-        public ConsoleColor ForeColor { get; set; }
-        public ConsoleColor BackColor { get; set; }
+        public ConsoleColor? ForeColor { get; set; }
+        public ConsoleColor? BackColor { get; set; }
     }
 }

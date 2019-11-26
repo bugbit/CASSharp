@@ -41,7 +41,7 @@ namespace CASSharp.Main
         {
             new Param(Properties.Resources.HelpParamDescr,Help,"/?","-help","--h"),
 #if DEBUG
-            new Param(Properties.Resources.TestParamDescr,Test,"/test")
+            new Param(Properties.Resources.TestParamDescr,Test,"/test","/t")
 #endif
         };
 
