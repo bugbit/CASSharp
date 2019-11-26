@@ -8,11 +8,22 @@ namespace CASSharp.Console
 {
     class STFormater
     {
-        public TextFormat[] Format(LinkedList<STBase> argSts)
+        public const ConsoleColor ColorError = ConsoleColor.Red;
+        public const ConsoleColor ColorNumber = ConsoleColor.DarkBlue;
+        public IDictionary<ESTType, ConsoleColor> TypesColores { get; } = new Dictionary<ESTType, ConsoleColor>
         {
-            var pFmt = new List<TextFormat>();
+            [ESTType.Error] = ColorError,
+            [ESTType.Numeric] = ColorNumber
+        };
 
-            return pFmt.ToArray();
+        public SortedSet<TextFormat> Format(LinkedList<STBase> argSts)
+        {
+            var pFmt = new SortedSet<TextFormat>();
+            var pSt = argSts.First;
+
+            //pSt.Equals
+
+            return pFmt;
         }
     }
 }

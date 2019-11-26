@@ -25,6 +25,7 @@
 */
 #endregion
 
+using CASSharp.Comun;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,8 +35,7 @@ namespace CASSharp.Console
 {
     class TextFormat
     {
-        public int PosIni { get; set; }
-        public int PosFin { get; set; }
+        public PositionRange Position { get; set; }
         public ConsoleColor? ForeColor { get; set; }
         public ConsoleColor? BackColor { get; set; }
     }

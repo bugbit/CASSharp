@@ -29,14 +29,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CASSharp.Comun;
 
 namespace CASSharp.Core.Sintaxis
 {
     class STBase
     {
         public ESTType Type { get; set; }
-        public int PosIni { get; set; }
-        public int PosFin { get; set; }
+        public PositionRange Position { get; set; }
         public string Text { get; set; }
 
         public STBase() { }
@@ -48,8 +48,7 @@ namespace CASSharp.Core.Sintaxis
 
         public void SetText(int argPosIni, int argPosFin, string argTheText)
         {
-            PosIni = argPosIni;
-            PosFin = argPosFin;
+            Position = new PositionRange(argPosIni, argPosFin);
             Text = argTheText.Substring(argPosIni, argPosFin - argPosIni + 1);
         }
 
