@@ -65,7 +65,8 @@ namespace CASSharp.Main
 
                 return -1;
             }
-            ReadLine();
+
+            System.ReadLine.Read("(%1) ");
 
             return 0;
         }

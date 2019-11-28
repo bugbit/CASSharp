@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CASSharp", "CASSharp.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastColoredTextBox", "..\FastColoredTextBox\FastColoredTextBox\FastColoredTextBox.csproj", "{6DD14A85-CCFC-4774-BD26-0F5772512319}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadLine", "..\ReadLine\ReadLine.csproj", "{77FAA1E8-2B1D-45A7-99F2-A0C1E7034862}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{6DD14A85-CCFC-4774-BD26-0F5772512319}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DD14A85-CCFC-4774-BD26-0F5772512319}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6DD14A85-CCFC-4774-BD26-0F5772512319}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77FAA1E8-2B1D-45A7-99F2-A0C1E7034862}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77FAA1E8-2B1D-45A7-99F2-A0C1E7034862}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77FAA1E8-2B1D-45A7-99F2-A0C1E7034862}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77FAA1E8-2B1D-45A7-99F2-A0C1E7034862}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
