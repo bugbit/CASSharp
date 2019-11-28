@@ -54,10 +54,14 @@
     <Compile Include="Comun\PositionRange.cs" />
     <Compile Include="Console\STFormater.cs" />
     <Compile Include="Console\TextFormat.cs" />
+    <Compile Include="Core\Sintaxis\ESTTokenizerTerminate.cs" />
     <Compile Include="Core\Sintaxis\ESTType.cs" />
     <Compile Include="Core\Sintaxis\STBase.cs" />
     <Compile Include="Core\Sintaxis\STError.cs" />
+    <Compile Include="Core\Sintaxis\STException.cs" />
     <Compile Include="Core\Sintaxis\STTokenizer.cs" />
+    <Compile Include="Core\Sintaxis\STTokenizerResult.cs" />
+    <Compile Include="Core\Sintaxis\STTokenizerTask.cs" />
     <Compile Include="Main\Tests\ITest.cs" />
     <Compile Include="Main\Param.cs" />
     <Compile Include="Main\Program.cs" />

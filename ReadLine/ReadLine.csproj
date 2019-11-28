@@ -40,11 +40,11 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstractions\Console2.cs" />
+    <Compile Include="Abstractions\IConsole.cs" />
     <Compile Include="IAutoCompleteHandler.cs" />
     <Compile Include="KeyHandler.cs" />
     <Compile Include="ReadLine.cs" />
-    <Compile Include="Abstractions/Console2.cs" />
-    <Compile Include="Abstractions/IConsole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
