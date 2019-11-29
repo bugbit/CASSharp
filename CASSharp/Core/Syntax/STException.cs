@@ -25,18 +25,38 @@
 */
 #endregion
 
-using CASSharp.Comun;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 
-namespace CASSharp.Console
+namespace CASSharp.Core.Syntax
 {
-    class TextFormat
+    class STException : Exception
     {
-        public PositionRange Position { get; set; }
-        public ConsoleColor? ForeColor { get; set; }
-        public ConsoleColor? BackColor { get; set; }
+        public int Position { get; set; }
+
+        public STException(int? argPosition = null)
+        {
+            if (argPosition.HasValue)
+                Position = argPosition.Value;
+        }
+
+        public STException(string message, int? argPosition = null) : base(message)
+        {
+            if (argPosition.HasValue)
+                Position = argPosition.Value;
+        }
+
+        public STException(string message, Exception innerException, int? argPosition = null) : base(message, innerException)
+        {
+            if (argPosition.HasValue)
+                Position = argPosition.Value;
+        }
+
+        protected STException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
     }
 }

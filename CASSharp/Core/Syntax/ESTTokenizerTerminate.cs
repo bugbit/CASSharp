@@ -29,36 +29,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CASSharp.Comun;
 
-namespace CASSharp.Core.Sintaxis
+namespace CASSharp.Core.Syntax
 {
-    class STBase
+    enum ESTTokenizerTerminate
     {
-        public ESTType Type { get; set; }
-        public PositionRange Position { get; set; }
-        public string Text { get; set; }
-
-        public STBase() { }
-
-        public STBase(ESTType argType)
-        {
-            Type = argType;
-        }
-
-        public void SetText(int argPosIni, int argPosFin, string argTheText)
-        {
-            Position = new PositionRange(argPosIni, argPosFin);
-            Text = argTheText.Substring(argPosIni, argPosFin - argPosIni + 1);
-        }
-
-        public static STBase CreateByTheText(ESTType argType, int argPosIni, int argPosFin, string argTheText)
-        {
-            var pSt = new STBase(argType);
-
-            pSt.SetText(argPosIni, argPosFin, argTheText);
-
-            return pSt;
-        }
+        No, ShowResult, HideResult
     }
 }

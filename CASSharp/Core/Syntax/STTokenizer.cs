@@ -29,46 +29,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
-namespace CASSharp.Core.Sintaxis
+namespace CASSharp.Core.Syntax
 {
     class STTokenizer
     {
-        public LinkedList<STBase> Parse(string argText)
+        private STTokenizerTask mTask = null;
+        private object mLock = new object();
+
+        public STTokenizerResult Parse(string argText, CancellationToken argCancelToken)
         {
-            var pSTs = new LinkedList<STBase>();
-            var i = 0;
+            STTokenizerTask pTask = null;
 
-            while (i < argText.Length)
-                ParseToken(pSTs, argText, ref i);
-
-            return pSTs;
-        }
-
-        private void ParseToken(LinkedList<STBase> argSts, string argText, ref int i)
-        {
-            while (i < argText.Length && char.IsWhiteSpace(argText[i]))
-                i++;
-
-            if (i >= argText.Length)
-                return;
-
-            int pIni, pFin;
-
-            pIni = pFin = i;
-
-            if (char.IsDigit(argText[i]))
+            lock (mLock)
             {
-                do pFin = i++; while (i < argText.Length && char.IsDigit(argText[i]));
-
-                argSts.AddLast(STBase.CreateByTheText(ESTType.Numeric, pIni, pFin, argText));
+                pTask = mTask;
             }
-            else
-            {
-                do pFin = i++; while (i < argText.Length && !char.IsWhiteSpace(argText[i]));
 
-                argSts.AddLast(STError.CreateByTheText(pIni, pFin, argText, Properties.Resources.NoRecognizeStError));
-            }
+            var pResult = pTask.Parse(argText, argCancelToken);
+
+            return pResult;
         }
     }
 }

@@ -30,21 +30,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CASSharp.Core.Sintaxis
+namespace CASSharp.Core.Syntax
 {
-    class STError : STBase
+    class STToken
     {
-        public string Error { get; set; }
-
-        public STError() : base(ESTType.Error) { }
-
-        public static STError CreateByTheText(int argPosIni, int argPosFin, string argTheText, string argError)
-        {
-            var pSt = new STError { Error = string.Format(Properties.Resources.StError, argPosIni, argError) };
-
-            pSt.SetText(argPosIni, argPosFin, argTheText);
-
-            return pSt;
-        }
+        public ESTToken IdToken { get; set; }
+        public string Text { get; set; }
     }
 }

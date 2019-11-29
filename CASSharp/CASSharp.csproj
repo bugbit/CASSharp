@@ -52,16 +52,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Comun\PositionRange.cs" />
-    <Compile Include="Console\STFormater.cs" />
-    <Compile Include="Console\TextFormat.cs" />
-    <Compile Include="Core\Sintaxis\ESTTokenizerTerminate.cs" />
-    <Compile Include="Core\Sintaxis\ESTType.cs" />
-    <Compile Include="Core\Sintaxis\STBase.cs" />
-    <Compile Include="Core\Sintaxis\STError.cs" />
-    <Compile Include="Core\Sintaxis\STException.cs" />
-    <Compile Include="Core\Sintaxis\STTokenizer.cs" />
-    <Compile Include="Core\Sintaxis\STTokenizerResult.cs" />
-    <Compile Include="Core\Sintaxis\STTokenizerTask.cs" />
+    <Compile Include="Core\Syntax\ESTTokenizerTerminate.cs" />
+    <Compile Include="Core\Syntax\ESTToken.cs" />
+    <Compile Include="Core\Syntax\ISTTokens.cs" />
+    <Compile Include="Core\Syntax\STException.cs" />
+    <Compile Include="Core\Syntax\STTokenizer.cs" />
+    <Compile Include="Core\Syntax\STTokenizerResult.cs" />
+    <Compile Include="Core\Syntax\STTokenizerTask.cs" />
+    <Compile Include="Core\Syntax\STToken.cs" />
+    <Compile Include="Core\Syntax\STTokens.cs" />
     <Compile Include="Main\Tests\ITest.cs" />
     <Compile Include="Main\Param.cs" />
     <Compile Include="Main\Program.cs" />
@@ -102,5 +101,6 @@
       <Name>ReadLine</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

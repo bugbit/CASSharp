@@ -30,10 +30,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CASSharp.Core.Sintaxis
+namespace CASSharp.Core.Syntax
 {
-    enum ESTType
+    class STTokens : ISTTokens
     {
-        None, Error, Numeric
+        public LinkedList<STToken> Tokens { get; set; }
     }
 }

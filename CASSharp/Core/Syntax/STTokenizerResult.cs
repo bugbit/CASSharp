@@ -25,27 +25,17 @@
 */
 #endregion
 
-#if DEBUG
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
-using ST = CASSharp.Core.Syntax;
 
-[assembly: CASSharp.Main.Tests.Test(typeof(CASSharp.Main.Tests.TokernizerTest))]
-
-namespace CASSharp.Main.Tests
+namespace CASSharp.Core.Syntax
 {
-    class TokernizerTest : ITest
+    class STTokenizerResult
     {
-        public void Run()
-        {
-            var pTokernizer = new ST.STTokenizer();
-            var pTokens = pTokernizer.Parse("10 20+ 30", CancellationToken.None);
-        }
+        public ESTTokenizerTerminate Terminate { get; set; } = ESTTokenizerTerminate.No;
+        public STTokens Tokens { get; set; }
+        public string PromptNoParse { get; set; }
     }
 }
-
-#endif
