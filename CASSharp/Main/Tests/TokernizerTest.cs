@@ -51,23 +51,31 @@ namespace CASSharp.Main.Tests
         public void Run()
         {
             var pTokernizer = new ST.STTokenizer();
+            var pCanceltoken = new CancellationTokenSource();
 
-            foreach (var t in mTexts)
+            try
             {
-                try
+                foreach (var t in mTexts)
                 {
-                    var pTokens = pTokernizer.Parse(t, CancellationToken.None);
+                    try
+                    {
+                        var pTokens = pTokernizer.Parse(t, pCanceltoken.Token);
 
-                    Console.WriteLine(pTokens);
+                        Console.WriteLine(pTokens);
+                    }
+                    catch (AggregateException ex)
+                    {
+                        ex.Handle(e => PrintError(t, e));
+                    }
+                    catch (Exception ex)
+                    {
+                        PrintError(t, ex);
+                    }
                 }
-                catch (AggregateException ex)
-                {
-                    ex.Handle(e => PrintError(t, e));
-                }
-                catch (Exception ex)
-                {
-                    PrintError(t, ex);
-                }
+            }
+            finally
+            {
+                pCanceltoken.Cancel();
             }
         }
 
