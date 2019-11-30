@@ -126,8 +126,12 @@ namespace CASSharp.Core.Syntax
 
         private bool ParseToken(out STToken argToken, out char argCar)
         {
+            mCancelToken.ThrowIfCancellationRequested();
             while (mPosition < mText.Length && char.IsWhiteSpace(mText[mPosition]))
+            {
+                mCancelToken.ThrowIfCancellationRequested();
                 mPosition++;
+            }
 
             if (mPosition >= mText.Length)
             {
@@ -155,6 +159,7 @@ namespace CASSharp.Core.Syntax
                     {
                         do
                         {
+                            mCancelToken.ThrowIfCancellationRequested();
                             pLen++;
                             mPosition++;
                         } while (mPosition < mText.Length && char.IsDigit(mText[mPosition]));
@@ -174,6 +179,8 @@ namespace CASSharp.Core.Syntax
         {
             for (; ; )
             {
+                mCancelToken.ThrowIfCancellationRequested();
+
                 if (mPosition > mText.Length)
                     Yield(ESTTokenizerTerminate.No);
                 ParseToken(out STToken pToken, out char pCar);
