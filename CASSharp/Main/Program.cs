@@ -50,7 +50,7 @@ namespace CASSharp.Main
         /// </summary>
         static int Main(string[] args)
         {
-            Header();
+            PrintHeader();
             WriteLine();
             try
             {
@@ -71,7 +71,7 @@ namespace CASSharp.Main
             return 0;
         }
 
-        static private void Header()
+        static private void PrintHeader()
         {
             var pAssembly = Assembly.GetExecutingAssembly();
             var pAttrs = pAssembly.GetCustomAttributes(false);

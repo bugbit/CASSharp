@@ -54,13 +54,15 @@
     <Compile Include="Comun\PositionRange.cs" />
     <Compile Include="Core\Syntax\ESTTokenizerTerminate.cs" />
     <Compile Include="Core\Syntax\ESTToken.cs" />
-    <Compile Include="Core\Syntax\ISTTokens.cs" />
     <Compile Include="Core\Syntax\STException.cs" />
+    <Compile Include="Core\Syntax\STTokenBlock.cs" />
+    <Compile Include="Core\Syntax\STTokenChars.cs" />
     <Compile Include="Core\Syntax\STTokenizer.cs" />
     <Compile Include="Core\Syntax\STTokenizerResult.cs" />
     <Compile Include="Core\Syntax\STTokenizerTask.cs" />
     <Compile Include="Core\Syntax\STToken.cs" />
     <Compile Include="Core\Syntax\STTokens.cs" />
+    <Compile Include="Core\Syntax\STTokenStr.cs" />
     <Compile Include="Main\Tests\ITest.cs" />
     <Compile Include="Main\Param.cs" />
     <Compile Include="Main\Program.cs" />

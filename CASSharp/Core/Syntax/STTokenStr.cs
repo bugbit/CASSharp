@@ -33,9 +33,11 @@ using System.Text;
 
 namespace CASSharp.Core.Syntax
 {
-    [DebuggerDisplay("Token : {Token}")]
-    abstract class STToken
+    [DebuggerDisplay("Token : {Token} Text : {Text}")]
+    class STTokenStr : STToken
     {
-        public ESTToken Token { get; set; }
+        public string Text { get; set; }
+
+        public override string ToString() => Text;
     }
 }

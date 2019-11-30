@@ -42,23 +42,11 @@ namespace CASSharp.Core.Syntax
         private TaskCompletionSource<string> mParseContinue;
         private TaskCompletionSource<STTokenizerResult> mParseCompleted;
         private string mText;
-        private STTokens mTokens = new STTokens();
+        private STTokens mTokens = new STTokens { Tokens = new LinkedList<STToken>() };
         private int mPosition = 0;
 
         public STTokenizerResult Parse(string argText, CancellationToken argCancelToken)
         {
-            TaskCompletionSource<string> pTaskCont;
-
-            lock (mLock)
-            {
-                pTaskCont = mParseContinue;
-                mCancelToken = argCancelToken;
-            }
-
-            if (pTaskCont == null)
-                mText = argText;
-            else
-                pTaskCont.SetResult(argText);
 
             Task<STTokenizerResult> pTaskR;
 
@@ -68,7 +56,25 @@ namespace CASSharp.Core.Syntax
                 pTaskR = mParseCompleted.Task;
             }
 
-            Task.Factory.StartNew(() => Start());
+            TaskCompletionSource<string> pTaskCont;
+
+            lock (mLock)
+            {
+                pTaskCont = mParseContinue;
+                mCancelToken = argCancelToken;
+            }
+
+            if (pTaskCont == null)
+            {
+                mText = argText;
+
+                Task.Factory.StartNew(() => Start());
+            }
+            else
+            {
+                pTaskCont.SetResult(argText);
+                pTaskCont.Task.Wait(argCancelToken);
+            }
 
             pTaskR.Wait(argCancelToken);
 
@@ -77,7 +83,16 @@ namespace CASSharp.Core.Syntax
 
         private void Start()
         {
-            //Parse(mTokens, out char pCar);
+            mPosition = 0;
+
+            try
+            {
+                ParseTokens();
+            }
+            catch (Exception ex)
+            {
+                mParseCompleted.SetException(ex);
+            }
         }
 
         private void Yield(ESTTokenizerTerminate argTerminate)
@@ -105,65 +120,84 @@ namespace CASSharp.Core.Syntax
             {
                 pTask.Task.Wait(pCancelToken);
                 mText = pTask.Task.Result;
+                mPosition = 0;
             }
         }
 
-        //private void ParseToken(ISTTokens argTokens, out char argCar)
-        //{
-        //    while (mPosition < mText.Length && char.IsWhiteSpace(mText[mPosition]))
-        //        mPosition++;
-
-        //    if (mPosition >= mText.Length)
-        //    {
-        //        argCar = '\x0';
-
-        //        return;
-        //    }
-
-        //    int pIni, pFin;
-
-        //    pIni = pFin = mPosition;
-        //}
-
-        /*
-         
-        public LinkedList<STBase> Parse(string argText)
+        private bool ParseToken(out STToken argToken, out char argCar)
         {
-            var pSTs = new LinkedList<STBase>();
-            var i = 0;
+            while (mPosition < mText.Length && char.IsWhiteSpace(mText[mPosition]))
+                mPosition++;
 
-            while (i < argText.Length)
-                ParseToken(pSTs, argText, ref i);
+            if (mPosition >= mText.Length)
+            {
+                argToken = null;
+                argCar = '\x0';
 
-            return pSTs;
+                return false;
+            }
+
+            int pIni, pFin, pLen = 0;
+            var pCar = mText[mPosition];
+
+            pIni = pFin = mPosition;
+
+            switch (pCar)
+            {
+                case STTokenChars.Terminate:
+                case STTokenChars.TerminateNoShowOut:
+                    argToken = null;
+                    argCar = pCar;
+
+                    return true;
+                default:
+                    if (char.IsDigit(pCar))
+                    {
+                        do
+                        {
+                            pLen++;
+                            mPosition++;
+                        } while (mPosition < mText.Length && char.IsDigit(mText[mPosition]));
+
+                        argToken = new STTokenStr { Token = ESTToken.Numeric, Text = mText.Substring(pIni, pLen) };
+                        argCar = '\x0';
+
+                        return true;
+                    }
+                    break;
+            }
+
+            throw new STException(string.Format(Properties.Resources.NoRecognizeStError, pCar), pIni);
         }
 
-        private void ParseToken(LinkedList<STBase> argSts, string argText, ref int i)
+        private void ParseTokens()
         {
-            while (i < argText.Length && char.IsWhiteSpace(argText[i]))
-                i++;
-
-            if (i >= argText.Length)
-                return;
-
-            int pIni, pFin;
-
-            pIni = pFin = i;
-
-            if (char.IsDigit(argText[i]))
+            for (; ; )
             {
-                do pFin = i++; while (i < argText.Length && char.IsDigit(argText[i]));
+                if (mPosition > mText.Length)
+                    Yield(ESTTokenizerTerminate.No);
+                ParseToken(out STToken pToken, out char pCar);
+                if (pToken != null)
+                    mTokens.Tokens.AddLast(pToken);
+                else
+                    switch (pCar)
+                    {
+                        case '\x0':
+                            Yield(ESTTokenizerTerminate.No);
 
-                argSts.AddLast(STBase.CreateByTheText(ESTType.Numeric, pIni, pFin, argText));
-            }
-            else
-            {
-                do pFin = i++; while (i < argText.Length && !char.IsWhiteSpace(argText[i]));
+                            break;
+                        case STTokenChars.Terminate:
+                            Yield(ESTTokenizerTerminate.ShowResult);
 
-                argSts.AddLast(STError.CreateByTheText(pIni, pFin, argText, Properties.Resources.NoRecognizeStError));
+                            return;
+                        case STTokenChars.TerminateNoShowOut:
+                            Yield(ESTTokenizerTerminate.HideResult);
+
+                            return;
+                        default:
+                            throw new NotImplementedException();
+                    }
             }
         }
-
-         */
     }
 }

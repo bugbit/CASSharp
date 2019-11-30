@@ -40,10 +40,55 @@ namespace CASSharp.Main.Tests
 {
     class TokernizerTest : ITest
     {
+        private string[] mTexts =
+        {
+            "10 20+ 30",
+            "10",
+            ";",
+            "20;"
+        };
+
         public void Run()
         {
             var pTokernizer = new ST.STTokenizer();
-            var pTokens = pTokernizer.Parse("10 20+ 30", CancellationToken.None);
+
+            foreach (var t in mTexts)
+            {
+                try
+                {
+                    var pTokens = pTokernizer.Parse(t, CancellationToken.None);
+
+                    Console.WriteLine(pTokens);
+                }
+                catch (AggregateException ex)
+                {
+                    ex.Handle(e => PrintError(t, e));
+                }
+                catch (Exception ex)
+                {
+                    PrintError(t, ex);
+                }
+            }
+        }
+
+        private bool PrintError(string t, Exception ex)
+        {
+            var pColor = Console.ForegroundColor;
+
+            Console.ForegroundColor = ConsoleColor.Red;
+
+            Console.WriteLine(ex.Message);
+
+            Console.ForegroundColor = pColor;
+
+            if (ex is ST.STException pSTEx)
+            {
+                Console.WriteLine(t);
+                Console.Write(new string(' ', pSTEx.Position));
+                Console.WriteLine('^');
+            }
+
+            return true;
         }
     }
 }

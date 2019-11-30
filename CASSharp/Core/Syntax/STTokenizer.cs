@@ -44,7 +44,7 @@ namespace CASSharp.Core.Syntax
 
             lock (mLock)
             {
-                pTask = mTask;
+                pTask = mTask ?? (mTask = new STTokenizerTask());
             }
 
             var pResult = pTask.Parse(argText, argCancelToken);

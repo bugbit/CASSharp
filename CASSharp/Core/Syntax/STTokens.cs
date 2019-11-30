@@ -32,8 +32,10 @@ using System.Text;
 
 namespace CASSharp.Core.Syntax
 {
-    class STTokens : ISTTokens
+    class STTokens
     {
         public LinkedList<STToken> Tokens { get; set; }
+
+        public override string ToString() => (Tokens != null) ? string.Join("", Tokens) : string.Empty;
     }
 }
