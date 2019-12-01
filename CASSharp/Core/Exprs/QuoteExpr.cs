@@ -27,12 +27,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using ST = CASSharp.Core.Syntax;
 
 namespace CASSharp.Core.Exprs
 {
+    [DebuggerDisplay("TypeExpr : {TypeExpr} Tokens : {Tokens}")]
     sealed class QuoteExpr : Expr
     {
         public ST.STTokens Tokens { get; }
