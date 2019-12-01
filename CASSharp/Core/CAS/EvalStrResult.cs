@@ -29,13 +29,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ST = CASSharp.Core.Syntax;
 
-namespace CASSharp.Core.Syntax
+namespace CASSharp.Core.CAS
 {
-    class STTokens
+    class EvalStrResult
     {
-        public LinkedList<STToken> Tokens { get; set; }
-
-        public override string ToString() => (Tokens != null) ? string.Join(" ", Tokens) : string.Empty;
+        public ST.ESTTokenizerTerminate Terminate { get; set; } = ST.ESTTokenizerTerminate.No;
+        public Exprs.Expr Expr { get; set; }
+        public string PromptNoParse { get; set; }
     }
 }

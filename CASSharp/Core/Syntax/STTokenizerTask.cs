@@ -42,7 +42,7 @@ namespace CASSharp.Core.Syntax
         private TaskCompletionSource<string> mParseContinue;
         private TaskCompletionSource<STTokenizerResult> mParseCompleted;
         private string mText;
-        private STTokens mTokens = new STTokens { Tokens = new LinkedList<STToken>() };
+        private STTokens mTokens = new STTokens();
         private int mPosition = 0;
 
         public STTokenizerResult Parse(string argText, CancellationToken argCancelToken)
@@ -84,6 +84,7 @@ namespace CASSharp.Core.Syntax
         private void Start()
         {
             mPosition = 0;
+            mTokens.Tokens = new LinkedList<STToken>();
 
             try
             {
@@ -91,6 +92,7 @@ namespace CASSharp.Core.Syntax
             }
             catch (Exception ex)
             {
+                mTokens.Tokens = new LinkedList<STToken>();
                 mParseCompleted.SetException(ex);
             }
         }
@@ -111,8 +113,15 @@ namespace CASSharp.Core.Syntax
                 }
                 else
                 {
-                    pTask = null;
-                    pPromptNoParse = (mPosition < mText.Length) ? mText.Substring(mPosition + 1).Trim() : null;
+                    mParseContinue = pTask = null;
+                    if (mPosition < mText.Length)
+                    {
+                        pPromptNoParse = mText.Substring(mPosition + 1).Trim();
+                        if (string.IsNullOrWhiteSpace(pPromptNoParse))
+                            pPromptNoParse = null;
+                    }
+                    else
+                        pPromptNoParse = null;
                 }
             }
             mParseCompleted.SetResult(new STTokenizerResult { Tokens = mTokens, Terminate = argTerminate, PromptNoParse = pPromptNoParse });

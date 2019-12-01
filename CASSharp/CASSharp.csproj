@@ -52,6 +52,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Comun\PositionRange.cs" />
+    <Compile Include="Core\CAS\CAS.cs" />
+    <Compile Include="Core\CAS\EvalStrResult.cs" />
+    <Compile Include="Core\Exprs\CteExpr.cs" />
+    <Compile Include="Core\Exprs\ETypeExpr.cs" />
+    <Compile Include="Core\Exprs\Expr.cs" />
+    <Compile Include="Core\Exprs\QuoteExpr.cs" />
     <Compile Include="Core\Syntax\ESTTokenizerTerminate.cs" />
     <Compile Include="Core\Syntax\ESTToken.cs" />
     <Compile Include="Core\Syntax\STException.cs" />
@@ -63,6 +69,7 @@
     <Compile Include="Core\Syntax\STToken.cs" />
     <Compile Include="Core\Syntax\STTokens.cs" />
     <Compile Include="Core\Syntax\STTokenStr.cs" />
+    <Compile Include="Main\Tests\EvalTest.cs" />
     <Compile Include="Main\Tests\ITest.cs" />
     <Compile Include="Main\Param.cs" />
     <Compile Include="Main\Program.cs" />

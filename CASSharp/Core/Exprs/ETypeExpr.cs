@@ -30,12 +30,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CASSharp.Core.Syntax
+namespace CASSharp.Core.Exprs
 {
-    class STTokens
+    [Flags]
+    enum ETypeExpr
     {
-        public LinkedList<STToken> Tokens { get; set; }
-
-        public override string ToString() => (Tokens != null) ? string.Join(" ", Tokens) : string.Empty;
+        None, Quote, Constant,
+        // Flags
+        Type = 0xFFF,
+        Flags = 0xF000,
+        // Cte
+        Number = 0x8000
     }
 }

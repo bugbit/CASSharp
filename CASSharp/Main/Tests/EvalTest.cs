@@ -32,13 +32,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using CAS = CASSharp.Core.CAS;
 using ST = CASSharp.Core.Syntax;
 
-//[assembly: CASSharp.Main.Tests.Test(typeof(CASSharp.Main.Tests.TokernizerTest))]
+[assembly: CASSharp.Main.Tests.Test(typeof(CASSharp.Main.Tests.EvalTest))]
 
 namespace CASSharp.Main.Tests
 {
-    class TokernizerTest : ITest
+    class EvalTest : ITest
     {
         private string[] mTexts =
         {
@@ -51,7 +52,7 @@ namespace CASSharp.Main.Tests
 
         public void Run()
         {
-            var pTokernizer = new ST.STTokenizer();
+            var pCAS = new CAS.CAS();
             var pCanceltoken = new CancellationTokenSource();
 
             try
@@ -60,17 +61,18 @@ namespace CASSharp.Main.Tests
                 {
                     var pText = t;
 
+                    Console.WriteLine(t);
                     try
                     {
                         do
                         {
-                            var pTokens = pTokernizer.Parse(pText, pCanceltoken.Token);
+                            var pResult = pCAS.Eval(pText, pCanceltoken.Token);
 
-                            Console.WriteLine($"{pTokens.Terminate} {pTokens.Tokens}");
+                            Console.WriteLine(pResult.Expr);
 
-                            if (pTokens.Terminate == ST.ESTTokenizerTerminate.No)
+                            if (pResult.Terminate == ST.ESTTokenizerTerminate.No)
                                 break;
-                            pText = pTokens.PromptNoParse;
+                            pText = pResult.PromptNoParse;
                         } while (pText != null);
                     }
                     catch (AggregateException ex)

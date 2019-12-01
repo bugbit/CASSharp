@@ -29,13 +29,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ST = CASSharp.Core.Syntax;
 
-namespace CASSharp.Core.Syntax
+namespace CASSharp.Core.Exprs
 {
-    class STTokens
+    sealed class QuoteExpr : Expr
     {
-        public LinkedList<STToken> Tokens { get; set; }
+        public ST.STTokens Tokens { get; }
 
-        public override string ToString() => (Tokens != null) ? string.Join(" ", Tokens) : string.Empty;
+        public QuoteExpr(ST.STTokens argTokens) : base(ETypeExpr.Quote)
+        {
+            Tokens = argTokens;
+        }
+
+        public QuoteExpr(QuoteExpr e) : this(e.Tokens)
+        {
+        }
+
+        public override Expr Clone() => new QuoteExpr(this);
     }
 }

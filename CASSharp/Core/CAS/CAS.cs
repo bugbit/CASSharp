@@ -29,13 +29,40 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using Deveel.Math;
+using ST = CASSharp.Core.Syntax;
 
-namespace CASSharp.Core.Syntax
+namespace CASSharp.Core.CAS
 {
-    class STTokens
+    class CAS
     {
-        public LinkedList<STToken> Tokens { get; set; }
+        private ST.STTokenizer mParser = new ST.STTokenizer();
 
-        public override string ToString() => (Tokens != null) ? string.Join(" ", Tokens) : string.Empty;
+        public ST.STTokenizerResult Parse(string argText, CancellationToken argCancelToken) => mParser.Parse(argText, argCancelToken);
+
+        public EvalStrResult Eval(string argText, CancellationToken argCancelToken)
+        {
+            var pResultP = Parse(argText, argCancelToken);
+            var pResult = new EvalStrResult { Terminate = pResultP.Terminate };
+
+            if (pResultP.Terminate == ST.ESTTokenizerTerminate.No)
+                return pResult;
+
+            var e = STToExprs(pResultP.Tokens, argCancelToken);
+            var en = Eval(e);
+
+            pResult.Expr = en;
+            pResult.PromptNoParse = pResultP.PromptNoParse;
+
+            return pResult;
+        }
+
+        public Exprs.Expr STToExprs(ST.STTokens argTokens, CancellationToken argCancelToken)
+        {
+            return Exprs.Expr.Number(BigDecimal.Parse(argTokens.Tokens.OfType<ST.STTokenStr>().First().Text));
+        }
+
+        public Exprs.Expr Eval(Exprs.Expr e) => e;
     }
 }
