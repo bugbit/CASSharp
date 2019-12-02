@@ -30,35 +30,20 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CASSharp.Core.Exprs;
 
 namespace CASSharp.Core.CAS
 {
-    class CasVars : Vars
+    class Vars : IVars
     {
-        private List<InOutExpr> mInOutExprs = new List<InOutExpr>();
+        protected ConcurrentDictionary<string, Exprs.Expr> mVars = new ConcurrentDictionary<string, Exprs.Expr>(StringComparer.InvariantCultureIgnoreCase);
 
-        override public IEnumerable<string> NameVars
-        {
-            get
-            {
-                var pNVars = new List<string>();
-                var n = 1;
+        virtual public IEnumerable<string> NameVars => mVars.Keys.ToArray();
 
-                foreach (var ine in mInOutExprs)
-                {
-                    if (ine.In != null)
-                        pNVars.Add(InNVar(n));
-                    if (ine.Out != null)
-                        pNVars.Add(OutNVar(n));
-                }
+        virtual public bool ExistVar(string nvar) => mVars.ContainsKey(nvar);
 
-                pNVars.AddRange(mVars.Keys);
+        virtual public Expr Get(string nvar) => mVars[nvar];
 
-                return pNVars.ToArray();
-            }
-        }
-
-        public static string InNVar(int n) => $"i{n}";
-        public static string OutNVar(int n) => $"i{n}";
+        virtual public void Set(string nvar, Expr e) => mVars[nvar] = e;
     }
 }

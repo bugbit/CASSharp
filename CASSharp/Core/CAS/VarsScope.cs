@@ -26,39 +26,28 @@
 #endregion
 
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace CASSharp.Core.CAS
 {
-    class CasVars : Vars
+    class VarsScope
     {
-        private List<InOutExpr> mInOutExprs = new List<InOutExpr>();
+        private List<Exprs.Expr> mScope = new List<Exprs.Expr>();
 
-        override public IEnumerable<string> NameVars
+        public void Push(Exprs.Expr e) => mScope.Add(e);
+
+        public Exprs.Expr Pop()
         {
-            get
-            {
-                var pNVars = new List<string>();
-                var n = 1;
+            if (mScope.Count == 0)
+                return null;
 
-                foreach (var ine in mInOutExprs)
-                {
-                    if (ine.In != null)
-                        pNVars.Add(InNVar(n));
-                    if (ine.Out != null)
-                        pNVars.Add(OutNVar(n));
-                }
+            var e = mScope.Last();
 
-                pNVars.AddRange(mVars.Keys);
+            mScope.Remove(e);
 
-                return pNVars.ToArray();
-            }
+            return e;
         }
-
-        public static string InNVar(int n) => $"i{n}";
-        public static string OutNVar(int n) => $"i{n}";
     }
 }

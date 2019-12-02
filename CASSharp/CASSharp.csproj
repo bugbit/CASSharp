@@ -57,6 +57,8 @@
     <Compile Include="Core\CAS\EvalStrResult.cs" />
     <Compile Include="Core\CAS\InOutExpr.cs" />
     <Compile Include="Core\CAS\IVars.cs" />
+    <Compile Include="Core\CAS\Vars.cs" />
+    <Compile Include="Core\CAS\VarsScope.cs" />
     <Compile Include="Core\Exprs\CteExpr.cs" />
     <Compile Include="Core\Exprs\ETypeExpr.cs" />
     <Compile Include="Core\Exprs\Expr.cs" />

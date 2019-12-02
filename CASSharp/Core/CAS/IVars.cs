@@ -34,7 +34,7 @@ namespace CASSharp.Core.CAS
 {
     interface IVars
     {
-        IEnumerable<string> Vars { get; }
+        IEnumerable<string> NameVars { get; }
         bool ExistVar(string nvar);
         void Set(string nvar, Exprs.Expr e);
         Exprs.Expr Get(string nvar);
