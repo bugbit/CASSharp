@@ -45,5 +45,6 @@ namespace CASSharp.Core.CAS
         virtual public Expr Get(string nvar) => mVars[nvar];
 
         virtual public void Set(string nvar, Expr e) => mVars[nvar] = e;
+        virtual public void Clear() => mVars.Clear();
     }
 }

@@ -29,25 +29,37 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CASSharp.Core.Exprs;
 
 namespace CASSharp.Core.CAS
 {
-    class VarsScope
+    abstract class VarsScope : IVars
     {
-        private List<Exprs.Expr> mScope = new List<Exprs.Expr>();
+        public IVars Vars { get; private set; }
+        public IVars Parent { get; private set; }
+        public abstract IEnumerable<string> NameVars { get; }
 
-        public void Push(Exprs.Expr e) => mScope.Add(e);
+        public abstract void Clear();
+        public abstract bool ExistVar(string nvar);
+        public abstract Expr Get(string nvar);
+        public abstract void Set(string nvar, Expr e);
 
-        public Exprs.Expr Pop()
+        public IVars Create(IVars argParent, IVars argVars)
         {
-            if (mScope.Count == 0)
-                return null;
+            if (argParent == null && argVars != null)
+                return argVars;
 
-            var e = mScope.Last();
+            if (argVars == null && argParent != null)
+                return argParent;
 
-            mScope.Remove(e);
+            var pVars = NewVars();
 
-            return e;
+            pVars.Parent = argParent;
+            pVars.Vars = argVars;
+
+            return pVars;
         }
+
+        abstract protected VarsScope NewVars();
     }
 }

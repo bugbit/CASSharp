@@ -37,6 +37,7 @@ namespace CASSharp.Core.CAS
 {
     class CAS
     {
+        private CasVars mVars = new CasVars();
         private ST.STTokenizer mParser = new ST.STTokenizer();
 
         public ST.STTokenizerResult Parse(string argText, CancellationToken argCancelToken) => mParser.Parse(argText, argCancelToken);
@@ -50,7 +51,7 @@ namespace CASSharp.Core.CAS
                 return pResult;
 
             var e = STToExprs(pResultP.Tokens, argCancelToken);
-            var en = Eval(e);
+            var en = Eval(e, mVars, argCancelToken);
 
             pResult.Expr = en;
             pResult.PromptNoParse = pResultP.PromptNoParse;
@@ -63,6 +64,6 @@ namespace CASSharp.Core.CAS
             return Exprs.Expr.Number(BigDecimal.Parse(argTokens.Tokens.OfType<ST.STTokenStr>().First().Text));
         }
 
-        public Exprs.Expr Eval(Exprs.Expr e) => e;
+        public Exprs.Expr Eval(Exprs.Expr e, IVars argVars, CancellationToken argCancelToken) => e;
     }
 }

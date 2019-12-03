@@ -38,5 +38,6 @@ namespace CASSharp.Core.CAS
         bool ExistVar(string nvar);
         void Set(string nvar, Exprs.Expr e);
         Exprs.Expr Get(string nvar);
+        void Clear();
     }
 }
