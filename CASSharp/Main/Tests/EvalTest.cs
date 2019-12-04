@@ -61,7 +61,7 @@ namespace CASSharp.Main.Tests
                 {
                     var pText = t;
 
-                    Console.WriteLine(t);
+                    Console.WriteLine($"{{{pCAS.Vars.NameVarPromt}}} {t}");
                     try
                     {
                         do

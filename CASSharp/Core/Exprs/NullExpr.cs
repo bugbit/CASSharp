@@ -16,36 +16,21 @@
 */
 #endregion
 
-using Deveel.Math;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using ST = CASSharp.Core.Syntax;
 
 namespace CASSharp.Core.Exprs
 {
     [DebuggerDisplay("TypeExpr : {TypeExpr}")]
-    abstract class Expr : ICloneable
+    sealed class NullExpr : Expr
     {
-        public ETypeExpr TypeExpr { get; }
+        private static readonly Lazy<Expr> mValue = new Lazy<Expr>(() => new NullExpr());
 
-        protected Expr(ETypeExpr argTypeExpr)
-        {
-            TypeExpr = argTypeExpr;
-        }
+        private NullExpr() : base(ETypeExpr.Null) { }
 
-        protected Expr(Expr e) : this(e.TypeExpr) { }
-
-        virtual public Expr Clone() => throw new NotImplementedException();
-
-        object ICloneable.Clone() => Clone();
-
-        public static Expr Null => NullExpr.Value;
-
-        public static QuoteExpr Quote(ST.STTokens argTokens) => new QuoteExpr(argTokens);
-
-        public static CteExpr<BigDecimal> Number(BigDecimal n) => new CteExpr<BigDecimal>(ETypeExpr.Number, n);
+        public static Expr Value => mValue.Value;
     }
 }

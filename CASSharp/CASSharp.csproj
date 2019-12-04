@@ -62,6 +62,7 @@
     <Compile Include="Core\Exprs\CteExpr.cs" />
     <Compile Include="Core\Exprs\ETypeExpr.cs" />
     <Compile Include="Core\Exprs\Expr.cs" />
+    <Compile Include="Core\Exprs\NullExpr.cs" />
     <Compile Include="Core\Exprs\QuoteExpr.cs" />
     <Compile Include="Core\Syntax\ESTTokenizerTerminate.cs" />
     <Compile Include="Core\Syntax\ESTToken.cs" />

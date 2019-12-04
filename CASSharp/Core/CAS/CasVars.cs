@@ -58,6 +58,17 @@ namespace CASSharp.Core.CAS
             }
         }
 
+        public string NameVarPromt
+        {
+            get
+            {
+                lock (mInOutExprs)
+                {
+                    return InNVar(mInOutExprs.Count + 1);
+                }
+            }
+        }
+
         public static string InNVar(int n) => $"i{n}";
         public static string OutNVar(int n) => $"i{n}";
     }
