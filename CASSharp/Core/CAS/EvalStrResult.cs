@@ -36,6 +36,7 @@ namespace CASSharp.Core.CAS
     class EvalStrResult
     {
         public ST.ESTTokenizerTerminate Terminate { get; set; } = ST.ESTTokenizerTerminate.No;
+        public string NameVar { get; set; }
         public Exprs.Expr Expr { get; set; }
         public string PromptNoParse { get; set; }
     }

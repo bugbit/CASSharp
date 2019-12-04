@@ -53,9 +53,12 @@ namespace CASSharp.Core.CAS
                 return pResult;
 
             var e = STToExprs(pResultP.Tokens, argCancelToken);
-            var en = Eval(e, mVars, argCancelToken);
+            var o = Eval(e, mVars, argCancelToken);
+            var i = Exprs.Expr.Quote(pResultP.Tokens);
 
-            pResult.Expr = en;
+            mVars.AddInOut(i, o, out string pNameVarOut);
+            pResult.NameVar = pNameVarOut;
+            pResult.Expr = o;
             pResult.PromptNoParse = pResultP.PromptNoParse;
 
             return pResult;

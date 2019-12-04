@@ -61,17 +61,18 @@ namespace CASSharp.Main.Tests
                 {
                     var pText = t;
 
-                    Console.WriteLine($"{{{pCAS.Vars.NameVarPromt}}} {t}");
+                    Console.WriteLine($"({{{pCAS.Vars.NameVarPromt}}}) {t}");
                     try
                     {
                         do
                         {
                             var pResult = pCAS.Eval(pText, pCanceltoken.Token);
 
-                            Console.WriteLine(pResult.Expr);
-
                             if (pResult.Terminate == ST.ESTTokenizerTerminate.No)
                                 break;
+
+                            if (pResult.Terminate == ST.ESTTokenizerTerminate.ShowResult)
+                                Console.WriteLine($"({{{pResult.NameVar}}}) {pResult.Expr}");
                             pText = pResult.PromptNoParse;
                         } while (pText != null);
                     }

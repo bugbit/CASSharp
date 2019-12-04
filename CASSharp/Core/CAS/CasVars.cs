@@ -69,7 +69,16 @@ namespace CASSharp.Core.CAS
             }
         }
 
-        public static string InNVar(int n) => $"i{n}";
-        public static string OutNVar(int n) => $"i{n}";
+        public void AddInOut(Exprs.Expr i, Exprs.Expr o, out string argNameVarOut)
+        {
+            lock (mInOutExprs)
+            {
+                mInOutExprs.Add(new InOutExpr { In = i, Out = o });
+                argNameVarOut = OutNVar(mInOutExprs.Count);
+            }
+        }
+
+        public static string InNVar(int n) => $"%i{n}";
+        public static string OutNVar(int n) => $"%o{n}";
     }
 }
