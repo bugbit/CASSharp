@@ -44,8 +44,8 @@ namespace CASSharp.Core.Exprs
 
         public static Expr Null => NullExpr.Value;
 
-        public static QuoteExpr Quote(ST.STTokens argTokens) => new QuoteExpr(argTokens);
+        public static TokensExpr Tokens(ST.STTokens argTokens) => new TokensExpr(argTokens);
 
-        public static CteExpr<BigDecimal> Number(BigDecimal n) => new CteExpr<BigDecimal>(ETypeExpr.Number, n);
+        public static NumberExpr Number(BigDecimal n) => new NumberExpr(n);
     }
 }

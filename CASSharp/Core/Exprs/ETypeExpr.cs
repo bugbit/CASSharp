@@ -35,11 +35,12 @@ namespace CASSharp.Core.Exprs
     [Flags]
     enum ETypeExpr
     {
-        None, Null, Quote, Constant,
+        None, Null, Constant,
         // Flags
         Type = 0xFFF,
         Flags = 0xF000,
         // Cte
-        Number = 0x8000
+        Tokens = 0x1000,
+        Number = 0x2000
     }
 }

@@ -34,20 +34,14 @@ using ST = CASSharp.Core.Syntax;
 
 namespace CASSharp.Core.Exprs
 {
-    [DebuggerDisplay("TypeExpr : {TypeExpr} Tokens : {Tokens}")]
-    sealed class QuoteExpr : Expr
+    [DebuggerDisplay("TypeExpr : {TypeExpr} Constant : {Constant}")]
+    sealed class TokensExpr : CteExpr<ST.STTokens>
     {
-        public ST.STTokens Tokens { get; }
 
-        public QuoteExpr(ST.STTokens argTokens) : base(ETypeExpr.Quote)
-        {
-            Tokens = argTokens;
-        }
+        public TokensExpr(ST.STTokens argTokens) : base(ETypeExpr.Tokens, argTokens) { }
 
-        public QuoteExpr(QuoteExpr e) : this(e.Tokens)
-        {
-        }
+        public TokensExpr(TokensExpr e) : base(e) { }
 
-        public override Expr Clone() => new QuoteExpr(this);
+        public override Expr Clone() => new TokensExpr(this);
     }
 }

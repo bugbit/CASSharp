@@ -56,6 +56,7 @@
     <Compile Include="Core\CAS\CasVars.cs" />
     <Compile Include="Core\CAS\EvalStrResult.cs" />
     <Compile Include="Core\CAS\InOutExpr.cs" />
+    <Compile Include="Core\CAS\IConsole.cs" />
     <Compile Include="Core\CAS\IVars.cs" />
     <Compile Include="Core\CAS\Vars.cs" />
     <Compile Include="Core\CAS\VarsScope.cs" />
@@ -63,7 +64,8 @@
     <Compile Include="Core\Exprs\ETypeExpr.cs" />
     <Compile Include="Core\Exprs\Expr.cs" />
     <Compile Include="Core\Exprs\NullExpr.cs" />
-    <Compile Include="Core\Exprs\QuoteExpr.cs" />
+    <Compile Include="Core\Exprs\NumberExpr.cs" />
+    <Compile Include="Core\Exprs\TokensExpr.cs" />
     <Compile Include="Core\Syntax\ESTTokenizerTerminate.cs" />
     <Compile Include="Core\Syntax\ESTToken.cs" />
     <Compile Include="Core\Syntax\STException.cs" />

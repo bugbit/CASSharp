@@ -18,27 +18,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace CASSharp.Core.Exprs
+namespace CASSharp.Core.CAS
 {
-    [DebuggerDisplay("TypeExpr : {TypeExpr} Constant : {Constant}")]
-    abstract class CteExpr<T> : Expr
+    interface IConsole
     {
-        public T Constant { get; }
-
-        public CteExpr(ETypeExpr argTypeExpr, T argCte) : base(ETypeExpr.Constant | (argTypeExpr & ETypeExpr.Flags))
-        {
-            Constant = argCte;
-        }
-
-        public CteExpr(CteExpr<T> e) : this(e.TypeExpr, e.Constant)
-        {
-        }
-
-        public override string ToString() => Constant?.ToString();
-
     }
 }

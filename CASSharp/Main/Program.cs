@@ -80,6 +80,7 @@ namespace CASSharp.Main
             var pDescription = pAttrs.OfType<AssemblyDescriptionAttribute>().First().Description;
             var pLicense = pAttrs.OfType<AssemblyCopyrightAttribute>().First().Copyright;
 
+            Title = $"{pName} {pVersion}";
             WriteLine
             (
                  $@"

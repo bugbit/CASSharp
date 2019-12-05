@@ -40,6 +40,8 @@ namespace CASSharp.Core.CAS
         private CasVars mVars = new CasVars();
         private ST.STTokenizer mParser = new ST.STTokenizer();
 
+        public IConsole Console { get; set; }
+
         public CasVars Vars => mVars;
 
         public ST.STTokenizerResult Parse(string argText, CancellationToken argCancelToken) => mParser.Parse(argText, argCancelToken);
@@ -54,7 +56,7 @@ namespace CASSharp.Core.CAS
 
             var e = STToExprs(pResultP.Tokens, argCancelToken);
             var o = Eval(e, mVars, argCancelToken);
-            var i = Exprs.Expr.Quote(pResultP.Tokens);
+            var i = Exprs.Expr.Tokens(pResultP.Tokens);
 
             mVars.AddInOut(i, o, out string pNameVarOut);
             pResult.NameVar = pNameVarOut;

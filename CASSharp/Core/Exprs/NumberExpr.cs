@@ -16,6 +16,7 @@
 */
 #endregion
 
+using Deveel.Math;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -25,20 +26,11 @@ using System.Text;
 namespace CASSharp.Core.Exprs
 {
     [DebuggerDisplay("TypeExpr : {TypeExpr} Constant : {Constant}")]
-    abstract class CteExpr<T> : Expr
+    sealed class NumberExpr : CteExpr<BigDecimal>
     {
-        public T Constant { get; }
+        public NumberExpr(BigDecimal n) : base(ETypeExpr.Number, n) { }
+        public NumberExpr(NumberExpr e) : base(e) { }
 
-        public CteExpr(ETypeExpr argTypeExpr, T argCte) : base(ETypeExpr.Constant | (argTypeExpr & ETypeExpr.Flags))
-        {
-            Constant = argCte;
-        }
-
-        public CteExpr(CteExpr<T> e) : this(e.TypeExpr, e.Constant)
-        {
-        }
-
-        public override string ToString() => Constant?.ToString();
-
+        public override Expr Clone() => new NumberExpr(this);
     }
 }
