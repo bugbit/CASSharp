@@ -40,8 +40,6 @@ namespace CASSharp.Core.CAS
         private CasVars mVars = new CasVars();
         private ST.STTokenizer mParser = new ST.STTokenizer();
 
-        public IConsole Console { get; set; }
-
         public CasVars Vars => mVars;
 
         public ST.STTokenizerResult Parse(string argText, CancellationToken argCancelToken) => mParser.Parse(argText, argCancelToken);

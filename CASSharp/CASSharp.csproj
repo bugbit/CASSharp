@@ -56,7 +56,6 @@
     <Compile Include="Core\CAS\CasVars.cs" />
     <Compile Include="Core\CAS\EvalStrResult.cs" />
     <Compile Include="Core\CAS\InOutExpr.cs" />
-    <Compile Include="Core\CAS\IConsole.cs" />
     <Compile Include="Core\CAS\IVars.cs" />
     <Compile Include="Core\CAS\Vars.cs" />
     <Compile Include="Core\CAS\VarsScope.cs" />
@@ -80,7 +79,7 @@
     <Compile Include="Main\Tests\EvalTest.cs" />
     <Compile Include="Main\Tests\ITest.cs" />
     <Compile Include="Main\Param.cs" />
-    <Compile Include="Main\Program.cs" />
+    <Compile Include="Main\CASAppConsole.cs" />
     <Compile Include="Main\Tests\PositionRangeIntersectionTest.cs" />
     <Compile Include="Main\Tests\TestAttribute.cs" />
     <Compile Include="Main\Tests\TokernizerTest.cs" />

@@ -35,6 +35,8 @@ using System.Threading;
 using CAS = CASSharp.Core.CAS;
 using ST = CASSharp.Core.Syntax;
 
+using static CASSharp.Main.CASAppConsole;
+
 [assembly: CASSharp.Main.Tests.Test(typeof(CASSharp.Main.Tests.EvalTest))]
 
 namespace CASSharp.Main.Tests
@@ -61,7 +63,9 @@ namespace CASSharp.Main.Tests
                 {
                     var pText = t;
 
-                    Console.WriteLine($"({{{pCAS.Vars.NameVarPromt}}}) {t}");
+                    PrintPromptVar(pCAS.Vars.NameVarPromt);
+                    Console.WriteLine($" {t}");
+                    //Console.WriteLine($"({{{pCAS.Vars.NameVarPromt}}}) {t}");
                     try
                     {
                         do

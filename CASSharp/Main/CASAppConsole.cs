@@ -30,12 +30,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using CAS = CASSharp.Core.CAS;
 
 using static System.Console;
 
 namespace CASSharp.Main
 {
-    static class Program
+    static class CASAppConsole
     {
         static readonly Param[] mParams = new[]
         {
@@ -44,6 +45,12 @@ namespace CASSharp.Main
             new Param(Properties.Resources.TestParamDescr,Test,"/test","/t")
 #endif
         };
+
+        static CAS.CAS mCAS = new CAS.CAS();
+
+        public static CAS.CAS TheCAS => mCAS;
+
+        public static void PrintPromptVar(string argNameVar) => Write($"({argNameVar})");
 
         /// <summary>
         /// Punto de entrada principal para la aplicación.
@@ -132,7 +139,7 @@ MIT LICENSE"
         {
             argExit = true;
 
-            var pTests = typeof(Program).Assembly.GetCustomAttributes(true).OfType<Tests.TestAttribute>().OrderBy(a => a.Order);
+            var pTests = typeof(CASAppConsole).Assembly.GetCustomAttributes(true).OfType<Tests.TestAttribute>().OrderBy(a => a.Order);
 
             foreach (var t in pTests)
             {

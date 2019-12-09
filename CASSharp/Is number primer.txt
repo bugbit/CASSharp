@@ -1,0 +1,80 @@
+https://cosas.wordpress.com/2010/10/25/la-criba-de-sundaram/
+
+https://es.wikibooks.org/wiki/Implementaci%C3%B3n_de_algoritmos_de_teor%C3%ADa_de_n%C3%BAmeros/Criba_de_Erat%C3%B3stenes
+
+http://www.topcoder.com/tc?module=Static&d1=tutorials&d2=primalityTesting
+
+https://stackoverflow.com/questions/2468412/finding-a-prime-number-after-a-given-number/2473188#2473188
+
+#include
+using namespace std;
+
+/* This function calculates (ab)%c /
+int modulo(int a,int b,int c){
+long long x=1,y=a; // long long is taken to avoid overflow of intermediate results
+while(b > 0){
+if(b%2 == 1){
+x=(xy)%c;
+}
+y = (y*y)%c; // squaring the base
+b /= 2;
+}
+return x%c;
+}
+
+/* this function calculates (ab)%c taking into account that ab might overflow /
+long long mulmod(long long a,long long b,long long c){
+long long x = 0,y=a%c;
+while(b > 0){
+if(b%2 == 1){
+x = (x+y)%c;
+}
+y = (y2)%c;
+b /= 2;
+}
+return x%c;
+}
+
+/* Miller-Rabin primality test, iteration signifies the accuracy of the test */
+bool Miller(long long p,int iteration){
+if(p<2){
+return false;
+}
+if(p!=2 && p%2==0){
+return false;
+}
+long long s=p-1;
+while(s%2==0){
+s/=2;
+}
+for(int i=0;i<iteration;i++){
+long long a=rand()%(p-1)+1,temp=s;
+long long mod=modulo(a,temp,p);
+while(temp!=p-1 && mod!=1 && mod!=p-1){
+mod=mulmod(mod,mod,p);
+temp *= 2;
+}
+if(mod!=p-1 && temp%2==0){
+return false;
+}
+}
+return true;
+}
+
+int main(int argc, char* argv[])
+{
+
+int input = 1000;
+int i = 0;
+
+if(input%2==0)
+    i = input+1;
+else i = input;
+
+for(;i<2*input;i+=2) // from Rajendra's answer
+    if(Miller(i,20)) // 18-20 iterations are enough for most of the applications.
+        break;
+cout<<i<<endl;
+
+return 0;
+}

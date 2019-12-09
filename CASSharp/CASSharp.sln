@@ -9,6 +9,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastColoredTextBox", "..\Fa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadLine", "..\ReadLine\ReadLine.csproj", "{77FAA1E8-2B1D-45A7-99F2-A0C1E7034862}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "otros", "otros", "{5FD13119-B74A-49B6-AEE2-5FF27F6B626A}"
+	ProjectSection(SolutionItems) = preProject
+		Is number primer.txt = Is number primer.txt
+		links.txt = links.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
