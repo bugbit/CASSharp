@@ -32,10 +32,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using CASSharp.Main;
 using CAS = CASSharp.Core.CAS;
 using ST = CASSharp.Core.Syntax;
-
-using static CASSharp.Main.CASAppConsole;
 
 [assembly: CASSharp.Main.Tests.Test(typeof(CASSharp.Main.Tests.EvalTest))]
 
@@ -54,7 +53,7 @@ namespace CASSharp.Main.Tests
 
         public void Run()
         {
-            var pCAS = new CAS.CAS();
+            var pCAS = CASAppConsole.Instance;
             var pCanceltoken = new CancellationTokenSource();
 
             try
@@ -63,7 +62,7 @@ namespace CASSharp.Main.Tests
                 {
                     var pText = t;
 
-                    PrintPromptVar(pCAS.Vars.NameVarPromt);
+                    pCAS.PrintPromptVar(pCAS.Vars.NameVarPromt);
                     Console.WriteLine($" {t}");
                     //Console.WriteLine($"({{{pCAS.Vars.NameVarPromt}}}) {t}");
                     try
