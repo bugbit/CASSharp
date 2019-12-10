@@ -33,7 +33,7 @@ using System.Text;
 
 using static System.Console;
 
-namespace CASSharp.Main
+namespace CASSharp.Console
 {
     static class Program
     {
@@ -132,14 +132,14 @@ MIT LICENSE"
         {
             argExit = true;
 
-            var pTests = typeof(CASAppConsole).Assembly.GetCustomAttributes(true).OfType<Tests.TestAttribute>().OrderBy(a => a.Order);
+            //var pTests = typeof(Program).Assembly.GetCustomAttributes(true).OfType<Tests.TestAttribute>().OrderBy(a => a.Order);
 
-            foreach (var t in pTests)
-            {
-                var pTest = Activator.CreateInstance(t.TestType);
+            //foreach (var t in pTests)
+            //{
+            //    var pTest = Activator.CreateInstance(t.TestType);
 
-                (pTest as Tests.ITest)?.Run();
-            }
+            //    (pTest as Tests.ITest)?.Run();
+            //}
         }
 #endif
     }
