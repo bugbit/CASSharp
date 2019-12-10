@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "otros", "otros", "{5FD13119
 		links.txt = links.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CASSharp.Core", "..\CASSharp.Core\CASSharp.Core.csproj", "{132A459F-2990-42A4-AC15-7AC4E6A70F5A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CASSharp.Core", "CASSharp.Core\CASSharp.Core.csproj", "{132A459F-2990-42A4-AC15-7AC4E6A70F5A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CASSharp.Console", "CASSharp.Console\CASSharp.Console.csproj", "{ADC725A4-B107-4FFE-8397-2A8D8918E948}"
 EndProject
