@@ -123,4 +123,7 @@
   <data name="NoRecognizeStError" xml:space="preserve">
     <value>No reconozco '{0}'</value>
   </data>
+  <data name="NoExpectTokenException" xml:space="preserve">
+    <value>No esperaba {0}.</value>
+  </data>
 </root>

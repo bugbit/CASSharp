@@ -75,6 +75,7 @@
     <Compile Include="Core\Syntax\STTokenizerTask.cs" />
     <Compile Include="Core\Syntax\STToken.cs" />
     <Compile Include="Core\Syntax\STTokens.cs" />
+    <Compile Include="Core\Syntax\STTokensTerminate.cs" />
     <Compile Include="Core\Syntax\STTokenStr.cs" />
     <Compile Include="Main\Program.cs" />
     <Compile Include="Main\Tests\EvalTest.cs" />

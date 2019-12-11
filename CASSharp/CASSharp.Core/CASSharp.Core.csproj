@@ -74,6 +74,7 @@
     <Compile Include="Syntax\STTokenizerResult.cs" />
     <Compile Include="Syntax\STTokenizerTask.cs" />
     <Compile Include="Syntax\STTokens.cs" />
+    <Compile Include="Syntax\STTokensTerminate.cs" />
     <Compile Include="Syntax\STTokenStr.cs" />
   </ItemGroup>
   <ItemGroup>

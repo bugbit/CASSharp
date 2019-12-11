@@ -27,16 +27,24 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
 namespace CASSharp.Core.Syntax
 {
-    [DebuggerDisplay("Token : {Token}")]
-    public abstract class STToken
+    public class STTokensTerminate : STTokens
     {
-        public ESTToken Token { get; set; }
-        public int Position { get; set; }
+        public char? TerminateChar { get; set; }
+        public ESTTokenizerTerminate Terminate { get; set; }
+
+        public override string ToString()
+        {
+            var pStr = base.ToString();
+
+            if (TerminateChar.HasValue)
+                pStr += TerminateChar.Value;
+
+            return pStr;
+        }
     }
 }

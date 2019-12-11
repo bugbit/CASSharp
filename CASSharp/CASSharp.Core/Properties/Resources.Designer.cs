@@ -61,6 +61,15 @@ namespace CASSharp.Core.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a I didn&apos;t expect a {0}..
+        /// </summary>
+        internal static string NoExpectTokenException {
+            get {
+                return ResourceManager.GetString("NoExpectTokenException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a I don&apos;t recognize &apos;{0}&apos;.
         /// </summary>
         internal static string NoRecognizeStError {
