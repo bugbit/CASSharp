@@ -30,7 +30,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using Deveel.Math;
 using ST = CASSharp.Core.Syntax;
 
 namespace CASSharp.Core.CAS
