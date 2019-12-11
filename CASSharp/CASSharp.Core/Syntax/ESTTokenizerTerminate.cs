@@ -32,7 +32,7 @@ using System.Text;
 
 namespace CASSharp.Core.Syntax
 {
-    enum ESTTokenizerTerminate
+    public enum ESTTokenizerTerminate
     {
         No, ShowResult, HideResult
     }

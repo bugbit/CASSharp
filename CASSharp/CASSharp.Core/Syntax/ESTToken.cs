@@ -32,7 +32,7 @@ using System.Text;
 
 namespace CASSharp.Core.Syntax
 {
-    enum ESTToken
+    public enum ESTToken
     {
         None, Numeric, Terminate
     }

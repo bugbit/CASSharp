@@ -27,7 +27,7 @@ using ST = CASSharp.Core.Syntax;
 namespace CASSharp.Core.Exprs
 {
     [DebuggerDisplay("TypeExpr : {TypeExpr}")]
-    abstract class Expr : ICloneable
+    abstract public class Expr : ICloneable
     {
         public ETypeExpr TypeExpr { get; }
 

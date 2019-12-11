@@ -32,7 +32,7 @@ using System.Text;
 
 namespace CASSharp.Core.Syntax
 {
-    class STTokenBlock : STToken
+    public class STTokenBlock : STToken
     {
         public List<STTokens> Tokens { get; set; }
 

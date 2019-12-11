@@ -47,7 +47,6 @@ namespace CASSharp.Core.Syntax
 
         public STTokenizerResult Parse(string argText, CancellationToken argCancelToken)
         {
-
             Task<STTokenizerResult> pTaskR;
 
             lock (mLock)
@@ -173,7 +172,7 @@ namespace CASSharp.Core.Syntax
                             mPosition++;
                         } while (mPosition < mText.Length && char.IsDigit(mText[mPosition]));
 
-                        argToken = new STTokenStr { Token = ESTToken.Numeric, Text = mText.Substring(pIni, pLen) };
+                        argToken = new STTokenStr { Token = ESTToken.Numeric, Position = pIni, Text = mText.Substring(pIni, pLen) };
                         argCar = '\x0';
 
                         return true;

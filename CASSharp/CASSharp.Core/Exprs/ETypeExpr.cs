@@ -33,7 +33,7 @@ using System.Text;
 namespace CASSharp.Core.Exprs
 {
     [Flags]
-    enum ETypeExpr
+    public enum ETypeExpr
     {
         None, Null, Constant,
         // Flags

@@ -35,7 +35,7 @@ using ST = CASSharp.Core.Syntax;
 namespace CASSharp.Core.Exprs
 {
     [DebuggerDisplay("TypeExpr : {TypeExpr} Constant : {Constant}")]
-    sealed class TokensExpr : CteExpr<ST.STTokens>
+    sealed public class TokensExpr : CteExpr<ST.STTokens>
     {
 
         public TokensExpr(ST.STTokens argTokens) : base(ETypeExpr.Tokens, argTokens) { }

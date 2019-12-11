@@ -50,7 +50,11 @@ namespace CASSharp.Console
         /// </summary>
         static int Main(string[] args)
         {
-            PrintHeader();
+            var pApp = new CASConsoleApp();
+
+            return pApp.Run(args);
+
+            //PrintHeader();
             WriteLine();
             try
             {

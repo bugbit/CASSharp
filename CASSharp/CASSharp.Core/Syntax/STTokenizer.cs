@@ -33,7 +33,7 @@ using System.Threading;
 
 namespace CASSharp.Core.Syntax
 {
-    class STTokenizer
+    public class STTokenizer
     {
         private STTokenizerTask mTask = null;
         private object mLock = new object();

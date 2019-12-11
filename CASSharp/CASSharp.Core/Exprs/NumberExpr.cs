@@ -26,7 +26,7 @@ using System.Text;
 namespace CASSharp.Core.Exprs
 {
     [DebuggerDisplay("TypeExpr : {TypeExpr} Constant : {Constant}")]
-    sealed class NumberExpr : CteExpr<BigDecimal>
+    sealed public class NumberExpr : CteExpr<BigDecimal>
     {
         public NumberExpr(BigDecimal n) : base(ETypeExpr.Number, n) { }
         public NumberExpr(NumberExpr e) : base(e) { }

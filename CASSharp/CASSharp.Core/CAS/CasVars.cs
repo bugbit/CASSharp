@@ -26,37 +26,59 @@
 #endregion
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Text;
 
-namespace CASSharp.Core.Syntax
+namespace CASSharp.Core.CAS
 {
-    public class STException : Exception
+    public class CasVars : Vars
     {
-        public int Position { get; set; }
+        private List<InOutExpr> mInOutExprs = new List<InOutExpr>();
 
-        public STException(int? argPosition = null)
+        override public IEnumerable<string> NameVars
         {
-            if (argPosition.HasValue)
-                Position = argPosition.Value;
+            get
+            {
+                var pNVars = new List<string>();
+                var n = 1;
+
+                foreach (var ine in mInOutExprs)
+                {
+                    if (ine.In != null)
+                        pNVars.Add(InNVar(n));
+                    if (ine.Out != null)
+                        pNVars.Add(OutNVar(n));
+                }
+
+                pNVars.AddRange(mVars.Keys);
+
+                return pNVars.ToArray();
+            }
         }
 
-        public STException(string message, int? argPosition = null) : base(message)
+        public string NameVarPromt
         {
-            if (argPosition.HasValue)
-                Position = argPosition.Value;
+            get
+            {
+                lock (mInOutExprs)
+                {
+                    return InNVar(mInOutExprs.Count + 1);
+                }
+            }
         }
 
-        public STException(string message, Exception innerException, int? argPosition = null) : base(message, innerException)
+        public void AddInOut(Exprs.Expr i, Exprs.Expr o, out string argNameVarOut)
         {
-            if (argPosition.HasValue)
-                Position = argPosition.Value;
+            lock (mInOutExprs)
+            {
+                mInOutExprs.Add(new InOutExpr { In = i, Out = o });
+                argNameVarOut = OutNVar(mInOutExprs.Count);
+            }
         }
 
-        protected STException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
+        public static string InNVar(int n) => $"%i{n}";
+        public static string OutNVar(int n) => $"%o{n}";
     }
 }

@@ -25,19 +25,26 @@
 */
 #endregion
 
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using CASSharp.Core.Exprs;
 
-// La información general de un ensamblado se controla mediante el siguiente 
-// conjunto de atributos. Cambie estos valores de atributo para modificar la información
-// asociada con un ensamblado.[assembly: AssemblyTitle("CAS Sharp Edition Nieblita")]
-[assembly: AssemblyTitle("CAS Sharp (Console) Edition " + CASSharp.Core.Properties.AssemblyConstants.Edicion)]
+namespace CASSharp.Core.CAS
+{
+    public class Vars : IVars
+    {
+        protected ConcurrentDictionary<string, Exprs.Expr> mVars = new ConcurrentDictionary<string, Exprs.Expr>(StringComparer.InvariantCultureIgnoreCase);
 
-// Si establece ComVisible en false, los tipos de este ensamblado no estarán visibles 
-// para los componentes COM.  Si es necesario obtener acceso a un tipo en este ensamblado desde 
-// COM, establezca el atributo ComVisible en true en este tipo.
-[assembly: ComVisible(false)]
+        virtual public IEnumerable<string> NameVars => mVars.Keys.ToArray();
 
-// El siguiente GUID sirve como id. de typelib si este proyecto se expone a COM.
-[assembly: Guid("adc725a4-b107-4ffe-8397-2a8d8918e948")]
+        virtual public bool ExistVar(string nvar) => mVars.ContainsKey(nvar);
+
+        virtual public Expr Get(string nvar) => mVars[nvar];
+
+        virtual public void Set(string nvar, Expr e) => mVars[nvar] = e;
+        virtual public void Clear() => mVars.Clear();
+    }
+}

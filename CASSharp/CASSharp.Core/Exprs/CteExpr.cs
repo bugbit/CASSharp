@@ -25,7 +25,7 @@ using System.Text;
 namespace CASSharp.Core.Exprs
 {
     [DebuggerDisplay("TypeExpr : {TypeExpr} Constant : {Constant}")]
-    abstract class CteExpr<T> : Expr
+    abstract public class CteExpr<T> : Expr
     {
         public T Constant { get; }
 

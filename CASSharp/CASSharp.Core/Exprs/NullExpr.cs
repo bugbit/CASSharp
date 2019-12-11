@@ -25,7 +25,7 @@ using System.Text;
 namespace CASSharp.Core.Exprs
 {
     [DebuggerDisplay("TypeExpr : {TypeExpr}")]
-    sealed class NullExpr : Expr
+    sealed public class NullExpr : Expr
     {
         private static readonly Lazy<Expr> mValue = new Lazy<Expr>(() => new NullExpr());
 

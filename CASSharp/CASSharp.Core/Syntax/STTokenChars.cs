@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CASSharp.Core.Syntax
 {
-    static class STTokenChars
+    static public class STTokenChars
     {
         public const char Terminate = ';';
         public const char TerminateNoShowOut = '$';

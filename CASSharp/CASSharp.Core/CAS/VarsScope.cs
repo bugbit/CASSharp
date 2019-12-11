@@ -25,19 +25,41 @@
 */
 #endregion
 
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using CASSharp.Core.Exprs;
 
-// La información general de un ensamblado se controla mediante el siguiente 
-// conjunto de atributos. Cambie estos valores de atributo para modificar la información
-// asociada con un ensamblado.[assembly: AssemblyTitle("CAS Sharp Edition Nieblita")]
-[assembly: AssemblyTitle("CAS Sharp (Console) Edition " + CASSharp.Core.Properties.AssemblyConstants.Edicion)]
+namespace CASSharp.Core.CAS
+{
+    abstract public class VarsScope : IVars
+    {
+        public IVars Vars { get; private set; }
+        public IVars Parent { get; private set; }
+        public abstract IEnumerable<string> NameVars { get; }
 
-// Si establece ComVisible en false, los tipos de este ensamblado no estarán visibles 
-// para los componentes COM.  Si es necesario obtener acceso a un tipo en este ensamblado desde 
-// COM, establezca el atributo ComVisible en true en este tipo.
-[assembly: ComVisible(false)]
+        public abstract void Clear();
+        public abstract bool ExistVar(string nvar);
+        public abstract Expr Get(string nvar);
+        public abstract void Set(string nvar, Expr e);
 
-// El siguiente GUID sirve como id. de typelib si este proyecto se expone a COM.
-[assembly: Guid("adc725a4-b107-4ffe-8397-2a8d8918e948")]
+        public IVars Create(IVars argParent, IVars argVars)
+        {
+            if (argParent == null && argVars != null)
+                return argVars;
+
+            if (argVars == null && argParent != null)
+                return argParent;
+
+            var pVars = NewVars();
+
+            pVars.Parent = argParent;
+            pVars.Vars = argVars;
+
+            return pVars;
+        }
+
+        abstract protected VarsScope NewVars();
+    }
+}

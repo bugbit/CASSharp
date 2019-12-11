@@ -36,6 +36,7 @@ namespace CASSharp.Core.Syntax
     {
         public ESTTokenizerTerminate Terminate { get; set; } = ESTTokenizerTerminate.No;
         public STTokens Tokens { get; set; }
+        public string PromptParse { get; set; }
         public string PromptNoParse { get; set; }
     }
 }

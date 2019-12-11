@@ -35,7 +35,7 @@ using System.Threading.Tasks;
 
 namespace CASSharp.Core.Syntax
 {
-    class STTokenizerTask
+    public class STTokenizerTask
     {
         private object mLock = new object();
         private CancellationToken mCancelToken;

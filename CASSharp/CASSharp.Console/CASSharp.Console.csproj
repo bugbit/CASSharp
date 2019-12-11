@@ -41,6 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CASSharp.Core\Properties\AssemblyGlobalInfo.cs">
+      <Link>Properties\AssemblyGlobalInfo.cs</Link>
+    </Compile>
+    <Compile Include="CASConsoleApp.cs" />
     <Compile Include="Param.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -51,13 +55,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\CASSharp.Core\CASSharp.Core.csproj">
-      <Project>{132a459f-2990-42a4-ac15-7ac4e6a70f5a}</Project>
-      <Name>CASSharp.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\ReadLine\ReadLine.csproj">
       <Project>{77faa1e8-2b1d-45a7-99f2-a0c1e7034862}</Project>
       <Name>ReadLine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CASSharp.Core\CASSharp.Core.csproj">
+      <Project>{132a459f-2990-42a4-ac15-7ac4e6a70f5a}</Project>
+      <Name>CASSharp.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

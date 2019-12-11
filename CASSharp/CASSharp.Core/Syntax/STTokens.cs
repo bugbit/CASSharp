@@ -32,7 +32,7 @@ using System.Text;
 
 namespace CASSharp.Core.Syntax
 {
-    class STTokens
+    public class STTokens
     {
         public LinkedList<STToken> Tokens { get; set; }
 

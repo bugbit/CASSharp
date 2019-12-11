@@ -34,7 +34,7 @@ using System.Text;
 namespace CASSharp.Core.Syntax
 {
     [DebuggerDisplay("Token : {Token} Text : {Text}")]
-    class STTokenStr : STToken
+    public class STTokenStr : STToken
     {
         public string Text { get; set; }
 

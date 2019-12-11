@@ -46,6 +46,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CASSharp.Core\Properties\AssemblyGlobalInfo.cs">
+      <Link>Properties\AssemblyGlobalInfo.cs</Link>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -54,13 +57,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\CASSharp.Core\CASSharp.Core.csproj">
-      <Project>{132a459f-2990-42a4-ac15-7ac4e6a70f5a}</Project>
-      <Name>CASSharp.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\FastColoredTextBox\FastColoredTextBox\FastColoredTextBox.csproj">
       <Project>{6dd14a85-ccfc-4774-bd26-0f5772512319}</Project>
       <Name>FastColoredTextBox</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CASSharp.Core\CASSharp.Core.csproj">
+      <Project>{132a459f-2990-42a4-ac15-7ac4e6a70f5a}</Project>
+      <Name>CASSharp.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
