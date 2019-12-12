@@ -76,7 +76,8 @@ namespace CASSharp.Core.App
             return 0;
         }
 
-        protected virtual void PrintException(Exception ex) { }
+        protected virtual void PrintError(string argError) { }
+        protected virtual void PrintException(Exception ex) => PrintError(ex.Message);
         protected void ParseCommandLine(out bool argExit)
         {
             argExit = false;
@@ -174,18 +175,35 @@ MIT LICENSE"
 
             while (pTexts != null && pTexts.Length > 0)
             {
-                var pRet = ST.STTokenizer.Parse(pTexts, CancellationToken.None);
-                var pTokensOut = pRet.TokensOut;
-
-                if (pTokensOut != null)
+                try
                 {
-                    foreach (var pTokens in pTokensOut)
-                    {
-                        PrintTest($"{pTokens.Terminate} {pTokens.Tokens}");
-                    }
-                }
+                    var pRet = ST.STTokenizer.Parse(pTexts, CancellationToken.None);
+                    var pTokensOut = pRet.TokensOut;
 
-                pTexts = pRet.LinesNoParse;
+                    if (pTokensOut != null)
+                    {
+                        foreach (var pTokens in pTokensOut)
+                        {
+                            PrintTest($"{pTokens.Terminate} {pTokens.Tokens}");
+                        }
+                    }
+
+                    pTexts = pRet.LinesNoParse;
+                }
+                catch (ST.STException ex)
+                {
+                    PrintError(ex.Message);
+                    PrintError(pTexts[ex.Linea]);
+                    PrintError($"{new string(' ', ex.Position)}^");
+
+                    var pTexts2 = pTexts.Skip(ex.Linea + 1);
+
+                    pTexts = pTexts2.ToArray();
+                }
+                catch (Exception ex)
+                {
+                    PrintException(ex);
+                }
             }
         }
 

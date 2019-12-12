@@ -39,20 +39,23 @@ namespace CASSharp.Console.App
 {
     public class CASConsoleApp : Core.App.CASApp
     {
-        protected override void PrintException(Exception ex)
+        protected override void PrintError(string argError)
         {
             var pForeColor = ForegroundColor;
 
             try
             {
                 ForegroundColor = ConsoleColor.Red;
-                WriteLine($"Error: {ex.Message}");
+                WriteLine(argError);
             }
             finally
             {
                 ForegroundColor = pForeColor;
             }
         }
+
+        protected override void PrintException(Exception ex) => PrintError($"Error: {ex.Message}");
+
         protected override void BeforeRun()
         {
             base.BeforeRun();
