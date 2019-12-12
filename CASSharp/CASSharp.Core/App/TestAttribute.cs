@@ -25,58 +25,19 @@
 */
 #endregion
 
+#if DEBUG
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using CAS = CASSharp.Core.CAS;
-
-using static System.Console;
-
-namespace CASSharp.Console
+namespace CASSharp.Core.App
 {
-    public class CASConsoleApp : CAS.CASApp
+    [AttributeUsage(AttributeTargets.Method)]
+    class TestAttribute : Attribute
     {
-        protected override void PrintException(Exception ex)
-        {
-            var pForeColor = ForegroundColor;
-
-            try
-            {
-                ForegroundColor = ConsoleColor.Red;
-                WriteLine($"Error: {ex.Message}");
-            }
-            finally
-            {
-                ForegroundColor = pForeColor;
-            }
-        }
-        protected override void BeforeRun()
-        {
-            base.BeforeRun();
-            PrintHeader();
-            WriteLine();
-        }
-
-        protected override void RunInternal()
-        {
-            base.RunInternal();
-            for (; ; )
-                Prompt();
-        }
-
-        private void PrintHeader()
-        {
-            GetHeader(out string pText, out string pTitle);
-            Title = pTitle;
-            WriteLine(pText);
-        }
-
-        private void Prompt()
-        {
-            var pNameVar = mCAS.Vars.NameVarPromt;
-            var pText = System.ReadLine.Read($"{mCAS.GetPromptVar(pNameVar)} ");
-        }
     }
 }
+
+#endif

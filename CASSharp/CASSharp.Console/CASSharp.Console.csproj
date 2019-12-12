@@ -44,7 +44,7 @@
     <Compile Include="..\CASSharp.Core\Properties\AssemblyGlobalInfo.cs">
       <Link>Properties\AssemblyGlobalInfo.cs</Link>
     </Compile>
-    <Compile Include="CASConsoleApp.cs" />
+    <Compile Include="App\CASConsoleApp.cs" />
     <Compile Include="Param.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

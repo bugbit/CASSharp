@@ -30,14 +30,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
+using CAS = CASSharp.Core.CAS;
+using ST = CASSharp.Core.Syntax;
 
-namespace CASSharp.Core.CAS
+namespace CASSharp.Core.App
 {
     public class CASApp
     {
         private string[] mArgs;
 
-        protected CAS mCAS = new CAS();
+        protected CAS.CAS mCAS = new CAS.CAS();
 
         public int Run(string[] args)
         {
@@ -74,7 +77,19 @@ namespace CASSharp.Core.CAS
         }
 
         protected virtual void PrintException(Exception ex) { }
-        protected void ParseCommandLine(out bool argExit) { argExit = false; }
+        protected void ParseCommandLine(out bool argExit)
+        {
+            argExit = false;
+#if DEBUG
+
+            if (mArgs != null && mArgs.Length > 0 && mArgs[0].Equals("--t", StringComparison.InvariantCultureIgnoreCase))
+            {
+                argExit = true;
+
+                Test(ref argExit);
+            }
+#endif
+        }
 
         protected virtual void BeforeRun() { }
         protected virtual void RunInternal() { }
@@ -100,5 +115,87 @@ https://github.com/bugbit/cassharp
 MIT LICENSE"
 ;
         }
+
+#if DEBUG
+
+        #region Test
+
+        private void Test(ref bool argExit)
+        {
+            var pType = this.GetType();
+            var pMethods = new List<MethodInfo>();
+
+            do
+            {
+                var pRet = pType.FindMembers(MemberTypes.Method, BindingFlags.Instance | BindingFlags.NonPublic, (m, c) => ((MethodInfo)m).GetCustomAttributes((Type)c, true).Length != 0, typeof(TestAttribute)).OfType<MethodInfo>();
+
+                pMethods.AddRange(pRet);
+                pType = pType.BaseType;
+            } while (pType != null);
+
+            foreach (var pMethod in pMethods)
+            {
+                var pArgs = pMethod.GetParameters();
+
+                switch (pArgs.Length)
+                {
+                    case 0:
+                        pMethod.Invoke(this, null);
+                        break;
+                    case 1:
+                        var pParamType = pArgs[0].ParameterType;
+
+                        if (!pParamType.IsByRef)
+                            return;
+
+                        var pParams = new object[] { argExit };
+
+                        pMethod.Invoke(this, pParams);
+                        argExit = (bool)pParams[0];
+
+                        break;
+                }
+            }
+        }
+
+        protected virtual void PrintTest(string argText) { }
+
+        [Test]
+        private void TokernizerTest()
+        {
+            var pTexts = new[]
+            {
+                "10 20+ 30",
+                "10",
+                ";",
+                "20;",
+                "50$100;"
+            };
+
+            while (pTexts != null && pTexts.Length > 0)
+            {
+                var pRet = ST.STTokenizer.Parse(pTexts, CancellationToken.None);
+                var pTokensOut = pRet.TokensOut;
+
+                if (pTokensOut != null)
+                {
+                    foreach (var pTokens in pTokensOut)
+                    {
+                        PrintTest($"{pTokens.Terminate} {pTokens.Tokens}");
+                    }
+                }
+
+                pTexts = pRet.LinesNoParse;
+            }
+        }
+
+        //[Test]
+        //private void Test2(ref bool argExit)
+        //{
+        //    argExit = false;
+        //}
+
+        #endregion
+#endif
     }
 }

@@ -43,8 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App\TestAttribute.cs" />
     <Compile Include="CAS\CAS.cs" />
-    <Compile Include="CAS\CASApp.cs" />
+    <Compile Include="App\CASApp.cs" />
     <Compile Include="CAS\CasVars.cs" />
     <Compile Include="CAS\InOutExpr.cs" />
     <Compile Include="CAS\IVars.cs" />
@@ -72,7 +73,6 @@
     <Compile Include="Syntax\STTokenChars.cs" />
     <Compile Include="Syntax\STTokenizer.cs" />
     <Compile Include="Syntax\STTokenizerResult.cs" />
-    <Compile Include="Syntax\STTokenizerTask.cs" />
     <Compile Include="Syntax\STTokens.cs" />
     <Compile Include="Syntax\STTokensTerminate.cs" />
     <Compile Include="Syntax\STTokenStr.cs" />
