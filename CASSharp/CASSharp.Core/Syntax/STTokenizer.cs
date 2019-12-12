@@ -65,8 +65,7 @@ namespace CASSharp.Core.Syntax
             if (mLines == null || mLines.Length < 1)
                 return null;
 
-            mLine = 0;
-            mPosition = -1;
+            mLine = mPosition = 0;
             mText = mLines.First();
             ReadChar();
             ParseLines(out STTokensTerminate[] pTokensOut, out string[] pLinesNoParse);
@@ -153,7 +152,7 @@ namespace CASSharp.Core.Syntax
         private bool ParseToken(out STToken argToken, out char argCar)
         {
             mCancelToken.ThrowIfCancellationRequested();
-            while (char.IsWhiteSpace(mLastChar))
+            while (char.IsWhiteSpace(mLastChar) || mLastChar == STTokenChars.EndLine)
                 ReadChar();
 
             if (mLastChar == STTokenChars.Null)
@@ -164,11 +163,11 @@ namespace CASSharp.Core.Syntax
                 return false;
             }
 
-            int pLinea = mLine;
+            int pLinea = mLineAnt;
             int pIni, pFin, pLen = 0;
             var pCar = mLastChar;
 
-            pIni = pFin = mPosition;
+            pIni = pFin = mPositionAnt;
 
             switch (pCar)
             {
@@ -202,24 +201,33 @@ namespace CASSharp.Core.Syntax
 
         private bool ReadChar()
         {
-            mLineAnt = mLine;
-            mPositionAnt = mPosition;
-            while (mPosition >= mText.Length)
+            if (mLastChar == STTokenChars.EndLine)
             {
-                mCancelToken.ThrowIfCancellationRequested();
-                if (mLine >= mLines.Length)
+                do
                 {
-                    mLastChar = STTokenChars.Null;
+                    mCancelToken.ThrowIfCancellationRequested();
+                    if (mLine + 1 >= mLines.Length)
+                    {
+                        mLastChar = STTokenChars.Null;
 
-                    return false;
-                }
+                        return false;
+                    }
+                    mText = mLines[++mLine];
+                    mPosition = 0;
+                } while (mPosition >= mText.Length);
+            }
+            else if (mPosition >= mText.Length)
+            {
+                mLastChar = STTokenChars.EndLine;
 
-                mText = mLines[++mLine];
-                mPosition = 0;
+                return true;
             }
             mCancelToken.ThrowIfCancellationRequested();
 
-            mLastChar = mText[++mPosition];
+            mLineAnt = mLine;
+            mPositionAnt = mPosition;
+
+            mLastChar = mText[mPosition++];
 
             return true;
         }
