@@ -36,18 +36,17 @@ namespace CASSharp.Core.Syntax
 {
     public class STTokenizer
     {
-        private static readonly Regex mRegExTokens = new Regex(@"(\s*)(?<number>\d+)|(?<word>\w+)|(?<sep>[;$])");
+        private const string grNumber = "number";
+        private const string grSep = "sep";
+        private static readonly Regex mRegExTokens = new Regex(@"(\s*)(?<" + grNumber + @">\d+)|(?<word>\w+)|(?<" + grSep + @">[;$])");
 
         private CancellationToken mCancelToken;
         private string[] mLines;
         private string mText;
         private Match mMatch = null;
         private int mLine = 0;
-        private int mLineAnt = 0;
         private int mPosition = 0;
-        private int mPositionAnt = 0;
         private char mChar = STTokenChars.Null;
-        private char mLastChar = STTokenChars.Null;
 
         public STTokenizer() { }
 
@@ -72,9 +71,9 @@ namespace CASSharp.Core.Syntax
 
             mLine = 0;
             ReadLineTokens(mLines.First());
-            mLine = mPosition = 0;
-            mText = mLines.First();
-            ReadChar();
+            //mLine = mPosition = 0;
+            //mText = mLines.First();
+            //ReadChar();
             ParseLines(out STTokensTerminate[] pTokensOut, out string[] pLinesNoParse);
 
             return new STTokenizerResult { TokensOut = pTokensOut, LinesNoParse = pLinesNoParse };
@@ -85,7 +84,7 @@ namespace CASSharp.Core.Syntax
             var pTokensOut = new List<STTokensTerminate>();
 
             argLinesNoParse = mLines;
-            while (mLastChar != STTokenChars.Null)
+            do
             {
                 mCancelToken.ThrowIfCancellationRequested();
 
@@ -96,7 +95,7 @@ namespace CASSharp.Core.Syntax
                     break;
                 }
                 pTokensOut.Add(pTokens);
-            }
+            } while (mChar != STTokenChars.Null);
 
             argTokensOut = pTokensOut.ToArray();
         }
@@ -107,9 +106,9 @@ namespace CASSharp.Core.Syntax
             var pPos0 = mPosition;
 
             argTokens = ParseTokens<STTokensTerminate>();
-            argTokens.TerminateChar = mLastChar;
+            argTokens.TerminateChar = mChar;
 
-            if (mLastChar == STTokenChars.Null)
+            if (mChar == STTokenChars.Null)
             {
                 var pLines = new List<string>();
 
@@ -124,13 +123,13 @@ namespace CASSharp.Core.Syntax
             }
 
             argLinesNoParse = null;
-            switch (mLastChar)
+            switch (mChar)
             {
                 case STTokenChars.Terminate:
                 case STTokenChars.TerminateNoShowOut:
                     return true;
                 default:
-                    throw new STException(string.Format(Properties.Resources.NoExpectTokenException, mLastChar), mLineAnt, mPositionAnt);
+                    throw new STException(string.Format(Properties.Resources.NoExpectTokenException, mChar), mLine, mPosition);
             }
         }
 
@@ -142,10 +141,8 @@ namespace CASSharp.Core.Syntax
             {
                 mCancelToken.ThrowIfCancellationRequested();
 
-                if (mLastChar == STTokenChars.Null)
-                    return pTokens;
+                var pToken = ParseToken();
 
-                ParseToken(out STToken pToken, out char pCar);
                 if (pToken == null)
                     return pTokens;
 
@@ -158,14 +155,48 @@ namespace CASSharp.Core.Syntax
 
         private STToken ParseToken()
         {
-            if (mMatch.Success)
+            do
             {
+                mCancelToken.ThrowIfCancellationRequested();
 
-            }
-            else
-            {
+                if (mMatch.Success)
+                {
+                    if (mMatch.Index != mPosition)
+                        throw new STException(string.Format(Properties.Resources.NoRecognizeStError, mText[mPosition]), mLine, mPosition);
 
-            }
+                    var pGr = mMatch.Groups[1];
+
+                    if (pGr.Success)
+                        mPosition = pGr.Index + pGr.Length;
+
+                    pGr = null;
+                    STToken pSt = null;
+                    char pCar = STTokenChars.Null;
+
+                    if (mMatch.Groups[grNumber].Success)
+                    {
+                        pGr = mMatch.Groups[grNumber];
+                        pSt = new STTokenStr { Token = ESTToken.Numeric, Position = pGr.Index, Text = pGr.Value };
+                    }
+                    else if (mMatch.Groups[grSep].Success)
+                    {
+                        pGr = mMatch.Groups[grSep];
+                        pCar = pGr.Value[0];
+                    }
+                    else
+                        throw new STException(string.Format(Properties.Resources.NoRecognizeStError, mText[mPosition]), mLine, mPosition);
+
+                    if (pGr != null)
+                        mPosition = pGr.Index + pGr.Length;
+                    mChar = pCar;
+                    mMatch = mMatch.NextMatch();
+
+                    return pSt;
+                }
+            } while (ReadNextLine());
+
+            mChar = STTokenChars.Null;
+
             return null;
         }
 
@@ -183,89 +214,6 @@ namespace CASSharp.Core.Syntax
                 return false;
 
             ReadLineTokens(mLines[++mLine]);
-
-            return true;
-        }
-
-        private bool ParseToken(out STToken argToken, out char argCar)
-        {
-            mCancelToken.ThrowIfCancellationRequested();
-            while (char.IsWhiteSpace(mLastChar) || mLastChar == STTokenChars.EndLine)
-                ReadChar();
-
-            if (mLastChar == STTokenChars.Null)
-            {
-                argToken = null;
-                argCar = '\x0';
-
-                return false;
-            }
-
-            int pLinea = mLineAnt;
-            int pIni, pFin, pLen = 0;
-            var pCar = mLastChar;
-
-            pIni = pFin = mPositionAnt;
-
-            switch (pCar)
-            {
-                case STTokenChars.Terminate:
-                case STTokenChars.TerminateNoShowOut:
-                    argToken = null;
-                    argCar = pCar;
-
-                    return true;
-                default:
-                    if (char.IsDigit(pCar))
-                    {
-                        do
-                        {
-                            if (!ReadChar())
-                                break;
-
-                            pLen++;
-                        } while (char.IsDigit(mLastChar));
-
-                        argToken = new STTokenStr { Token = ESTToken.Numeric, Position = pIni, Text = mText.Substring(pIni, pLen) };
-                        argCar = '\x0';
-
-                        return true;
-                    }
-                    break;
-            }
-
-            throw new STException(string.Format(Properties.Resources.NoRecognizeStError, pCar), pLinea, pIni);
-        }
-
-        private bool ReadChar()
-        {
-            if (mLastChar == STTokenChars.EndLine)
-            {
-                do
-                {
-                    mCancelToken.ThrowIfCancellationRequested();
-                    if (mLine + 1 >= mLines.Length)
-                    {
-                        mLastChar = STTokenChars.Null;
-
-                        return false;
-                    }
-                    mText = mLines[++mLine];
-                    mPosition = 0;
-                } while (mPosition >= mText.Length);
-            }
-            else if (mPosition >= mText.Length)
-            {
-                mLastChar = STTokenChars.EndLine;
-
-                return true;
-            }
-            mCancelToken.ThrowIfCancellationRequested();
-
-            mLineAnt = mLine;
-            mPositionAnt = mPosition;
-
-            mLastChar = mText[mPosition++];
 
             return true;
         }
