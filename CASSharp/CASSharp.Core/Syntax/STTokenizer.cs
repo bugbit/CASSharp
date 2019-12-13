@@ -29,19 +29,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 
 namespace CASSharp.Core.Syntax
 {
     public class STTokenizer
     {
+        private static readonly Regex mRegExTokens = new Regex(@"(\s*)(?<number>\d+)|(?<word>\w+)|(?<sep>[;$])");
+
         private CancellationToken mCancelToken;
         private string[] mLines;
         private string mText;
+        private Match mMatch = null;
         private int mLine = 0;
         private int mLineAnt = 0;
         private int mPosition = 0;
         private int mPositionAnt = 0;
+        private char mChar = STTokenChars.Null;
         private char mLastChar = STTokenChars.Null;
 
         public STTokenizer() { }
@@ -65,6 +70,8 @@ namespace CASSharp.Core.Syntax
             if (mLines == null || mLines.Length < 1)
                 return null;
 
+            mLine = 0;
+            ReadLineTokens(mLines.First());
             mLine = mPosition = 0;
             mText = mLines.First();
             ReadChar();
@@ -147,6 +154,37 @@ namespace CASSharp.Core.Syntax
 
                 pTokens.Tokens.AddLast(pToken);
             }
+        }
+
+        private STToken ParseToken()
+        {
+            if (mMatch.Success)
+            {
+
+            }
+            else
+            {
+
+            }
+            return null;
+        }
+
+        private void ReadLineTokens(string argText)
+        {
+            mText = argText;
+            mMatch = mRegExTokens.Match(argText);
+            mPosition = 0;
+            mChar = STTokenChars.Null;
+        }
+
+        private bool ReadNextLine()
+        {
+            if (mLine + 1 >= mLines.Length)
+                return false;
+
+            ReadLineTokens(mLines[++mLine]);
+
+            return true;
         }
 
         private bool ParseToken(out STToken argToken, out char argCar)
