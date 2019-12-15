@@ -29,12 +29,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ST = CASSharp.Core.Syntax;
 
 namespace CASSharp.Core.CAS
 {
-    public class InOutExpr
+    public class EvalExprInResult
     {
-        public Exprs.Expr In { get; set; }
-        public Exprs.Expr Out { get; set; }
+        public ST.ESTTokenizerTerminate Terminate { get; set; }
+        public Exprs.Expr InExpr { get; set; }
+        public Exprs.Expr OutExpr { get; set; }
+        public string NameVarIn { get; set; }
+        public string NameVarOut { get; set; }
     }
 }

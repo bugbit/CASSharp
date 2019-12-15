@@ -32,9 +32,8 @@ using System.Text;
 
 namespace CASSharp.Core.CAS
 {
-    public class InOutExpr
+    public interface ICASPost
     {
-        public Exprs.Expr In { get; set; }
-        public Exprs.Expr Out { get; set; }
+        void PrintExprOutPost(string argNameVar, Exprs.Expr e);
     }
 }

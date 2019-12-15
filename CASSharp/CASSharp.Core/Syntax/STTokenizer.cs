@@ -50,15 +50,15 @@ namespace CASSharp.Core.Syntax
 
         public STTokenizer() { }
 
-        public STTokenizer(string[] argLineas, CancellationToken argCancelToken)
+        public STTokenizer(string[] argLines, CancellationToken argCancelToken)
         {
-            mLines = argLineas;
+            mLines = argLines;
             mCancelToken = argCancelToken;
         }
 
-        public static STTokenizerResult Parse(string[] argLineas, CancellationToken argCancelToken)
+        public static STTokenizerResult Parse(string[] argLines, CancellationToken argCancelToken)
         {
-            var pTokenizer = new STTokenizer(argLineas, argCancelToken);
+            var pTokenizer = new STTokenizer(argLines, argCancelToken);
             var pRet = pTokenizer.Parse();
 
             return pRet;
@@ -126,7 +126,12 @@ namespace CASSharp.Core.Syntax
             switch (mChar)
             {
                 case STTokenChars.Terminate:
+                    argTokens.Terminate = ESTTokenizerTerminate.ShowResult;
+
+                    return true;
                 case STTokenChars.TerminateNoShowOut:
+                    argTokens.Terminate = ESTTokenizerTerminate.HideResult;
+
                     return true;
                 default:
                     throw new STException(string.Format(Properties.Resources.NoExpectTokenException, mChar), mLine, mPosition);

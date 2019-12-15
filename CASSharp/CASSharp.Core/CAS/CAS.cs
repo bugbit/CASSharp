@@ -25,6 +25,7 @@
 */
 #endregion
 
+using Deveel.Math;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,9 +38,57 @@ namespace CASSharp.Core.CAS
     public class CAS
     {
         private CasVars mVars = new CasVars();
+        private ICASPost mPost;
 
         public CasVars Vars => mVars;
 
+        public CAS(ICASPost argPost)
+        {
+            mPost = argPost;
+        }
+
         public string GetPromptVar(string argNameVar) => $"({argNameVar})";
+        public string GetPromptInVarAct() => GetPromptVar(mVars.NameVarPrompt);
+
+        public EvalPromptResult EvalPrompt(string[] argLines, bool argEvalIfExprsInCompleted, CancellationToken argCancelToken)
+        {
+            var pRetP = ST.STTokenizer.Parse(argLines, argCancelToken);
+
+            if (argEvalIfExprsInCompleted && ((pRetP.LinesNoParse != null && pRetP.LinesNoParse.Length > 0) || (pRetP.TokensOut.Any(t => t.Terminate == ST.ESTTokenizerTerminate.No))))
+                return null;
+
+            var pResults = new List<EvalExprInResult>();
+            var pTokens = from t in pRetP.TokensOut where t.Terminate != ST.ESTTokenizerTerminate.No select t;
+
+            foreach (var t in pTokens)
+            {
+                argCancelToken.ThrowIfCancellationRequested();
+
+                var pRetE = EvalPrompt(t, argCancelToken);
+
+                pResults.Add(pRetE);
+            }
+
+            return new EvalPromptResult { EvalResults = pResults.ToArray(), LinesNoParse = pRetP.LinesNoParse };
+        }
+
+        public EvalExprInResult EvalPrompt(ST.STTokensTerminate argTokens, CancellationToken argCancelToken)
+        {
+            var pIn = STToExprs(argTokens, argCancelToken);
+            var pOut = Eval(pIn, mVars, argCancelToken);
+            var pIOE = mVars.AddInOut(pIn, pOut, out string pNameVarIn, out string pNameVarOut);
+
+            if (argTokens.Terminate == ST.ESTTokenizerTerminate.ShowResult)
+                mPost.PrintExprOutPost(GetPromptVar(pNameVarOut), pOut);
+
+            return new EvalExprInResult { Terminate = argTokens.Terminate, InExpr = pIn, OutExpr = pOut, NameVarIn = pNameVarIn, NameVarOut = pNameVarOut };
+        }
+
+        public Exprs.Expr STToExprs(ST.STTokens argTokens, CancellationToken argCancelToken)
+        {
+            return Exprs.Expr.Number(BigDecimal.Parse(argTokens.Tokens.OfType<ST.STTokenStr>().First().Text));
+        }
+
+        public Exprs.Expr Eval(Exprs.Expr e, IVars argVars, CancellationToken argCancelToken) => e;
     }
 }

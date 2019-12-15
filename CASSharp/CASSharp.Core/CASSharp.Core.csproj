@@ -43,10 +43,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App\CASAppPost.cs" />
     <Compile Include="App\TestAttribute.cs" />
     <Compile Include="CAS\CAS.cs" />
     <Compile Include="App\CASApp.cs" />
     <Compile Include="CAS\CasVars.cs" />
+    <Compile Include="CAS\EvalExprInResult.cs" />
+    <Compile Include="CAS\EvalPromptResult.cs" />
+    <Compile Include="CAS\ICASPost.cs" />
     <Compile Include="CAS\InOutExpr.cs" />
     <Compile Include="CAS\IVars.cs" />
     <Compile Include="CAS\Vars.cs" />

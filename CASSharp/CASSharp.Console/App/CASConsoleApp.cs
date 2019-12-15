@@ -34,11 +34,35 @@ using Core = CASSharp.Core;
 using CAS = CASSharp.Core.CAS;
 
 using static System.Console;
+using CASSharp.Core.Exprs;
 
 namespace CASSharp.Console.App
 {
     public class CASConsoleApp : Core.App.CASApp
     {
+        public CASConsoleApp() : base() { }
+
+        public override void PrintPrompt(string argNameVarPrompt, bool newline)
+        {
+            if (newline)
+                WriteLine(argNameVarPrompt);
+            else
+            {
+                Write(argNameVarPrompt);
+                Write(' ');
+            }
+        }
+
+        public override void PrintPrompt(string argNameVarPrompt, string argExpr)
+        {
+            PrintPrompt(argNameVarPrompt, false);
+            WriteLine(argExpr);
+        }
+
+        protected override CAS.ICASPost NewPos() => new Core.App.CASAppPost<CASConsoleApp>(this);
+
+        protected override void PrintExpr(string argNameVarPrompt, Expr e) => WriteLine($"{argNameVarPrompt} {e}");
+
         protected override void PrintError(string argError)
         {
             var pForeColor = ForegroundColor;
@@ -79,7 +103,7 @@ namespace CASSharp.Console.App
 
         private void Prompt()
         {
-            var pNameVar = mCAS.Vars.NameVarPromt;
+            var pNameVar = mCAS.Vars.NameVarPrompt;
             var pText = System.ReadLine.Read($"{mCAS.GetPromptVar(pNameVar)} ");
         }
 

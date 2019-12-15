@@ -40,7 +40,14 @@ namespace CASSharp.Core.App
     {
         private string[] mArgs;
 
-        protected CAS.CAS mCAS = new CAS.CAS();
+        protected CAS.ICASPost mPost;
+        protected CAS.CAS mCAS;
+
+        public CASApp()
+        {
+            mPost = NewPos();
+            mCAS = new CAS.CAS(mPost);
+        }
 
         public int Run(string[] args)
         {
@@ -76,6 +83,13 @@ namespace CASSharp.Core.App
             return 0;
         }
 
+        public virtual void PrintPrompt(string argNameVarPrompt, bool newline) { }
+        public virtual void PrintPrompt(string argNameVarPrompt, string argExpr) { }
+        public virtual void PrintExprIn(string argNameVarPrompt, Exprs.Expr e) => PrintExpr(argNameVarPrompt, e);
+        public virtual void PrintExprOut(string argNameVarPrompt, Exprs.Expr e) => PrintExpr(argNameVarPrompt, e);
+
+        protected virtual void PrintExpr(string argNameVarPrompt, Exprs.Expr e) { }
+        protected virtual CAS.ICASPost NewPos() => new CASAppPost<CASApp>(this);
         protected virtual void PrintError(string argError) { }
         protected virtual void PrintException(Exception ex) => PrintError(ex.Message);
         protected void ParseCommandLine(out bool argExit)
@@ -153,6 +167,8 @@ MIT LICENSE"
 
                         pMethod.Invoke(this, pParams);
                         argExit = (bool)pParams[0];
+                        if (argExit)
+                            return;
 
                         break;
                 }
@@ -161,7 +177,7 @@ MIT LICENSE"
 
         protected virtual void PrintTest(string argText) { }
 
-        [Test]
+        //[Test]
         private void TokernizerTest()
         {
             var pTexts = new[]
@@ -172,6 +188,7 @@ MIT LICENSE"
                 "20;",
                 "50$100;"
             };
+            var pTextsE = new List<string>();
 
             while (pTexts != null && pTexts.Length > 0)
             {
@@ -184,7 +201,7 @@ MIT LICENSE"
                     {
                         foreach (var pTokens in pTokensOut)
                         {
-                            PrintTest($"{pTokens.Terminate} {pTokens.Tokens}");
+                            PrintTest($"{pTokens.Terminate} {pTokens}");
                         }
                     }
 
@@ -199,6 +216,51 @@ MIT LICENSE"
                     var pTexts2 = pTexts.Skip(ex.Linea + 1);
 
                     pTexts = pTexts2.ToArray();
+                }
+                catch (Exception ex)
+                {
+                    PrintException(ex);
+                }
+            }
+        }
+
+        [Test]
+        private void EvalPromptTest()
+        {
+            var pTexts = new[]
+            {
+                "10 20+ 30",
+                "10",
+                ";",
+                "20;",
+                "50$100;"
+            };
+
+            var pTextsE = new List<string>();
+
+            foreach (var pText in pTexts)
+            {
+                pTextsE.Add(pText);
+                PrintPrompt(mCAS.Vars.NameVarPrompt, pText);
+
+                try
+                {
+                    var pRet = mCAS.EvalPrompt(pTextsE.ToArray(), false, CancellationToken.None);
+
+                    if (pRet == null)
+                        return;
+
+                    pTextsE = new List<string>(pRet.LinesNoParse);
+                }
+                catch (ST.STException ex)
+                {
+                    PrintError(ex.Message);
+                    PrintError(pTextsE[ex.Linea]);
+                    PrintError($"{new string(' ', ex.Position)}^");
+
+                    var pTexts2 = pTextsE.Skip(ex.Linea + 1);
+
+                    pTextsE = new List<string>(pTexts2);
                 }
                 catch (Exception ex)
                 {

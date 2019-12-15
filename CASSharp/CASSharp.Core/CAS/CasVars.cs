@@ -50,6 +50,7 @@ namespace CASSharp.Core.CAS
                         pNVars.Add(InNVar(n));
                     if (ine.Out != null)
                         pNVars.Add(OutNVar(n));
+                    n++;
                 }
 
                 pNVars.AddRange(mVars.Keys);
@@ -58,7 +59,7 @@ namespace CASSharp.Core.CAS
             }
         }
 
-        public string NameVarPromt
+        public string NameVarPrompt
         {
             get
             {
@@ -69,12 +70,17 @@ namespace CASSharp.Core.CAS
             }
         }
 
-        public void AddInOut(Exprs.Expr i, Exprs.Expr o, out string argNameVarOut)
+        public InOutExpr AddInOut(Exprs.Expr i, Exprs.Expr o, out string argNameVarIn, out string argNameVarOut)
         {
             lock (mInOutExprs)
             {
-                mInOutExprs.Add(new InOutExpr { In = i, Out = o });
+                var pIOE = new InOutExpr { In = i, Out = o };
+
+                mInOutExprs.Add(pIOE);
+                argNameVarIn = InNVar(mInOutExprs.Count);
                 argNameVarOut = OutNVar(mInOutExprs.Count);
+
+                return pIOE;
             }
         }
 

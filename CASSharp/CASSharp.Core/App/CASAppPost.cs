@@ -29,12 +29,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CASSharp.Core.Exprs;
 
-namespace CASSharp.Core.CAS
+namespace CASSharp.Core.App
 {
-    public class InOutExpr
+    public class CASAppPost<T> : CAS.ICASPost where T : CASApp
     {
-        public Exprs.Expr In { get; set; }
-        public Exprs.Expr Out { get; set; }
+        protected readonly T mApp;
+
+        public CASAppPost(T argApp)
+        {
+            mApp = argApp;
+        }
+
+        public void PrintExprOutPost(string argNameVarPrompt, Expr e) => mApp.PrintExprOut(argNameVarPrompt, e);
     }
 }
