@@ -38,6 +38,7 @@ namespace CASSharp.Core.Syntax
     {
         private const string grNumber = "number";
         private const string grSep = "sep";
+        private static readonly string[] mGrTokens = { grNumber, grSep };
         private static readonly Regex mRegExTokens = new Regex(@"(\s*)(?<" + grNumber + @">\d+)|(?<word>\w+)|(?<" + grSep + @">[;$])");
 
         private CancellationToken mCancelToken;
@@ -178,16 +179,10 @@ namespace CASSharp.Core.Syntax
                     STToken pSt = null;
                     char pCar = STTokenChars.Null;
 
-                    if (mMatch.Groups[grNumber].Success)
-                    {
-                        pGr = mMatch.Groups[grNumber];
+                    if ((pGr = mMatch.Groups[grNumber]).Success)
                         pSt = new STTokenStr { Token = ESTToken.Numeric, Position = pGr.Index, Text = pGr.Value };
-                    }
-                    else if (mMatch.Groups[grSep].Success)
-                    {
-                        pGr = mMatch.Groups[grSep];
+                    else if ((pGr = mMatch.Groups[grSep]).Success)
                         pCar = pGr.Value[0];
-                    }
                     else
                         throw new STException(string.Format(Properties.Resources.NoRecognizeStError, mText[mPosition]), mLine, mPosition);
 

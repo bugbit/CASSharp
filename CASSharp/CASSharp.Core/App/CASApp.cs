@@ -177,7 +177,7 @@ MIT LICENSE"
 
         protected virtual void PrintTest(string argText) { }
 
-        //[Test]
+        [Test]
         private void TokernizerTest()
         {
             var pTexts = new[]
@@ -224,7 +224,7 @@ MIT LICENSE"
             }
         }
 
-        [Test]
+        //[Test]
         private void EvalPromptTest()
         {
             var pTexts = new[]
