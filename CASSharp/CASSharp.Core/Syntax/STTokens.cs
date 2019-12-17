@@ -36,6 +36,32 @@ namespace CASSharp.Core.Syntax
     {
         public LinkedList<STToken> Tokens { get; set; }
 
-        public override string ToString() => (Tokens != null) ? string.Join(" ", Tokens) : string.Empty;
+        public override string ToString() //=> (Tokens != null) ? string.Join(" ", Tokens) : string.Empty;
+        {
+            var pStr = string.Empty;
+            var pTokens = Tokens.First;
+
+            while (pTokens != null)
+            {
+                if (pTokens.Previous != null)
+                    switch (pTokens.Previous.Value.Token)
+                    {
+                        case ESTToken.Number:
+                        case ESTToken.Word:
+                            switch (pTokens.Value.Token)
+                            {
+                                case ESTToken.Number:
+                                case ESTToken.Word:
+                                    pStr += " ";
+                                    break;
+                            }
+                            break;
+                    }
+                pStr += pTokens.Value.ToString();
+                pTokens = pTokens.Next;
+            }
+
+            return pStr;
+        }
     }
 }

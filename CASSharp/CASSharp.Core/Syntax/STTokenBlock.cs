@@ -27,15 +27,19 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
 namespace CASSharp.Core.Syntax
 {
+    [DebuggerDisplay("Token : {Token} BeginSep : {BeginSep} EndSep : {EndSep}")]
     public class STTokenBlock : STToken
     {
+        public string BeginSep { get; set; }
+        public string EndSep { get; set; }
         public List<STTokens> Tokens { get; set; }
 
-        public override string ToString() => (Tokens != null) ? string.Join("", Tokens) : string.Empty;
+        public override string ToString() => (BeginSep ?? string.Empty) + ((Tokens != null) ? string.Join("", Tokens) : string.Empty) + (EndSep ?? string.Empty);
     }
 }

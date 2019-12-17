@@ -37,9 +37,14 @@ namespace CASSharp.Core.Syntax
     public class STTokenizer
     {
         private const string grNumber = "number";
-        private const string grSep = "sep";
-        private static readonly string[] mGrTokens = { grNumber, grSep };
-        private static readonly Regex mRegExTokens = new Regex(@"(\s*)(?<" + grNumber + @">\d+)|(?<word>\w+)|(?<" + grSep + @">[;$])");
+        private const string grWord = "word";
+        private const string grSymbol = "sep";
+        private const string syTerminate = ";";
+        private const string syNextElemBlock = ",";
+        private const string syTerminateHide = "$";
+        private const string syBeginParenthesis = "(";
+        private const string syEndParenthesis = ")";
+        private static readonly Regex mRegExTokens = new Regex($@"(\s*)(?<{grNumber}>\d+)|(?<{grWord}>[A-Z_%]+\w*)|(?<{grSymbol}>[;$\(\),])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private CancellationToken mCancelToken;
         private string[] mLines;
@@ -47,7 +52,7 @@ namespace CASSharp.Core.Syntax
         private Match mMatch = null;
         private int mLine = 0;
         private int mPosition = 0;
-        private char mChar = STTokenChars.Null;
+        private string mSymbol = null;
 
         public STTokenizer() { }
 
@@ -96,7 +101,7 @@ namespace CASSharp.Core.Syntax
                     break;
                 }
                 pTokensOut.Add(pTokens);
-            } while (mChar != STTokenChars.Null);
+            } while (mSymbol != null);
 
             argTokensOut = pTokensOut.ToArray();
         }
@@ -107,9 +112,9 @@ namespace CASSharp.Core.Syntax
             var pPos0 = mPosition;
 
             argTokens = ParseTokens<STTokensTerminate>();
-            argTokens.TerminateChar = mChar;
+            argTokens.TerminateChar = (mSymbol?.FirstOrDefault()).GetValueOrDefault('\x0');
 
-            if (mChar == STTokenChars.Null)
+            if (mSymbol == null)
             {
                 var pLines = new List<string>();
 
@@ -124,19 +129,22 @@ namespace CASSharp.Core.Syntax
             }
 
             argLinesNoParse = null;
-            switch (mChar)
-            {
-                case STTokenChars.Terminate:
-                    argTokens.Terminate = ESTTokenizerTerminate.ShowResult;
+            if (mSymbol != null)
+                switch (mSymbol)
+                {
+                    case syTerminate:
+                        argTokens.Terminate = ESTTokenizerTerminate.ShowResult;
 
-                    return true;
-                case STTokenChars.TerminateNoShowOut:
-                    argTokens.Terminate = ESTTokenizerTerminate.HideResult;
+                        return true;
+                    case syTerminateHide:
+                        argTokens.Terminate = ESTTokenizerTerminate.HideResult;
 
-                    return true;
-                default:
-                    throw new STException(string.Format(Properties.Resources.NoExpectTokenException, mChar), mLine, mPosition);
-            }
+                        return true;
+                    default:
+                        throw new STException(string.Format(Properties.Resources.NoExpectTokenException, mSymbol), mLine, mPosition);
+                }
+
+            return false;
         }
 
         private T ParseTokens<T>() where T : STTokens, new()
@@ -161,6 +169,43 @@ namespace CASSharp.Core.Syntax
 
         private STToken ParseToken()
         {
+            var pToken = ParseTokenInternal();
+
+            if (pToken != null)
+                return pToken;
+
+            switch (mSymbol)
+            {
+                case syBeginParenthesis:
+                    return ParseBlock(syEndParenthesis, ESTToken.Parenthesis);
+            }
+
+            return null;
+        }
+
+        private STTokenBlock ParseBlock(string argSyEnd, ESTToken argTypeToken)
+        {
+            var pBlock = new STTokenBlock { BeginSep = mSymbol, EndSep = argSyEnd, Token = argTypeToken, Tokens = new List<STTokens>() };
+
+            do
+            {
+                var pTokens = ParseTokens<STTokens>();
+
+                if (pTokens != null && pTokens.Tokens != null)
+                    pBlock.Tokens.Add(pTokens);
+            } while (mSymbol != null && mSymbol == syNextElemBlock);
+
+            if (mSymbol == null)
+                return null;
+
+            if (mSymbol != argSyEnd)
+                throw new STException(string.Format(Properties.Resources.NoExpectTokenException, mSymbol), mLine, mPosition);
+
+            return pBlock;
+        }
+
+        private STToken ParseTokenInternal()
+        {
             do
             {
                 mCancelToken.ThrowIfCancellationRequested();
@@ -177,25 +222,31 @@ namespace CASSharp.Core.Syntax
 
                     pGr = null;
                     STToken pSt = null;
-                    char pCar = STTokenChars.Null;
 
                     if ((pGr = mMatch.Groups[grNumber]).Success)
-                        pSt = new STTokenStr { Token = ESTToken.Numeric, Position = pGr.Index, Text = pGr.Value };
-                    else if ((pGr = mMatch.Groups[grSep]).Success)
-                        pCar = pGr.Value[0];
+                    {
+                        pSt = new STTokenStr { Token = ESTToken.Number, Position = pGr.Index, Text = pGr.Value };
+                        mSymbol = null;
+                    }
+                    else if ((pGr = mMatch.Groups[grWord]).Success)
+                    {
+                        pSt = new STTokenStr { Token = ESTToken.Word, Position = pGr.Index, Text = pGr.Value };
+                        mSymbol = null;
+                    }
+                    else if ((pGr = mMatch.Groups[grSymbol]).Success)
+                        mSymbol = pGr.Value;
                     else
                         throw new STException(string.Format(Properties.Resources.NoRecognizeStError, mText[mPosition]), mLine, mPosition);
 
                     if (pGr != null)
                         mPosition = pGr.Index + pGr.Length;
-                    mChar = pCar;
                     mMatch = mMatch.NextMatch();
 
                     return pSt;
                 }
             } while (ReadNextLine());
 
-            mChar = STTokenChars.Null;
+            mSymbol = null;
 
             return null;
         }
@@ -205,7 +256,7 @@ namespace CASSharp.Core.Syntax
             mText = argText;
             mMatch = mRegExTokens.Match(argText);
             mPosition = 0;
-            mChar = STTokenChars.Null;
+            mSymbol = null;
         }
 
         private bool ReadNextLine()

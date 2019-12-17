@@ -186,7 +186,9 @@ MIT LICENSE"
                 "10",
                 ";",
                 "20;",
-                "50$100;"
+                "50$100;",
+                "%pi;",
+                "quit();"
             };
             var pTextsE = new List<string>();
 

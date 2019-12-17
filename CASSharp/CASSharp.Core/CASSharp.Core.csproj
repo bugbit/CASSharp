@@ -74,7 +74,6 @@
     <Compile Include="Syntax\STException.cs" />
     <Compile Include="Syntax\STToken.cs" />
     <Compile Include="Syntax\STTokenBlock.cs" />
-    <Compile Include="Syntax\STTokenChars.cs" />
     <Compile Include="Syntax\STTokenizer.cs" />
     <Compile Include="Syntax\STTokenizerResult.cs" />
     <Compile Include="Syntax\STTokens.cs" />

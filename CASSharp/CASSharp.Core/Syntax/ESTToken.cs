@@ -34,6 +34,6 @@ namespace CASSharp.Core.Syntax
 {
     public enum ESTToken
     {
-        None, Numeric, Terminate
+        None, Number, Word, Terminate, Parenthesis
     }
 }
