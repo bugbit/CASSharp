@@ -29,15 +29,16 @@ using Deveel.Math;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using ST = CASSharp.Core.Syntax;
 
 namespace CASSharp.Core.CAS
 {
-    public class CAS
+    public sealed class CAS
     {
-        private static readonly Dictionary<string, InstructionInfo> mInstructions;
+        private readonly Dictionary<string, InstructionInfo> mInstructions;
 
         private CasVars mVars = new CasVars();
         private ICASPost mPost;
@@ -47,6 +48,13 @@ namespace CASSharp.Core.CAS
         public CAS(ICASPost argPost)
         {
             mPost = argPost;
+            mInstructions = BuildFuncs<InstructionAttribute, InstructionInfo>
+            (
+                (i, m, a) =>
+                {
+                    i.Method = (InstructionHandler)Delegate.CreateDelegate(typeof(InstructionHandler), this, m);
+                }
+            );
         }
 
         public string GetPromptVar(string argNameVar) => $"({argNameVar})";
@@ -76,7 +84,7 @@ namespace CASSharp.Core.CAS
 
         public EvalExprInResult EvalPrompt(ST.STTokensTerminate argTokens, CancellationToken argCancelToken)
         {
-            var pIn = STToExprs(argTokens, argCancelToken);
+            var pIn = STToExprsIn(argTokens, argCancelToken);
             var pOut = Eval(pIn, mVars, argCancelToken);
             var pIOE = mVars.AddInOut(pIn, pOut, out string pNameVarIn, out string pNameVarOut);
 
@@ -86,16 +94,54 @@ namespace CASSharp.Core.CAS
             return new EvalExprInResult { Terminate = argTokens.Terminate, InExpr = pIn, OutExpr = pOut, NameVarIn = pNameVarIn, NameVarOut = pNameVarOut };
         }
 
+        public Exprs.Expr STToExprsIn(ST.STTokens argTokens, CancellationToken argCancelToken) => STToExprs(argTokens, argCancelToken);
+
         public Exprs.Expr STToExprs(ST.STTokens argTokens, CancellationToken argCancelToken)
         {
+            var pTokens = argTokens.Tokens.First;
+
+            switch (pTokens.Value.Token)
+            {
+                case ST.ESTToken.Number:
+                    return Exprs.Expr.Number(BigDecimal.Parse(((ST.STTokenStr)pTokens.Value).Text));
+                case ST.ESTToken.Word:
+                    if (pTokens.Next != null && pTokens.Next.Value.Token == ST.ESTToken.Parenthesis)
+                    {
+
+                    }
+
+                    return Exprs.Expr.Null;
+            }
+
             return Exprs.Expr.Number(BigDecimal.Parse(argTokens.Tokens.OfType<ST.STTokenStr>().First().Text));
         }
 
         public Exprs.Expr Eval(Exprs.Expr e, IVars argVars, CancellationToken argCancelToken) => e;
 
-        [InstructionAttribute]
-        public void quit(CancellationToken argCancelToken, Exprs.Expr[] argParams) { }
+        [Instruction]
+        private void Quit(CancellationToken argCancelToken, Exprs.Expr[] argParams) { }
 
-        //private void //
+        private Dictionary<string, T> BuildFuncs<A, T>(Action<T, MethodInfo, A> argInit) where A : FunctionBaseAttribute where T : FunctionBaseInfo, new()
+        {
+            var pDicts = new Dictionary<string, T>(StringComparer.InvariantCultureIgnoreCase);
+            var pMethod = GetType().FindMembers
+           (
+               MemberTypes.Method, BindingFlags.Instance | BindingFlags.NonPublic,
+               (m, c) => ((MethodInfo)m).GetCustomAttributes((Type)c, true).Length > 0,
+               typeof(A)
+           ).OfType<MethodInfo>();
+
+            foreach (var m in pMethod)
+            {
+                var pAttr = (A)m.GetCustomAttributes(typeof(A), true)[0];
+                var pName = pAttr.Name ?? m.Name.ToLowerInvariant();
+                var pInfo = new T();
+
+                argInit.Invoke(pInfo, m, pAttr);
+                pDicts[pName] = pInfo;
+            }
+
+            return pDicts;
+        }
     }
 }

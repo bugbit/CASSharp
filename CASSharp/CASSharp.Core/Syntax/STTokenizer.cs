@@ -189,6 +189,8 @@ namespace CASSharp.Core.Syntax
 
             do
             {
+                mCancelToken.ThrowIfCancellationRequested();
+
                 var pTokens = ParseTokens<STTokens>();
 
                 if (pTokens != null && pTokens.Tokens != null)
