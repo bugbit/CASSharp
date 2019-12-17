@@ -37,6 +37,8 @@ namespace CASSharp.Core.CAS
 {
     public class CAS
     {
+        private static readonly Dictionary<string, InstructionInfo> mInstructions;
+
         private CasVars mVars = new CasVars();
         private ICASPost mPost;
 
@@ -90,5 +92,10 @@ namespace CASSharp.Core.CAS
         }
 
         public Exprs.Expr Eval(Exprs.Expr e, IVars argVars, CancellationToken argCancelToken) => e;
+
+        [InstructionAttribute]
+        public void quit(CancellationToken argCancelToken, Exprs.Expr[] argParams) { }
+
+        //private void //
     }
 }

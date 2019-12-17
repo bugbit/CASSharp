@@ -50,8 +50,11 @@
     <Compile Include="CAS\CasVars.cs" />
     <Compile Include="CAS\EvalExprInResult.cs" />
     <Compile Include="CAS\EvalPromptResult.cs" />
+    <Compile Include="CAS\FunctionBaseAttribute.cs" />
     <Compile Include="CAS\ICASPost.cs" />
     <Compile Include="CAS\InOutExpr.cs" />
+    <Compile Include="CAS\InstructionAttribute.cs" />
+    <Compile Include="CAS\InstructionInfo.cs" />
     <Compile Include="CAS\IVars.cs" />
     <Compile Include="CAS\Vars.cs" />
     <Compile Include="CAS\VarsScope.cs" />
