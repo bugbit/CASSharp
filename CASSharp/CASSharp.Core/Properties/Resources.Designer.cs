@@ -61,6 +61,15 @@ namespace CASSharp.Core.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a I cannot execute the instruction &apos;{0}&apos; because it is not at the beginning of the expression.
+        /// </summary>
+        internal static string NoExecInsTrNoStartExprException {
+            get {
+                return ResourceManager.GetString("NoExecInsTrNoStartExprException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a I didn&apos;t expect a {0}..
         /// </summary>
         internal static string NoExpectTokenException {

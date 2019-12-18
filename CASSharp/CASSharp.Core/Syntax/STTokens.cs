@@ -29,6 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace CASSharp.Core.Syntax
 {
@@ -39,6 +40,19 @@ namespace CASSharp.Core.Syntax
         public override string ToString() //=> (Tokens != null) ? string.Join(" ", Tokens) : string.Empty;
         {
             var pStr = string.Empty;
+            var pReader = new STTokensReader(this, CancellationToken.None);
+
+            while (!pReader.EOF)
+            {
+                if (pReader.IsPrev(2, n => n.Token == ESTToken.Number || n.Token == ESTToken.Word))
+                    pStr += " ";
+                pStr += pReader.Token.ToString();
+                pReader.Next();
+            }
+
+            return pStr;
+
+            /*
             var pTokens = Tokens.First;
 
             while (pTokens != null)
@@ -62,6 +76,7 @@ namespace CASSharp.Core.Syntax
             }
 
             return pStr;
+            */
         }
     }
 }

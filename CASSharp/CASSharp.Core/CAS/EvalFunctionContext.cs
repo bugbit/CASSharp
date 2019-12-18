@@ -32,12 +32,9 @@ using System.Text;
 
 namespace CASSharp.Core.CAS
 {
-    [AttributeUsage(AttributeTargets.Method, Inherited = true)]
-    public class FunctionBaseAttribute : Attribute
+    public class EvalFunctionContext
     {
-        public string Name { get; set; }
-        public int NumArgs { get; set; } = -1;
-        public int MinArgs { get; set; } = -1;
-        public int MaxArgs { get; set; } = -1;
+        public EvalContext Context { get; set; }
+        public FunctionBaseInfo Info { get; set; }
     }
 }

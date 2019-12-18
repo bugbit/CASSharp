@@ -185,7 +185,7 @@ namespace CASSharp.Core.Syntax
 
         private STTokenBlock ParseBlock(string argSyEnd, ESTToken argTypeToken)
         {
-            var pBlock = new STTokenBlock { BeginSep = mSymbol, EndSep = argSyEnd, Token = argTypeToken, Tokens = new List<STTokens>() };
+            var pBlock = new STTokenBlock { Line = mLine, Position = mPosition, BeginSep = mSymbol, EndSep = argSyEnd, Token = argTypeToken, Tokens = new List<STTokens>() };
 
             do
             {
@@ -227,12 +227,12 @@ namespace CASSharp.Core.Syntax
 
                     if ((pGr = mMatch.Groups[grNumber]).Success)
                     {
-                        pSt = new STTokenStr { Token = ESTToken.Number, Position = pGr.Index, Text = pGr.Value };
+                        pSt = new STTokenStr { Token = ESTToken.Number, Line = mLine, Position = pGr.Index, Text = pGr.Value };
                         mSymbol = null;
                     }
                     else if ((pGr = mMatch.Groups[grWord]).Success)
                     {
-                        pSt = new STTokenStr { Token = ESTToken.Word, Position = pGr.Index, Text = pGr.Value };
+                        pSt = new STTokenStr { Token = ESTToken.Word, Line = mLine, Position = pGr.Index, Text = pGr.Value };
                         mSymbol = null;
                     }
                     else if ((pGr = mMatch.Groups[grSymbol]).Success)

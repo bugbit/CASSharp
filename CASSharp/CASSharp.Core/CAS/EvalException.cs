@@ -28,16 +28,27 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace CASSharp.Core.CAS
 {
-    [AttributeUsage(AttributeTargets.Method, Inherited = true)]
-    public class FunctionBaseAttribute : Attribute
+    public class EvalException : Exception
     {
-        public string Name { get; set; }
-        public int NumArgs { get; set; } = -1;
-        public int MinArgs { get; set; } = -1;
-        public int MaxArgs { get; set; } = -1;
+        public EvalException()
+        {
+        }
+
+        public EvalException(string message) : base(message)
+        {
+        }
+
+        public EvalException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected EvalException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
     }
 }

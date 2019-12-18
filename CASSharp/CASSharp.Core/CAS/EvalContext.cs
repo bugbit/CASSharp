@@ -29,15 +29,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace CASSharp.Core.CAS
 {
-    [AttributeUsage(AttributeTargets.Method, Inherited = true)]
-    public class FunctionBaseAttribute : Attribute
+    public class EvalContext
     {
-        public string Name { get; set; }
-        public int NumArgs { get; set; } = -1;
-        public int MinArgs { get; set; } = -1;
-        public int MaxArgs { get; set; } = -1;
+        public CancellationToken CancelToken { get; set; }
     }
 }

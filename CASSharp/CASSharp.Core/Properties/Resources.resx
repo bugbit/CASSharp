@@ -126,4 +126,7 @@
   <data name="StError" xml:space="preserve">
     <value>In position {0} : {1}</value>
   </data>
+  <data name="NoExecInsTrNoStartExprException" xml:space="preserve">
+    <value>I cannot execute the instruction '{0}' because it is not at the beginning of the expression</value>
+  </data>
 </root>

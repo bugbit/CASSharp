@@ -126,4 +126,7 @@
   <data name="NoExpectTokenException" xml:space="preserve">
     <value>No esperaba {0}.</value>
   </data>
+  <data name="NoExecInsTrNoStartExprException" xml:space="preserve">
+    <value>No puedo ejecutar la instrucción '{0}' porque no está al inicio de la expresión</value>
+  </data>
 </root>

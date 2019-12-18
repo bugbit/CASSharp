@@ -16,37 +16,36 @@
 */
 #endregion
 
-using Deveel.Math;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using ST = CASSharp.Core.Syntax;
 
 namespace CASSharp.Core.Exprs
 {
-    [DebuggerDisplay("TypeExpr : {TypeExpr}")]
-    abstract public class Expr : ICloneable
+    [DebuggerDisplay("TypeExpr : {TypeExpr} FunctionName : {FunctionName}")]
+    public class FunctionExpr : Expr
     {
-        public ETypeExpr TypeExpr { get; }
+        public string FunctionName { get; }
+        public Expr[] Args { get; set; }
 
-        protected Expr(ETypeExpr argTypeExpr)
+        public FunctionExpr(string argFunctionName, Expr[] argArgs) : base(ETypeExpr.Function)
         {
-            TypeExpr = argTypeExpr;
+            FunctionName = argFunctionName;
+            Args = argArgs;
         }
 
-        protected Expr(Expr e) : this(e.TypeExpr) { }
+        public FunctionExpr(FunctionExpr e) : this(e.FunctionName, e.Args) { }
 
-        virtual public Expr Clone() => throw new NotImplementedException();
+        public override Expr Clone() => new FunctionExpr(this);
 
-        object ICloneable.Clone() => Clone();
+        public override string ToString()
+        {
+            var pAgrsStr = string.Join(",", Args.Select(e => e.ToString()));
+            var pStr = $"{FunctionName}({pAgrsStr})";
 
-        public static Expr Null => NullExpr.Value;
-
-        public static TokensExpr Tokens(ST.STTokens argTokens) => new TokensExpr(argTokens);
-
-        public static NumberExpr Number(BigDecimal n) => new NumberExpr(n);
-        public static FunctionExpr Function(string argName, Expr[] argArgs) => new FunctionExpr(argName, argArgs);
+            return pStr;
+        }
     }
 }

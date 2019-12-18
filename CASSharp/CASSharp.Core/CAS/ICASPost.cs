@@ -35,5 +35,6 @@ namespace CASSharp.Core.CAS
     public interface ICASPost
     {
         void PrintExprOutPost(string argNameVar, Exprs.Expr e);
+        void QuitPost();
     }
 }

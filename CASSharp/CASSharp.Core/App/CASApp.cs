@@ -83,6 +83,11 @@ namespace CASSharp.Core.App
             return 0;
         }
 
+        public virtual void Quit()
+        {
+            Environment.Exit(0);
+        }
+
         public virtual void PrintPrompt(string argNameVarPrompt, bool newline) { }
         public virtual void PrintPrompt(string argNameVarPrompt, string argExpr) { }
         public virtual void PrintExprIn(string argNameVarPrompt, Exprs.Expr e) => PrintExpr(argNameVarPrompt, e);
@@ -177,7 +182,7 @@ MIT LICENSE"
 
         protected virtual void PrintTest(string argText) { }
 
-        [Test]
+        //[Test]
         private void TokernizerTest()
         {
             var pTexts = new[]
@@ -212,10 +217,10 @@ MIT LICENSE"
                 catch (ST.STException ex)
                 {
                     PrintError(ex.Message);
-                    PrintError(pTexts[ex.Linea]);
+                    PrintError(pTexts[ex.Line]);
                     PrintError($"{new string(' ', ex.Position)}^");
 
-                    var pTexts2 = pTexts.Skip(ex.Linea + 1);
+                    var pTexts2 = pTexts.Skip(ex.Line + 1);
 
                     pTexts = pTexts2.ToArray();
                 }
@@ -226,16 +231,17 @@ MIT LICENSE"
             }
         }
 
-        //[Test]
+        [Test]
         private void EvalPromptTest()
         {
             var pTexts = new[]
             {
-                "10 20+ 30",
-                "10",
-                ";",
-                "20;",
-                "50$100;"
+                //"10 20+ 30",
+                //"10",
+                //";",
+                //"20;",
+                //"50$100;",
+                "quit();"
             };
 
             var pTextsE = new List<string>();
@@ -243,7 +249,7 @@ MIT LICENSE"
             foreach (var pText in pTexts)
             {
                 pTextsE.Add(pText);
-                PrintPrompt(mCAS.Vars.NameVarPrompt, pText);
+                PrintPrompt(mCAS.GetPromptInVarAct(), pText);
 
                 try
                 {
@@ -257,10 +263,10 @@ MIT LICENSE"
                 catch (ST.STException ex)
                 {
                     PrintError(ex.Message);
-                    PrintError(pTextsE[ex.Linea]);
+                    PrintError(pTextsE[ex.Line]);
                     PrintError($"{new string(' ', ex.Position)}^");
 
-                    var pTexts2 = pTextsE.Skip(ex.Linea + 1);
+                    var pTexts2 = pTextsE.Skip(ex.Line + 1);
 
                     pTextsE = new List<string>(pTexts2);
                 }

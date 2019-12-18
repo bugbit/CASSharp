@@ -29,11 +29,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
 
 namespace CASSharp.Core.CAS
 {
-    public delegate void InstructionHandler(CancellationToken argCancelToken, Exprs.Expr[] argParams);
+    public delegate void InstructionHandler(EvalFunctionContext argContext, Exprs.Expr[] argParams);
 
     public class InstructionInfo : FunctionBaseInfo
     {

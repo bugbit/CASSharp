@@ -48,7 +48,10 @@
     <Compile Include="CAS\CAS.cs" />
     <Compile Include="App\CASApp.cs" />
     <Compile Include="CAS\CasVars.cs" />
+    <Compile Include="CAS\EvalContext.cs" />
+    <Compile Include="CAS\EvalException.cs" />
     <Compile Include="CAS\EvalExprInResult.cs" />
+    <Compile Include="CAS\EvalFunctionContext.cs" />
     <Compile Include="CAS\EvalPromptResult.cs" />
     <Compile Include="CAS\FunctionBaseAttribute.cs" />
     <Compile Include="CAS\FunctionBaseInfo.cs" />
@@ -62,6 +65,7 @@
     <Compile Include="Exprs\CteExpr.cs" />
     <Compile Include="Exprs\ETypeExpr.cs" />
     <Compile Include="Exprs\Expr.cs" />
+    <Compile Include="Exprs\FunctionExpr.cs" />
     <Compile Include="Exprs\NullExpr.cs" />
     <Compile Include="Exprs\NumberExpr.cs" />
     <Compile Include="Exprs\TokensExpr.cs" />
@@ -81,6 +85,7 @@
     <Compile Include="Syntax\STTokenizer.cs" />
     <Compile Include="Syntax\STTokenizerResult.cs" />
     <Compile Include="Syntax\STTokens.cs" />
+    <Compile Include="Syntax\STTokensReader.cs" />
     <Compile Include="Syntax\STTokensTerminate.cs" />
     <Compile Include="Syntax\STTokenStr.cs" />
   </ItemGroup>

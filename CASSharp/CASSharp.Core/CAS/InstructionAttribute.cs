@@ -32,7 +32,7 @@ using System.Text;
 
 namespace CASSharp.Core.CAS
 {
-    [AttributeUsage(AttributeTargets.Method)]
+    [AttributeUsage(AttributeTargets.Method, Inherited = true)]
     public class InstructionAttribute : FunctionBaseAttribute
     {
     }

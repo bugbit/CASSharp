@@ -35,29 +35,29 @@ namespace CASSharp.Core.Syntax
 {
     public class STException : Exception
     {
-        public int Linea { get; set; }
+        public int Line { get; set; }
         public int Position { get; set; }
 
         public STException(int? argLinea, int? argPosition = null)
         {
             if (argLinea.HasValue)
-                Linea = argLinea.Value;
+                Line = argLinea.Value;
             if (argPosition.HasValue)
                 Position = argPosition.Value;
         }
 
-        public STException(string message, int? argLinea, int? argPosition = null) : base(message)
+        public STException(string message, int? argLine, int? argPosition = null) : base(message)
         {
-            if (argLinea.HasValue)
-                Linea = argLinea.Value;
+            if (argLine.HasValue)
+                Line = argLine.Value;
             if (argPosition.HasValue)
                 Position = argPosition.Value;
         }
 
-        public STException(string message, Exception innerException, int? argLinea, int? argPosition = null) : base(message, innerException)
+        public STException(string message, Exception innerException, int? argLine, int? argPosition = null) : base(message, innerException)
         {
-            if (argLinea.HasValue)
-                Linea = argLinea.Value;
+            if (argLine.HasValue)
+                Line = argLine.Value;
             if (argPosition.HasValue)
                 Position = argPosition.Value;
         }

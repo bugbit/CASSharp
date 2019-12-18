@@ -84,8 +84,10 @@ namespace CASSharp.Core.CAS
 
         public EvalExprInResult EvalPrompt(ST.STTokensTerminate argTokens, CancellationToken argCancelToken)
         {
-            var pIn = STToExprsIn(argTokens, argCancelToken);
-            var pOut = Eval(pIn, mVars, argCancelToken);
+            var pReader = new ST.STTokensReader(argTokens, argCancelToken);
+            var pIn = STToExprIn(pReader);
+            var pContext = new EvalContext { CancelToken = argCancelToken };
+            var pOut = EvalIn(pIn, pContext);
             var pIOE = mVars.AddInOut(pIn, pOut, out string pNameVarIn, out string pNameVarOut);
 
             if (argTokens.Terminate == ST.ESTTokenizerTerminate.ShowResult)
@@ -94,32 +96,118 @@ namespace CASSharp.Core.CAS
             return new EvalExprInResult { Terminate = argTokens.Terminate, InExpr = pIn, OutExpr = pOut, NameVarIn = pNameVarIn, NameVarOut = pNameVarOut };
         }
 
-        public Exprs.Expr STToExprsIn(ST.STTokens argTokens, CancellationToken argCancelToken) => STToExprs(argTokens, argCancelToken);
+        public Exprs.Expr STToExprIn(ST.STTokensReader argReader) => STToExpr(argReader);
 
-        public Exprs.Expr STToExprs(ST.STTokens argTokens, CancellationToken argCancelToken)
+        public Exprs.Expr STToExpr(ST.STTokensReader argReader)
         {
-            var pTokens = argTokens.Tokens.First;
+            argReader.CancelToken.ThrowIfCancellationRequested();
 
-            switch (pTokens.Value.Token)
+            var pToken = argReader.Token;
+            var pTypeToken = pToken?.Token;
+
+            if (!pTypeToken.HasValue)
+                return Exprs.Expr.Null;
+
+            switch (pTypeToken.Value)
             {
                 case ST.ESTToken.Number:
-                    return Exprs.Expr.Number(BigDecimal.Parse(((ST.STTokenStr)pTokens.Value).Text));
+                    return Exprs.Expr.Number(BigDecimal.Parse(argReader.TokenStr.Text));
                 case ST.ESTToken.Word:
-                    if (pTokens.Next != null && pTokens.Next.Value.Token == ST.ESTToken.Parenthesis)
-                    {
+                    var pWord = argReader.TokenStr;
 
-                    }
+                    if (argReader.NextIfNodeNextValue(t => t.Token == ST.ESTToken.Parenthesis))
+                        return STToFunctionExpr(pWord, argReader);
 
-                    return Exprs.Expr.Null;
+                    break;
             }
 
-            return Exprs.Expr.Number(BigDecimal.Parse(argTokens.Tokens.OfType<ST.STTokenStr>().First().Text));
+            throw new ST.STException(string.Format(Properties.Resources.NoExpectTokenException, pToken.ToString()), pToken.Line, pToken.Position);
         }
 
-        public Exprs.Expr Eval(Exprs.Expr e, IVars argVars, CancellationToken argCancelToken) => e;
+        public Exprs.FunctionExpr STToFunctionExpr(ST.STTokenStr argWord, ST.STTokensReader argReader)
+        {
+            argReader.CancelToken.ThrowIfCancellationRequested();
 
-        [Instruction]
-        private void Quit(CancellationToken argCancelToken, Exprs.Expr[] argParams) { }
+            var pArgs = STBlocktoExprs(argReader);
+
+            return Exprs.Expr.Function(argWord.Text, pArgs);
+        }
+
+        public Exprs.Expr[] STBlocktoExprs(ST.STTokensReader argReader)
+        {
+            var pExprs = new List<Exprs.Expr>();
+
+            if (argReader.Token is ST.STTokenBlock pBlock)
+            {
+                foreach (var pTokens in pBlock.Tokens)
+                {
+                    argReader.CancelToken.ThrowIfCancellationRequested();
+
+                    var pReader = new ST.STTokensReader(pTokens, argReader.CancelToken);
+                    var pExpr = STToExpr(pReader);
+
+                    pExprs.Add(pExpr);
+                }
+            }
+
+            return pExprs.ToArray();
+        }
+
+        public Exprs.Expr EvalIn(Exprs.Expr e, EvalContext argContext)
+        {
+            var pExpr = (e is Exprs.FunctionExpr pFn) ? Eval(pFn, argContext, false) : Eval(e, argContext);
+
+            return pExpr;
+        }
+
+        public Exprs.Expr Eval(Exprs.Expr e, EvalContext argContext)
+        {
+            return e;
+        }
+
+        public Exprs.Expr Eval(Exprs.FunctionExpr e, EvalContext argContext, bool argNoExecInstr = true, bool argEvalInExprMath = false)
+        {
+            var pName = e.FunctionName;
+            var pFNContext = new EvalFunctionContext { Context = argContext };
+
+            if (mInstructions.TryGetValue(pName, out InstructionInfo pInstr))
+            {
+                if (argNoExecInstr)
+                    throw new EvalException(string.Format(Properties.Resources.NoExecInsTrNoStartExprException, pName));
+
+                pFNContext.Info = pInstr;
+                pInstr.Method.Invoke(pFNContext, e.Args);
+
+                return Exprs.Expr.Null;
+            }
+
+            return null;
+        }
+
+        private Exprs.Expr[] GetArgs(EvalFunctionContext argContext, Exprs.Expr[] argParams)
+        {
+            var pInfo = argContext.Info;
+            var pNumArgs = argParams.Length;
+
+            if (pInfo.NumArgs.HasValue && pNumArgs != pInfo.NumArgs.Value)
+                throw new EvalException();
+
+            if (pInfo.MinArgs.HasValue && pNumArgs < pInfo.MinArgs.Value)
+                throw new EvalException();
+
+            if (pInfo.MaxArgs.HasValue && pNumArgs > pInfo.MaxArgs.Value)
+                throw new EvalException();
+
+            return argParams;
+        }
+
+        [Instruction(NumArgs = 0)]
+        private void Quit(EvalFunctionContext argContext, Exprs.Expr[] argParams)
+        {
+            GetArgs(argContext, argParams);
+
+            mPost.QuitPost();
+        }
 
         private Dictionary<string, T> BuildFuncs<A, T>(Action<T, MethodInfo, A> argInit) where A : FunctionBaseAttribute where T : FunctionBaseInfo, new()
         {
@@ -137,6 +225,10 @@ namespace CASSharp.Core.CAS
                 var pName = pAttr.Name ?? m.Name.ToLowerInvariant();
                 var pInfo = new T();
 
+                pInfo.Name = pName;
+                pInfo.NumArgs = (pAttr.NumArgs > 0) ? pAttr.NumArgs : (int?)null;
+                pInfo.MinArgs = (pAttr.MinArgs > 0) ? pAttr.MinArgs : (int?)null;
+                pInfo.MaxArgs = (pAttr.MaxArgs > 0) ? pAttr.MaxArgs : (int?)null;
                 argInit.Invoke(pInfo, m, pAttr);
                 pDicts[pName] = pInfo;
             }

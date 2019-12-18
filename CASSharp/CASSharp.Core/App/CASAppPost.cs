@@ -43,5 +43,7 @@ namespace CASSharp.Core.App
         }
 
         public void PrintExprOutPost(string argNameVarPrompt, Expr e) => mApp.PrintExprOut(argNameVarPrompt, e);
+
+        public void QuitPost() => mApp.Quit();
     }
 }

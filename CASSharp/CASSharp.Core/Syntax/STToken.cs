@@ -37,6 +37,7 @@ namespace CASSharp.Core.Syntax
     public abstract class STToken
     {
         public ESTToken Token { get; set; }
+        public int Line { get; set; }
         public int Position { get; set; }
     }
 }
