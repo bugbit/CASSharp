@@ -61,6 +61,15 @@ namespace CASSharp.Core.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a I expected {0} number of parameters.
+        /// </summary>
+        internal static string NoEqualFnArgsException {
+            get {
+                return ResourceManager.GetString("NoEqualFnArgsException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a I cannot execute the instruction &apos;{0}&apos; because it is not at the beginning of the expression.
         /// </summary>
         internal static string NoExecInsTrNoStartExprException {
@@ -75,6 +84,24 @@ namespace CASSharp.Core.Properties {
         internal static string NoExpectTokenException {
             get {
                 return ResourceManager.GetString("NoExpectTokenException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a I expected a maximum of {0} number of parameters.
+        /// </summary>
+        internal static string NoMaxFnArgsException {
+            get {
+                return ResourceManager.GetString("NoMaxFnArgsException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a I expected as a minimum {0} number of parameters.
+        /// </summary>
+        internal static string NoMinFnArgsException {
+            get {
+                return ResourceManager.GetString("NoMinFnArgsException", resourceCulture);
             }
         }
         

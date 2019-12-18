@@ -129,4 +129,13 @@
   <data name="NoExecInsTrNoStartExprException" xml:space="preserve">
     <value>I cannot execute the instruction '{0}' because it is not at the beginning of the expression</value>
   </data>
+  <data name="NoEqualFnArgsException" xml:space="preserve">
+    <value>I expected {0} number of parameters</value>
+  </data>
+  <data name="NoMaxFnArgsException" xml:space="preserve">
+    <value>I expected a maximum of {0} number of parameters</value>
+  </data>
+  <data name="NoMinFnArgsException" xml:space="preserve">
+    <value>I expected as a minimum {0} number of parameters</value>
+  </data>
 </root>

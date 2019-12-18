@@ -32,6 +32,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using ST = CASSharp.Core.Syntax;
 
 namespace CASSharp.Core.CAS
@@ -139,6 +140,8 @@ namespace CASSharp.Core.CAS
 
             if (argReader.Token is ST.STTokenBlock pBlock)
             {
+                //Parallel.For(0,pBlock.Tokens.Count,)
+
                 foreach (var pTokens in pBlock.Tokens)
                 {
                     argReader.CancelToken.ThrowIfCancellationRequested();
@@ -190,13 +193,13 @@ namespace CASSharp.Core.CAS
             var pNumArgs = argParams.Length;
 
             if (pInfo.NumArgs.HasValue && pNumArgs != pInfo.NumArgs.Value)
-                throw new EvalException();
+                throw new EvalException(string.Format(Properties.Resources.NoEqualFnArgsException, pInfo.NumArgs));
 
             if (pInfo.MinArgs.HasValue && pNumArgs < pInfo.MinArgs.Value)
-                throw new EvalException();
+                throw new EvalException(string.Format(Properties.Resources.NoMinFnArgsException, pInfo.MinArgs));
 
             if (pInfo.MaxArgs.HasValue && pNumArgs > pInfo.MaxArgs.Value)
-                throw new EvalException();
+                throw new EvalException(string.Format(Properties.Resources.NoMaxFnArgsException, pInfo.MaxArgs));
 
             return argParams;
         }
