@@ -69,6 +69,8 @@
     <Compile Include="Exprs\NullExpr.cs" />
     <Compile Include="Exprs\NumberExpr.cs" />
     <Compile Include="Exprs\TokensExpr.cs" />
+    <Compile Include="Extensions\RandomExtensions.cs" />
+    <Compile Include="Math\MathEx.cs" />
     <Compile Include="Properties\AssemblyConstants.cs" />
     <Compile Include="Properties\AssemblyGlobalInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

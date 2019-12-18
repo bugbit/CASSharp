@@ -36,8 +36,5 @@ namespace CASSharp.Core.CAS
     public class FunctionBaseAttribute : Attribute
     {
         public string Name { get; set; }
-        public int NumArgs { get; set; } = -1;
-        public int MinArgs { get; set; } = -1;
-        public int MaxArgs { get; set; } = -1;
     }
 }

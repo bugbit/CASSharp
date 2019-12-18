@@ -130,12 +130,12 @@
     <value>No puedo ejecutar la instrucción '{0}' porque no está al inicio de la expresión</value>
   </data>
   <data name="NoEqualFnArgsException" xml:space="preserve">
-    <value>Esperaba {0} número de parámetros</value>
+    <value>Función '{0}': Esperaba {1} número de parámetros</value>
   </data>
   <data name="NoMaxFnArgsException" xml:space="preserve">
-    <value>Esperaba como máximo {0} número de parámetros</value>
+    <value>Función '{0}': Esperaba como máximo {1} número de parámetros</value>
   </data>
   <data name="NoMinFnArgsException" xml:space="preserve">
-    <value>Esperaba como minino {0} número de parámetros</value>
+    <value>Función '{0}': Esperaba como minino {1} número de parámetros</value>
   </data>
 </root>

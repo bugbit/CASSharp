@@ -35,8 +35,5 @@ namespace CASSharp.Core.CAS
     public class FunctionBaseInfo
     {
         public string Name { get; set; }
-        public int? NumArgs { get; set; }
-        public int? MinArgs { get; set; }
-        public int? MaxArgs { get; set; }
     }
 }

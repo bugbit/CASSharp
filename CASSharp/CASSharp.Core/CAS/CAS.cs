@@ -32,7 +32,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using ST = CASSharp.Core.Syntax;
 
 namespace CASSharp.Core.CAS
@@ -140,8 +139,6 @@ namespace CASSharp.Core.CAS
 
             if (argReader.Token is ST.STTokenBlock pBlock)
             {
-                //Parallel.For(0,pBlock.Tokens.Count,)
-
                 foreach (var pTokens in pBlock.Tokens)
                 {
                     argReader.CancelToken.ThrowIfCancellationRequested();
@@ -187,27 +184,28 @@ namespace CASSharp.Core.CAS
             return null;
         }
 
-        private Exprs.Expr[] GetArgs(EvalFunctionContext argContext, Exprs.Expr[] argParams)
+        private void VerifNumArgs(EvalFunctionContext argContext, int argNumArgs, Exprs.Expr[] argParams)
+        {
+            if (argNumArgs != argParams.Length)
+                throw new EvalException(string.Format(Properties.Resources.NoEqualFnArgsException, argContext.Info.Name, argNumArgs));
+        }
+
+        private void VerifMinMaxArgs(EvalFunctionContext argContext, int argMinArgs, int argMaxArgs, Exprs.Expr[] argParams)
         {
             var pInfo = argContext.Info;
             var pNumArgs = argParams.Length;
 
-            if (pInfo.NumArgs.HasValue && pNumArgs != pInfo.NumArgs.Value)
-                throw new EvalException(string.Format(Properties.Resources.NoEqualFnArgsException, pInfo.NumArgs));
+            if (pNumArgs < argMinArgs)
+                throw new EvalException(string.Format(Properties.Resources.NoMinFnArgsException, pInfo.Name, argMinArgs));
 
-            if (pInfo.MinArgs.HasValue && pNumArgs < pInfo.MinArgs.Value)
-                throw new EvalException(string.Format(Properties.Resources.NoMinFnArgsException, pInfo.MinArgs));
-
-            if (pInfo.MaxArgs.HasValue && pNumArgs > pInfo.MaxArgs.Value)
-                throw new EvalException(string.Format(Properties.Resources.NoMaxFnArgsException, pInfo.MaxArgs));
-
-            return argParams;
+            if (pNumArgs > argMaxArgs)
+                throw new EvalException(string.Format(Properties.Resources.NoMaxFnArgsException, pInfo.Name, argMaxArgs));
         }
 
-        [Instruction(NumArgs = 0)]
+        [Instruction]
         private void Quit(EvalFunctionContext argContext, Exprs.Expr[] argParams)
         {
-            GetArgs(argContext, argParams);
+            VerifNumArgs(argContext, 0, argParams);
 
             mPost.QuitPost();
         }
@@ -229,9 +227,6 @@ namespace CASSharp.Core.CAS
                 var pInfo = new T();
 
                 pInfo.Name = pName;
-                pInfo.NumArgs = (pAttr.NumArgs > 0) ? pAttr.NumArgs : (int?)null;
-                pInfo.MinArgs = (pAttr.MinArgs > 0) ? pAttr.MinArgs : (int?)null;
-                pInfo.MaxArgs = (pAttr.MaxArgs > 0) ? pAttr.MaxArgs : (int?)null;
                 argInit.Invoke(pInfo, m, pAttr);
                 pDicts[pName] = pInfo;
             }
