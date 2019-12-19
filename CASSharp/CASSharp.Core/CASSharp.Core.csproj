@@ -31,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Deveel.Math, Version=1.6.1.93, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\dmath.1.6.1.93\lib\net20\Deveel.Math.pdb\Deveel.Math.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -100,7 +97,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\..\Deveel Math\Deveel.Math\Deveel.Math.csproj">
+      <Project>{dab16486-ed07-4d2d-8e09-db259c583f02}</Project>
+      <Name>Deveel.Math</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

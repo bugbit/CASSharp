@@ -41,9 +41,6 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Deveel.Math, Version=1.6.1.93, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\dmath.1.6.1.93\lib\net20\Deveel.Math.pdb\Deveel.Math.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -97,9 +94,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -114,6 +108,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Deveel Math\Deveel.Math\Deveel.Math.csproj">
+      <Project>{dab16486-ed07-4d2d-8e09-db259c583f02}</Project>
+      <Name>Deveel.Math</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ReadLine\ReadLine.csproj">
       <Project>{77faa1e8-2b1d-45a7-99f2-a0c1e7034862}</Project>
       <Name>ReadLine</Name>
