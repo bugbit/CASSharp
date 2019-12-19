@@ -40,7 +40,7 @@ namespace CASSharp.Core.Exprs
         Type = 0xFFF,
         Flags = 0xF000,
         // Cte
-        Tokens = 0x1000,
-        Number = 0x2000
+        Number = 0x1000,
+        Boolean = 0x2000
     }
 }

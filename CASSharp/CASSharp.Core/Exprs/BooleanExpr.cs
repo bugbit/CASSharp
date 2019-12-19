@@ -16,37 +16,23 @@
 */
 #endregion
 
-using Deveel.Math;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using ST = CASSharp.Core.Syntax;
 
 namespace CASSharp.Core.Exprs
 {
-    [DebuggerDisplay("TypeExpr : {TypeExpr}")]
-    abstract public class Expr : ICloneable
+    [DebuggerDisplay("TypeExpr : {TypeExpr} Constant : {Constant}")]
+    sealed public class BooleanExpr : CteExpr<bool>
     {
-        public ETypeExpr TypeExpr { get; }
+        public static readonly BooleanExpr True = new BooleanExpr(true);
+        public static readonly BooleanExpr False = new BooleanExpr(false);
 
-        protected Expr(ETypeExpr argTypeExpr)
-        {
-            TypeExpr = argTypeExpr;
-        }
+        public BooleanExpr(bool n) : base(ETypeExpr.Boolean, n) { }
+        public BooleanExpr(BooleanExpr e) : base(e) { }
 
-        protected Expr(Expr e) : this(e.TypeExpr) { }
-
-        virtual public Expr Clone() => throw new NotImplementedException();
-
-        object ICloneable.Clone() => Clone();
-
-        public static Expr Null => NullExpr.Value;
-
-        public static BooleanExpr Boolean(bool argBool) => (argBool) ? BooleanExpr.True : BooleanExpr.False;
-
-        public static NumberExpr Number(BigDecimal n) => new NumberExpr(n);
-        public static FunctionExpr Function(string argName, Expr[] argArgs) => new FunctionExpr(argName, argArgs);
+        public override Expr Clone() => new BooleanExpr(this);
     }
 }

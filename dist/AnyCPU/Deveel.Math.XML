@@ -587,6 +587,23 @@
             If the given <paramref name="bitLength"/> is smaller than 2.
             </exception>
         </member>
+        <member name="M:Deveel.Math.BigInteger.#ctor(System.Int32,System.Int32,System.Random,System.Threading.CancellationToken)">
+            <summary>
+            Constructs a random <see cref="T:Deveel.Math.BigInteger"/> instance in the 
+            range [0, 2^(bitLength)-1] which is probably prime.
+            </summary>
+            <param name="bitLength">The length of the new big integer in bits.</param>
+            <param name="certainty">The tolerated primality uncertainty.</param>
+            <param name="random">An optional random generator to be used.</param>
+            <param name="argCancelToken"></param>
+            <remarks>
+            The probability that the returned <see cref="T:Deveel.Math.BigInteger"/> is prime 
+            is beyond(1-1/2^certainty).
+            </remarks>
+            <exception cref="T:System.ArithmeticException">
+            If the given <paramref name="bitLength"/> is smaller than 2.
+            </exception>
+        </member>
         <member name="M:Deveel.Math.BigInteger.#ctor(System.Int32,System.Byte[])">
             <summary>
             Constructs a new {@code BigInteger} instance with the given sign and the given magnitude. 
@@ -711,8 +728,8 @@
         <!-- El comentario XML con formato incorrecto se ha omitido para el miembro "M:Deveel.Math.BigInteger.TestBit(Deveel.Math.BigInteger,System.Int32)" -->
         <!-- El comentario XML con formato incorrecto se ha omitido para el miembro "M:Deveel.Math.BigInteger.SetBit(Deveel.Math.BigInteger,System.Int32)" -->
         <!-- El comentario XML con formato incorrecto se ha omitido para el miembro "M:Deveel.Math.BigInteger.ClearBit(Deveel.Math.BigInteger,System.Int32)" -->
-        <!-- El comentario XML con formato incorrecto se ha omitido para el miembro "M:Deveel.Math.BigInteger.IsProbablePrime(Deveel.Math.BigInteger,System.Int32)" -->
-        <!-- El comentario XML con formato incorrecto se ha omitido para el miembro "M:Deveel.Math.BigInteger.NextProbablePrime(Deveel.Math.BigInteger)" -->
+        <!-- El comentario XML con formato incorrecto se ha omitido para el miembro "M:Deveel.Math.BigInteger.IsProbablePrime(Deveel.Math.BigInteger,System.Int32,System.Threading.CancellationToken)" -->
+        <!-- El comentario XML con formato incorrecto se ha omitido para el miembro "M:Deveel.Math.BigInteger.NextProbablePrime(Deveel.Math.BigInteger,System.Threading.CancellationToken)" -->
         <!-- El comentario XML con formato incorrecto se ha omitido para el miembro "M:Deveel.Math.BigInteger.ProbablePrime(System.Int32,System.Random)" -->
         <!-- El comentario XML con formato incorrecto se ha omitido para el miembro "M:Deveel.Math.BigInteger.FlipBit(Deveel.Math.BigInteger,System.Int32)" -->
         <member name="M:Deveel.Math.BigInteger.ToByteArray">
@@ -1881,7 +1898,7 @@
             index {@code 11} exists {@code 7} consecutive {@code 6}-bit prime
             numbers in the array.
         </member>
-        <member name="M:Deveel.Math.Primality.NextProbablePrime(Deveel.Math.BigInteger)">
+        <member name="M:Deveel.Math.Primality.NextProbablePrime(Deveel.Math.BigInteger,System.Threading.CancellationToken)">
             It uses the sieve of Eratosthenes to discard several composite numbers in
             some appropriate range (at the moment {@code [this, this + 1024]}). After
             this process it applies the Miller-Rabin test to the numbers that were
@@ -1890,20 +1907,20 @@
             @see BigInteger#nextProbablePrime()
             @see #millerRabin(BigInteger, int)
         </member>
-        <member name="M:Deveel.Math.Primality.ConsBigInteger(System.Int32,System.Int32,System.Random)">
+        <member name="M:Deveel.Math.Primality.ConsBigInteger(System.Int32,System.Int32,System.Random,System.Threading.CancellationToken)">
             A random number is generated until a probable prime number is found.
             
             @see BigInteger#BigInteger(int,int,Random)
             @see BigInteger#probablePrime(int,Random)
             @see #isProbablePrime(BigInteger, int)
         </member>
-        <member name="M:Deveel.Math.Primality.IsProbablePrime(Deveel.Math.BigInteger,System.Int32)">
+        <member name="M:Deveel.Math.Primality.IsProbablePrime(Deveel.Math.BigInteger,System.Int32,System.Threading.CancellationToken)">
             @see BigInteger#isProbablePrime(int)
             @see #millerRabin(BigInteger, int)
             @ar.org.fitc.ref Optimizations: "A. Menezes - Handbook of applied
                              Cryptography, Chapter 4".
         </member>
-        <member name="M:Deveel.Math.Primality.MillerRabin(Deveel.Math.BigInteger,System.Int32)">
+        <member name="M:Deveel.Math.Primality.MillerRabin(Deveel.Math.BigInteger,System.Int32,System.Threading.CancellationToken)">
             The Miller-Rabin primality test.
             
             @param n the input number to be tested.

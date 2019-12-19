@@ -59,13 +59,13 @@
     <Compile Include="CAS\IVars.cs" />
     <Compile Include="CAS\Vars.cs" />
     <Compile Include="CAS\VarsScope.cs" />
+    <Compile Include="Exprs\BooleanExpr.cs" />
     <Compile Include="Exprs\CteExpr.cs" />
     <Compile Include="Exprs\ETypeExpr.cs" />
     <Compile Include="Exprs\Expr.cs" />
     <Compile Include="Exprs\FunctionExpr.cs" />
     <Compile Include="Exprs\NullExpr.cs" />
     <Compile Include="Exprs\NumberExpr.cs" />
-    <Compile Include="Exprs\TokensExpr.cs" />
     <Compile Include="Extensions\RandomExtensions.cs" />
     <Compile Include="Math\MathEx.cs" />
     <Compile Include="Properties\AssemblyConstants.cs" />

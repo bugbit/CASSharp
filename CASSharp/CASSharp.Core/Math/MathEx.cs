@@ -4,11 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 
 namespace CASSharp.Core.Math
 {
     public static class MathEx
     {
+        public static int certainty = 20;
+
+        public static bool PrimeP(BigInteger n, CancellationToken argCancelToken) => BigInteger.IsProbablePrime(n, certainty, argCancelToken);
+
         public static bool Miller(int n, int iteration)
         {
             if ((n < 2) || (n % 2 == 0)) return (n == 2);
