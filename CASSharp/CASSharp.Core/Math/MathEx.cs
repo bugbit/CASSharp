@@ -14,30 +14,30 @@ namespace CASSharp.Core.Math
 
         public static bool PrimeP(BigInteger n, CancellationToken argCancelToken) => BigInteger.IsProbablePrime(n, certainty, argCancelToken);
 
-        public static bool Miller(int n, int iteration)
-        {
-            if ((n < 2) || (n % 2 == 0)) return (n == 2);
+        //public static bool Miller(int n, int iteration)
+        //{
+        //    if ((n < 2) || (n % 2 == 0)) return (n == 2);
 
-            int s = n - 1;
-            while (s % 2 == 0) s >>= 1;
+        //    int s = n - 1;
+        //    while (s % 2 == 0) s >>= 1;
 
-            Random r = new Random();
-            for (int i = 0; i < iteration; i++)
-            {
-                int a = r.Next(n - 1) + 1;
-                int temp = s;
-                long mod = 1;
-                for (int j = 0; j < temp; ++j) mod = (mod * a) % n;
-                while (temp != n - 1 && mod != 1 && mod != n - 1)
-                {
-                    mod = (mod * mod) % n;
-                    temp *= 2;
-                }
+        //    Random r = new Random();
+        //    for (int i = 0; i < iteration; i++)
+        //    {
+        //        int a = r.Next(n - 1) + 1;
+        //        int temp = s;
+        //        long mod = 1;
+        //        for (int j = 0; j < temp; ++j) mod = (mod * a) % n;
+        //        while (temp != n - 1 && mod != 1 && mod != n - 1)
+        //        {
+        //            mod = (mod * mod) % n;
+        //            temp *= 2;
+        //        }
 
-                if (mod != n - 1 && temp % 2 == 0) return false;
-            }
-            return true;
-        }
+        //        if (mod != n - 1 && temp % 2 == 0) return false;
+        //    }
+        //    return true;
+        //}
 
         //public static bool Miller(BigInteger n, int iteration)
         //{

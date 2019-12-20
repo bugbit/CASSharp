@@ -111,7 +111,7 @@ namespace CASSharp.Core.CAS
             switch (pTypeToken.Value)
             {
                 case ST.ESTToken.Number:
-                    return Exprs.Expr.Number(BigDecimal.Parse(argReader.TokenStr.Text));
+                    return Exprs.Expr.Number(argReader.TokenStr.Text);
                 case ST.ESTToken.Word:
                     var pWord = argReader.TokenStr;
 

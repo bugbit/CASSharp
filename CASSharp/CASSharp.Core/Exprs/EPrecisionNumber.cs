@@ -16,38 +16,15 @@
 */
 #endregion
 
-using Deveel.Math;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using ST = CASSharp.Core.Syntax;
 
 namespace CASSharp.Core.Exprs
 {
-    [DebuggerDisplay("TypeExpr : {TypeExpr}")]
-    abstract public class Expr : ICloneable
+    public enum EPrecisionNumber
     {
-        public ETypeExpr TypeExpr { get; }
-
-        protected Expr(ETypeExpr argTypeExpr)
-        {
-            TypeExpr = argTypeExpr;
-        }
-
-        protected Expr(Expr e) : this(e.TypeExpr) { }
-
-        virtual public Expr Clone() => throw new NotImplementedException();
-
-        object ICloneable.Clone() => Clone();
-
-        public static Expr Null => NullExpr.Value;
-
-        public static BooleanExpr Boolean(bool argBool) => (argBool) ? BooleanExpr.True : BooleanExpr.False;
-
-        public static NumberExpr Number(string n) => new NumberExpr(n);
-        public static BigNumberExpr Number(BigDecimal n) => new BigNumberExpr(n);
-        public static FunctionExpr Function(string argName, Expr[] argArgs) => new FunctionExpr(argName, argArgs);
+        None, Integer, SFloat, Float, BFloat
     }
 }
