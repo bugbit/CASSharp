@@ -39,11 +39,15 @@ namespace CASSharp.Core.CAS
     public sealed class CAS
     {
         private readonly Dictionary<string, InstructionInfo> mInstructions;
+        private readonly Dictionary<string, FunctionInfo> mFunctions;
 
         private CasVars mVars = new CasVars();
         private ICASPost mPost;
 
         public CasVars Vars => mVars;
+
+        // var fpprec
+        public int FPPrec { get; set; }
 
         public CAS(ICASPost argPost)
         {
@@ -53,6 +57,13 @@ namespace CASSharp.Core.CAS
                 (i, m, a) =>
                 {
                     i.Method = (InstructionHandler)Delegate.CreateDelegate(typeof(InstructionHandler), this, m);
+                }
+            );
+            mFunctions = BuildFuncs<FunctionAttribute, FunctionInfo>
+            (
+                (i, m, a) =>
+                {
+                    i.Method = (FunctionHandler)Delegate.CreateDelegate(typeof(FunctionHandler), this, m);
                 }
             );
         }
@@ -165,7 +176,7 @@ namespace CASSharp.Core.CAS
             return e;
         }
 
-        public Exprs.Expr Eval(Exprs.FunctionExpr e, EvalContext argContext, bool argNoExecInstr = true, bool argEvalInExprMath = false)
+        public Exprs.Expr Eval(Exprs.FunctionExpr e, EvalContext argContext, bool argNoExecInstr = true)
         {
             var pName = e.FunctionName;
 
@@ -185,8 +196,24 @@ namespace CASSharp.Core.CAS
 
                 return Exprs.Expr.Null;
             }
+            if (mFunctions.TryGetValue(pName, out FunctionInfo pFN))
+            {
+                try
+                {
+                    return pFN.Method.Invoke(argContext, e.Args);
+                }
+                catch (Exception ex)
+                {
+                    throw new EvalFunctionException(string.Format(Properties.Resources.EvalFunctionException, pInstr.Name, ex.Message), ex, pFN);
+                }
+            }
 
             return null;
+        }
+
+        public Exprs.Expr Primep(EvalContext argContext, Exprs.Expr n)
+        {
+            return n;
         }
 
         private void VerifNumArgs(int argNumArgs, Exprs.Expr[] argParams)
@@ -212,6 +239,17 @@ namespace CASSharp.Core.CAS
             VerifNumArgs(0, argParams);
 
             mPost.QuitPost();
+        }
+
+        [Function]
+        private Exprs.Expr Primep(EvalContext argContext, Exprs.Expr[] argParams)
+        {
+            VerifNumArgs(1, argParams);
+
+            var n = argParams[0];
+            var pRet = Primep(argContext, n);
+
+            return pRet;
         }
 
         private Dictionary<string, T> BuildFuncs<A, T>(Action<T, MethodInfo, A> argInit) where A : FunctionBaseAttribute where T : FunctionBaseInfo, new()

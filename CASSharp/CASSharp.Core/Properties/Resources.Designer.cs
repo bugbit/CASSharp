@@ -70,7 +70,7 @@ namespace CASSharp.Core.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a I expected {1} number of parameters.
+        ///   Busca una cadena traducida similar a I expected {0} number of parameters.
         /// </summary>
         internal static string NoEqualFnArgsException {
             get {
@@ -97,7 +97,7 @@ namespace CASSharp.Core.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a I expected a maximum of {1} number of parameters.
+        ///   Busca una cadena traducida similar a I expected a maximum of {0} number of parameters.
         /// </summary>
         internal static string NoMaxFnArgsException {
             get {
@@ -106,7 +106,7 @@ namespace CASSharp.Core.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a I expected as a minimum {1} number of parameters.
+        ///   Busca una cadena traducida similar a I expected as a minimum {0} number of parameters.
         /// </summary>
         internal static string NoMinFnArgsException {
             get {

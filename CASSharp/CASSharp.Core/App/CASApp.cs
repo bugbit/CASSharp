@@ -242,7 +242,8 @@ MIT LICENSE"
                 //"20;",
                 //"50$100;",
                  //"quit(20);",
-                "quit();"
+                //"quit();"
+                "primep(22323327887238723872383282342430924309243);"
             };
 
             var pTextsE = new List<string>();
@@ -274,6 +275,7 @@ MIT LICENSE"
                 catch (Exception ex)
                 {
                     PrintException(ex);
+                    pTextsE.Clear();
                 }
             }
         }

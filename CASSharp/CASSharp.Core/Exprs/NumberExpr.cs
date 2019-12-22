@@ -27,21 +27,24 @@ using System.Text;
 namespace CASSharp.Core.Exprs
 {
     /*
+        var fpprec : precisión (digitos)
         sfloat:float    (Function SFloat)
         float: double (default) (Function Float)
         bfloat:BigDecimal (default) (Function BFloat)
         Function Integer
      */
-    [DebuggerDisplay("TypeExpr : {TypeExpr} Precision : {Precision} Constant : {Constant}")]
+    [DebuggerDisplay("TypeExpr : {TypeExpr} Precision : {Precision} FPPrec : {FPPrec} Constant : {Constant}")]
     public class NumberExpr : CteExpr<BigDecimal>
     {
         public EPrecisionNumber Precision { get; }
+        public int FPPrec { get; }
 
-        public NumberExpr(EPrecisionNumber argPrecision, BigDecimal argCte) : base(ETypeExpr.Number, argCte)
+        public NumberExpr(EPrecisionNumber argPrecision, BigDecimal argCte, int argFPPrec = -1) : base(ETypeExpr.Number, argCte)
         {
             Precision = argPrecision;
+            FPPrec = argFPPrec;
         }
-        public NumberExpr(BigDecimal argCte) : this(EPrecisionNumber.BFloat, argCte) { }
+        public NumberExpr(BigDecimal argCte) : this(EPrecisionNumber.None, argCte) { }
         public NumberExpr(NumberExpr e) : this(e.Precision, e.Constant) { }
 
         public override Expr Clone() => new NumberExpr(this);
@@ -57,21 +60,48 @@ namespace CASSharp.Core.Exprs
         }
     }
 
-    [DebuggerDisplay("TypeExpr : {TypeExpr} Precision : {Precision} Constant : {Constant} PrecisionValue : {PrecisionValue}")]
+    [DebuggerDisplay("TypeExpr : {TypeExpr} Precision : {Precision} FPPrec : {FPPrec} PrecisionValue : {PrecisionValue} Constant : {Constant}")]
     abstract public class NumberPrecisionExpr<T> : NumberExpr
     {
         public T PrecisionValue { get; }
 
-        public NumberPrecisionExpr(EPrecisionNumber argPrecision, BigDecimal n, T vp) : base(argPrecision, n)
+        public NumberPrecisionExpr(EPrecisionNumber argPrecision, BigDecimal n, T vp, int argFPPrec = -1) : base(argPrecision, n, argFPPrec)
         {
             PrecisionValue = vp;
         }
-        public NumberPrecisionExpr(NumberPrecisionExpr<T> e) : this(e.Precision, e.Constant, e.PrecisionValue) { }
+        public NumberPrecisionExpr(NumberPrecisionExpr<T> e) : this(e.Precision, e.Constant, e.PrecisionValue, e.FPPrec) { }
 
         public override string ToString() => PrecisionValue.ToString();
     }
 
-    [DebuggerDisplay("TypeExpr : {TypeExpr} Precision : {Precision} Constant : {Constant}")]
+    [DebuggerDisplay("TypeExpr : {TypeExpr} Precision : {Precision} FPPrec : {FPPrec} PrecisionValue : {PrecisionValue} Constant : {Constant}")]
+    public class BigNumberExpr : NumberPrecisionExpr<BigDecimal>
+    {
+        public BigNumberExpr(BigDecimal n, int argFPPrec) : base(EPrecisionNumber.BFloat, n, BigMath.Round(n, new MathContext(argFPPrec)), argFPPrec) { }
+        public BigNumberExpr(BigNumberExpr e) : this(e.Constant, e.FPPrec) { }
+
+        public override Expr Clone() => new BigNumberExpr(this);
+    }
+
+    [DebuggerDisplay("TypeExpr : {TypeExpr} Precision : {Precision} FPPrec : {FPPrec} PrecisionValue : {PrecisionValue} Constant : {Constant}")]
+    public class FloatNumberExpr : NumberPrecisionExpr<double>
+    {
+        public FloatNumberExpr(BigDecimal n, double np) : base(EPrecisionNumber.Float, n, np) { }
+        public FloatNumberExpr(FloatNumberExpr e) : this(e.Constant, e.PrecisionValue) { }
+
+        public override Expr Clone() => new FloatNumberExpr(this);
+    }
+
+    [DebuggerDisplay("TypeExpr : {TypeExpr} Precision : {Precision} FPPrec : {FPPrec} PrecisionValue : {PrecisionValue} Constant : {Constant}")]
+    public class SingleFloatNumberExpr : NumberPrecisionExpr<float>
+    {
+        public SingleFloatNumberExpr(BigDecimal n, float np) : base(EPrecisionNumber.SFloat, n, np) { }
+        public SingleFloatNumberExpr(SingleFloatNumberExpr e) : this(e.Constant, e.PrecisionValue) { }
+
+        public override Expr Clone() => new SingleFloatNumberExpr(this);
+    }
+
+    [DebuggerDisplay("TypeExpr : {TypeExpr} Precision : {Precision} FPPrec : {FPPrec} PrecisionValue : {PrecisionValue} Constant : {Constant}")]
     public class NumberIntegerExpr : NumberPrecisionExpr<BigInteger>
     {
         public NumberIntegerExpr(BigDecimal n, BigInteger np) : base(EPrecisionNumber.Integer, n, np) { }

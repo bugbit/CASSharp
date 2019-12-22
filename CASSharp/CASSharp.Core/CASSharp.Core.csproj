@@ -50,8 +50,10 @@
     <Compile Include="CAS\EvalExprInResult.cs" />
     <Compile Include="CAS\EvalFunctionException.cs" />
     <Compile Include="CAS\EvalPromptResult.cs" />
+    <Compile Include="CAS\FunctionAttribute.cs" />
     <Compile Include="CAS\FunctionBaseAttribute.cs" />
     <Compile Include="CAS\FunctionBaseInfo.cs" />
+    <Compile Include="CAS\FunctionInfo.cs" />
     <Compile Include="CAS\ICASPost.cs" />
     <Compile Include="CAS\InOutExpr.cs" />
     <Compile Include="CAS\InstructionAttribute.cs" />

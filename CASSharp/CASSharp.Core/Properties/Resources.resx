@@ -130,13 +130,13 @@
     <value>I cannot execute the instruction '{0}' because it is not at the beginning of the expression</value>
   </data>
   <data name="NoEqualFnArgsException" xml:space="preserve">
-    <value>I expected {1} number of parameters</value>
+    <value>I expected {0} number of parameters</value>
   </data>
   <data name="NoMaxFnArgsException" xml:space="preserve">
-    <value>I expected a maximum of {1} number of parameters</value>
+    <value>I expected a maximum of {0} number of parameters</value>
   </data>
   <data name="NoMinFnArgsException" xml:space="preserve">
-    <value>I expected as a minimum {1} number of parameters</value>
+    <value>I expected as a minimum {0} number of parameters</value>
   </data>
   <data name="EvalFunctionException" xml:space="preserve">
     <value>Function '{0}': {1}</value>
