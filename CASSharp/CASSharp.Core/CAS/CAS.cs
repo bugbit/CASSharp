@@ -168,15 +168,20 @@ namespace CASSharp.Core.CAS
         public Exprs.Expr Eval(Exprs.FunctionExpr e, EvalContext argContext, bool argNoExecInstr = true, bool argEvalInExprMath = false)
         {
             var pName = e.FunctionName;
-            var pFNContext = new EvalFunctionContext { Context = argContext };
 
             if (mInstructions.TryGetValue(pName, out InstructionInfo pInstr))
             {
                 if (argNoExecInstr)
                     throw new EvalException(string.Format(Properties.Resources.NoExecInsTrNoStartExprException, pName));
 
-                pFNContext.Info = pInstr;
-                pInstr.Method.Invoke(pFNContext, e.Args);
+                try
+                {
+                    pInstr.Method.Invoke(argContext, e.Args);
+                }
+                catch (Exception ex)
+                {
+                    throw new EvalFunctionException(string.Format(Properties.Resources.EvalFunctionException, pInstr.Name, ex.Message), ex, pInstr);
+                }
 
                 return Exprs.Expr.Null;
             }
@@ -184,28 +189,27 @@ namespace CASSharp.Core.CAS
             return null;
         }
 
-        private void VerifNumArgs(EvalFunctionContext argContext, int argNumArgs, Exprs.Expr[] argParams)
+        private void VerifNumArgs(int argNumArgs, Exprs.Expr[] argParams)
         {
             if (argNumArgs != argParams.Length)
-                throw new EvalException(string.Format(Properties.Resources.NoEqualFnArgsException, argContext.Info.Name, argNumArgs));
+                throw new EvalException(string.Format(Properties.Resources.NoEqualFnArgsException, argNumArgs));
         }
 
-        private void VerifMinMaxArgs(EvalFunctionContext argContext, int argMinArgs, int argMaxArgs, Exprs.Expr[] argParams)
+        private void VerifMinMaxArgs(int argMinArgs, int argMaxArgs, Exprs.Expr[] argParams)
         {
-            var pInfo = argContext.Info;
             var pNumArgs = argParams.Length;
 
             if (pNumArgs < argMinArgs)
-                throw new EvalException(string.Format(Properties.Resources.NoMinFnArgsException, pInfo.Name, argMinArgs));
+                throw new EvalException(string.Format(Properties.Resources.NoMinFnArgsException, argMinArgs));
 
             if (pNumArgs > argMaxArgs)
-                throw new EvalException(string.Format(Properties.Resources.NoMaxFnArgsException, pInfo.Name, argMaxArgs));
+                throw new EvalException(string.Format(Properties.Resources.NoMaxFnArgsException, argMaxArgs));
         }
 
         [Instruction]
-        private void Quit(EvalFunctionContext argContext, Exprs.Expr[] argParams)
+        private void Quit(EvalContext argContext, Exprs.Expr[] argParams)
         {
-            VerifNumArgs(argContext, 0, argParams);
+            VerifNumArgs(0, argParams);
 
             mPost.QuitPost();
         }

@@ -32,7 +32,7 @@ using System.Text;
 
 namespace CASSharp.Core.CAS
 {
-    public delegate void InstructionHandler(EvalFunctionContext argContext, Exprs.Expr[] argParams);
+    public delegate void InstructionHandler(EvalContext argContext, Exprs.Expr[] argParams);
 
     public class InstructionInfo : FunctionBaseInfo
     {

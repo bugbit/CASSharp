@@ -27,62 +27,56 @@ using System.Text;
 namespace CASSharp.Core.Exprs
 {
     /*
-        sfloat:float
-        float: double (default)
-        bfloat:BigDecimal (default)
+        sfloat:float    (Function SFloat)
+        float: double (default) (Function Float)
+        bfloat:BigDecimal (default) (Function BFloat)
+        Function Integer
      */
     [DebuggerDisplay("TypeExpr : {TypeExpr} Precision : {Precision} Constant : {Constant}")]
-    abstract public class NumberBaseExpr<T> : CteExpr<T>
+    public class NumberExpr : CteExpr<BigDecimal>
     {
         public EPrecisionNumber Precision { get; }
 
-        public NumberBaseExpr(ETypeExpr argTypeExpr, EPrecisionNumber argPrecision, T argCte) : base(argTypeExpr, argCte)
+        public NumberExpr(EPrecisionNumber argPrecision, BigDecimal argCte) : base(ETypeExpr.Number, argCte)
         {
             Precision = argPrecision;
         }
-        public NumberBaseExpr(NumberBaseExpr<T> e) : this(e.TypeExpr, e.Precision, e.Constant)
+        public NumberExpr(BigDecimal argCte) : this(EPrecisionNumber.BFloat, argCte) { }
+        public NumberExpr(NumberExpr e) : this(e.Precision, e.Constant) { }
+
+        public override Expr Clone() => new NumberExpr(this);
+
+        //public abstract BigNumberExpr BFloat();
+        //public abstract NumberIntegerExpr Integer();
+
+        public static NumberExpr Create(string argNumberStr)
         {
+            var n = BigDecimal.Parse(argNumberStr, CultureInfo.InvariantCulture);
+
+            return new NumberExpr(n);
         }
+    }
 
-        public abstract BigNumberExpr BFloat();
-        public abstract NumberIntegerExpr Integer();
+    [DebuggerDisplay("TypeExpr : {TypeExpr} Precision : {Precision} Constant : {Constant} PrecisionValue : {PrecisionValue}")]
+    abstract public class NumberPrecisionExpr<T> : NumberExpr
+    {
+        public T PrecisionValue { get; }
+
+        public NumberPrecisionExpr(EPrecisionNumber argPrecision, BigDecimal n, T vp) : base(argPrecision, n)
+        {
+            PrecisionValue = vp;
+        }
+        public NumberPrecisionExpr(NumberPrecisionExpr<T> e) : this(e.Precision, e.Constant, e.PrecisionValue) { }
+
+        public override string ToString() => PrecisionValue.ToString();
     }
 
     [DebuggerDisplay("TypeExpr : {TypeExpr} Precision : {Precision} Constant : {Constant}")]
-    public class NumberExpr : NumberBaseExpr<string>
+    public class NumberIntegerExpr : NumberPrecisionExpr<BigInteger>
     {
-        public NumberExpr(string n) : base(ETypeExpr.Number, EPrecisionNumber.None, n) { }
-        public NumberExpr(NumberExpr e) : base(e) { }
-
-        public override BigNumberExpr BFloat() => new BigNumberExpr(this);
-        public override NumberIntegerExpr Integer() => new NumberIntegerExpr(this);
-    }
-
-    [DebuggerDisplay("TypeExpr : {TypeExpr} Precision : {Precision} Constant : {Constant}")]
-    public class NumberIntegerExpr : NumberBaseExpr<BigInteger>
-    {
-        public NumberIntegerExpr(BigInteger n) : base(ETypeExpr.Number, EPrecisionNumber.Integer, n) { }
-        public NumberIntegerExpr(NumberExpr n) : this(BigInteger.Parse(n.Constant, 10)) { }
-        public NumberIntegerExpr(BigNumberExpr n) : this(n) { }
-        public NumberIntegerExpr(NumberIntegerExpr e) : this(mn) { }
+        public NumberIntegerExpr(BigDecimal n, BigInteger np) : base(EPrecisionNumber.Integer, n, np) { }
+        public NumberIntegerExpr(NumberIntegerExpr e) : this(e.Constant, e.PrecisionValue) { }
 
         public override Expr Clone() => new NumberIntegerExpr(this);
-
-        public override BigNumberExpr BFloat() => new BigNumberExpr(this);
-        public override NumberIntegerExpr Integer() => new NumberIntegerExpr(this);
-    }
-
-    [DebuggerDisplay("TypeExpr : {TypeExpr} Precision : {Precision} Constant : {Constant}")]
-    public class BigNumberExpr : NumberBaseExpr<BigDecimal>
-    {
-        public BigNumberExpr(NumberExpr n) : this(BigDecimal.Parse(n.Constant, CultureInfo.InvariantCulture)) { }
-        public BigNumberExpr(NumberIntegerExpr n) : this(n.Constant) { }
-        public BigNumberExpr(BigDecimal n) : base(ETypeExpr.Number, EPrecisionNumber.BFloat, n) { }
-        public BigNumberExpr(BigNumberExpr e) : base(e) { }
-
-        public override Expr Clone() => new BigNumberExpr(this);
-
-        public override BigNumberExpr BFloat() => new BigNumberExpr(this);
-        public override NumberIntegerExpr Integer() => new NumberIntegerExpr(this);
     }
 }

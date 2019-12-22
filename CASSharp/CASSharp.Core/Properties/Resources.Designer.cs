@@ -61,7 +61,16 @@ namespace CASSharp.Core.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Function &apos;{0}&apos;: I expected {1} number of parameters.
+        ///   Busca una cadena traducida similar a Function &apos;{0}&apos;: {1}.
+        /// </summary>
+        internal static string EvalFunctionException {
+            get {
+                return ResourceManager.GetString("EvalFunctionException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a I expected {1} number of parameters.
         /// </summary>
         internal static string NoEqualFnArgsException {
             get {
@@ -88,7 +97,7 @@ namespace CASSharp.Core.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Function &apos;{0}&apos;: I expected a maximum of {1} number of parameters.
+        ///   Busca una cadena traducida similar a I expected a maximum of {1} number of parameters.
         /// </summary>
         internal static string NoMaxFnArgsException {
             get {
@@ -97,7 +106,7 @@ namespace CASSharp.Core.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Function &apos;{0}&apos;: I expected as a minimum {1} number of parameters.
+        ///   Busca una cadena traducida similar a I expected as a minimum {1} number of parameters.
         /// </summary>
         internal static string NoMinFnArgsException {
             get {

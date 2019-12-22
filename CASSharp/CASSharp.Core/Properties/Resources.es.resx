@@ -138,4 +138,7 @@
   <data name="NoMinFnArgsException" xml:space="preserve">
     <value>Función '{0}': Esperaba como minino {1} número de parámetros</value>
   </data>
+  <data name="EvalFunctionException" xml:space="preserve">
+    <value>Función '{0}': {1}</value>
+  </data>
 </root>

@@ -48,7 +48,7 @@
     <Compile Include="CAS\EvalContext.cs" />
     <Compile Include="CAS\EvalException.cs" />
     <Compile Include="CAS\EvalExprInResult.cs" />
-    <Compile Include="CAS\EvalFunctionContext.cs" />
+    <Compile Include="CAS\EvalFunctionException.cs" />
     <Compile Include="CAS\EvalPromptResult.cs" />
     <Compile Include="CAS\FunctionBaseAttribute.cs" />
     <Compile Include="CAS\FunctionBaseInfo.cs" />

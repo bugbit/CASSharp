@@ -46,8 +46,8 @@ namespace CASSharp.Core.Exprs
 
         public static BooleanExpr Boolean(bool argBool) => (argBool) ? BooleanExpr.True : BooleanExpr.False;
 
-        public static NumberExpr Number(string n) => new NumberExpr(n);
-        public static BigNumberExpr Number(BigDecimal n) => new BigNumberExpr(n);
+        public static NumberExpr Number(string n) => NumberExpr.Create(n);
+        public static NumberExpr Number(BigDecimal n) => new NumberExpr(n);
         public static FunctionExpr Function(string argName, Expr[] argArgs) => new FunctionExpr(argName, argArgs);
     }
 }
