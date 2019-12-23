@@ -27,12 +27,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
 
 namespace CASSharp.Core.CAS
 {
+    [DebuggerDisplay("Precision : {Precision}")]
     public class EvalContext
     {
         public CancellationToken CancelToken { get; set; }

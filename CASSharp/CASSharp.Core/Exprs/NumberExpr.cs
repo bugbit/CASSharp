@@ -56,8 +56,11 @@ namespace CASSharp.Core.Exprs
 
         public NumberExpr ConverTo(EPrecisionNumber argPrecision, int argFPPrec = -1)
         {
-            if (Precision == argPrecision && FPPrec == argFPPrec)
-                return this;
+            if (Precision == argPrecision)
+            {
+                if (Precision != EPrecisionNumber.BFloat || FPPrec == argFPPrec)
+                    return this;
+            }
 
             switch (argPrecision)
             {

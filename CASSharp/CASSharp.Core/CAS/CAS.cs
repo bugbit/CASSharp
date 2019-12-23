@@ -166,17 +166,17 @@ namespace CASSharp.Core.CAS
 
         public Exprs.Expr EvalIn(EvalContext argContext, Exprs.Expr e)
         {
-            var pExpr = (e is Exprs.FunctionExpr pFn) ? Eval(argContext, pFn, false) : Eval(argContext, e);
+            var pExpr = (e.TypeExpr == Exprs.ETypeExpr.Function && e is Exprs.FunctionExpr pFn) ? Eval(argContext, pFn, false) : Eval(argContext, e);
 
             return pExpr;
         }
 
         public Exprs.Expr Eval(EvalContext argContext, Exprs.Expr e)
         {
-            if (e.TypeExpr == Exprs.ETypeExpr.Number && (e is Exprs.NumberExpr ne))
-            {
+            if (e.TypeExpr.HasFlag(Exprs.ETypeExpr.Number) && (e is Exprs.NumberExpr ne))
                 return ne.ConverTo(argContext.Precision, FPPrec);
-            }
+            else if (e.TypeExpr == Exprs.ETypeExpr.Function && e is Exprs.FunctionExpr pFn)
+                return Eval(argContext, pFn);
 
             return e;
         }
@@ -209,7 +209,7 @@ namespace CASSharp.Core.CAS
                 }
                 catch (Exception ex)
                 {
-                    throw new EvalFunctionException(string.Format(Properties.Resources.EvalFunctionException, pInstr.Name, ex.Message), ex, pFN);
+                    throw new EvalFunctionException(string.Format(Properties.Resources.EvalFunctionException, pFN.Name, ex.Message), ex, pFN);
                 }
             }
 
@@ -225,10 +225,7 @@ namespace CASSharp.Core.CAS
 
             var e2 = e1;
 
-            if (e2.TypeExpr == Exprs.ETypeExpr.Number && e2 is Exprs.NumberExpr ne)
-                return ne.ConverTo(argPrecision, FPPrec);
-
-            return e2;
+            return (e2.TypeExpr.HasFlag(Exprs.ETypeExpr.Number) && e2 is Exprs.NumberExpr ne) ? ne.ConverTo(argPrecision, FPPrec) : e2;
         }
 
         public bool Integer(EvalContext argContext, Exprs.Expr e, out Exprs.Expr argRet, out BigInteger argInteger)
@@ -236,7 +233,7 @@ namespace CASSharp.Core.CAS
             var pRet = Approx(argContext, Exprs.EPrecisionNumber.Integer, e);
 
             argRet = pRet;
-            if (pRet.TypeExpr == Exprs.ETypeExpr.Number && pRet is Exprs.IntegerNumberExpr en)
+            if (pRet.TypeExpr.HasFlag(Exprs.ETypeExpr.Number) && pRet is Exprs.IntegerNumberExpr en)
             {
                 argInteger = en.PrecisionValue;
 
