@@ -141,4 +141,10 @@
   <data name="EvalFunctionException" xml:space="preserve">
     <value>Función '{0}': {1}</value>
   </data>
+  <data name="ConvertToIntegerException" xml:space="preserve">
+    <value>{0} no puedo convertirlo a un integer.</value>
+  </data>
+  <data name="NoExprIntegerException" xml:space="preserve">
+    <value>{0} No es un integer</value>
+  </data>
 </root>

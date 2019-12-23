@@ -47,7 +47,7 @@ namespace CASSharp.Core.CAS
         public CasVars Vars => mVars;
 
         // var fpprec
-        public int FPPrec { get; set; }
+        public int FPPrec { get; set; } = 16;
 
         public CAS(ICASPost argPost)
         {
@@ -98,7 +98,7 @@ namespace CASSharp.Core.CAS
             var pReader = new ST.STTokensReader(argTokens, argCancelToken);
             var pIn = STToExprIn(pReader);
             var pContext = new EvalContext { CancelToken = argCancelToken };
-            var pOut = EvalIn(pIn, pContext);
+            var pOut = EvalIn(pContext, pIn);
             var pIOE = mVars.AddInOut(pIn, pOut, out string pNameVarIn, out string pNameVarOut);
 
             if (argTokens.Terminate == ST.ESTTokenizerTerminate.ShowResult)
@@ -164,19 +164,24 @@ namespace CASSharp.Core.CAS
             return pExprs.ToArray();
         }
 
-        public Exprs.Expr EvalIn(Exprs.Expr e, EvalContext argContext)
+        public Exprs.Expr EvalIn(EvalContext argContext, Exprs.Expr e)
         {
-            var pExpr = (e is Exprs.FunctionExpr pFn) ? Eval(pFn, argContext, false) : Eval(e, argContext);
+            var pExpr = (e is Exprs.FunctionExpr pFn) ? Eval(argContext, pFn, false) : Eval(argContext, e);
 
             return pExpr;
         }
 
-        public Exprs.Expr Eval(Exprs.Expr e, EvalContext argContext)
+        public Exprs.Expr Eval(EvalContext argContext, Exprs.Expr e)
         {
+            if (e.TypeExpr == Exprs.ETypeExpr.Number && (e is Exprs.NumberExpr ne))
+            {
+                return ne.ConverTo(argContext.Precision, FPPrec);
+            }
+
             return e;
         }
 
-        public Exprs.Expr Eval(Exprs.FunctionExpr e, EvalContext argContext, bool argNoExecInstr = true)
+        public Exprs.Expr Eval(EvalContext argContext, Exprs.FunctionExpr e, bool argNoExecInstr = true)
         {
             var pName = e.FunctionName;
 
@@ -211,9 +216,46 @@ namespace CASSharp.Core.CAS
             return null;
         }
 
+        public Exprs.Expr Approx(EvalContext argContext, Exprs.EPrecisionNumber argPrecision, Exprs.Expr e)
+        {
+            var c = new EvalContext(argContext, argPrecision);
+            var e1 = Eval(c, e);
+
+            // falta aplicar operaciones y funciones matemáticas
+
+            var e2 = e1;
+
+            if (e2.TypeExpr == Exprs.ETypeExpr.Number && e2 is Exprs.NumberExpr ne)
+                return ne.ConverTo(argPrecision, FPPrec);
+
+            return e2;
+        }
+
+        public bool Integer(EvalContext argContext, Exprs.Expr e, out Exprs.Expr argRet, out BigInteger argInteger)
+        {
+            var pRet = Approx(argContext, Exprs.EPrecisionNumber.Integer, e);
+
+            argRet = pRet;
+            if (pRet.TypeExpr == Exprs.ETypeExpr.Number && pRet is Exprs.IntegerNumberExpr en)
+            {
+                argInteger = en.PrecisionValue;
+
+                return true;
+            }
+
+            argInteger = null;
+
+            return false;
+        }
+
         public Exprs.Expr Primep(EvalContext argContext, Exprs.Expr n)
         {
-            return n;
+            if (!Integer(argContext, n, out Exprs.Expr argRet, out BigInteger argInteger))
+                throw new EvalException(string.Format(Properties.Resources.NoExprIntegerException, n));
+
+            var pRet = Math.MathEx.PrimeP(argInteger, argContext.CancelToken);
+
+            return Exprs.Expr.Boolean(pRet);
         }
 
         private void VerifNumArgs(int argNumArgs, Exprs.Expr[] argParams)

@@ -61,6 +61,15 @@ namespace CASSharp.Core.Properties {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a {0} I can&apos;t convert it to an integer..
+        /// </summary>
+        internal static string ConvertToIntegerException {
+            get {
+                return ResourceManager.GetString("ConvertToIntegerException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Function &apos;{0}&apos;: {1}.
         /// </summary>
         internal static string EvalFunctionException {
@@ -93,6 +102,15 @@ namespace CASSharp.Core.Properties {
         internal static string NoExpectTokenException {
             get {
                 return ResourceManager.GetString("NoExpectTokenException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a {0} Not an integer.
+        /// </summary>
+        internal static string NoExprIntegerException {
+            get {
+                return ResourceManager.GetString("NoExprIntegerException", resourceCulture);
             }
         }
         

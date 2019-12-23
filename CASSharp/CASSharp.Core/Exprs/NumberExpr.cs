@@ -49,6 +49,31 @@ namespace CASSharp.Core.Exprs
 
         public override Expr Clone() => new NumberExpr(this);
 
+        public BigNumberExpr BFloat(int argFPPrec = -1) => new BigNumberExpr(Constant, argFPPrec);
+        public FloatNumberExpr Float() => new FloatNumberExpr(Constant, Constant.ToDouble());
+        public SingleFloatNumberExpr SFloat() => new SingleFloatNumberExpr(Constant, Constant.ToSingle());
+        public IntegerNumberExpr Integer() => IntegerNumberExpr.Create(Constant);
+
+        public NumberExpr ConverTo(EPrecisionNumber argPrecision, int argFPPrec = -1)
+        {
+            if (Precision == argPrecision && FPPrec == argFPPrec)
+                return this;
+
+            switch (argPrecision)
+            {
+                case EPrecisionNumber.BFloat:
+                    return BFloat(argFPPrec);
+                case EPrecisionNumber.Float:
+                    return Float();
+                case EPrecisionNumber.SFloat:
+                    return SFloat();
+                case EPrecisionNumber.Integer:
+                    return Integer();
+            }
+
+            return this;
+        }
+
         //public abstract BigNumberExpr BFloat();
         //public abstract NumberIntegerExpr Integer();
 
@@ -102,11 +127,19 @@ namespace CASSharp.Core.Exprs
     }
 
     [DebuggerDisplay("TypeExpr : {TypeExpr} Precision : {Precision} FPPrec : {FPPrec} PrecisionValue : {PrecisionValue} Constant : {Constant}")]
-    public class NumberIntegerExpr : NumberPrecisionExpr<BigInteger>
+    public class IntegerNumberExpr : NumberPrecisionExpr<BigInteger>
     {
-        public NumberIntegerExpr(BigDecimal n, BigInteger np) : base(EPrecisionNumber.Integer, n, np) { }
-        public NumberIntegerExpr(NumberIntegerExpr e) : this(e.Constant, e.PrecisionValue) { }
+        public IntegerNumberExpr(BigDecimal n, BigInteger np) : base(EPrecisionNumber.Integer, n, np) { }
+        public IntegerNumberExpr(IntegerNumberExpr e) : this(e.Constant, e.PrecisionValue) { }
 
-        public override Expr Clone() => new NumberIntegerExpr(this);
+        public override Expr Clone() => new IntegerNumberExpr(this);
+
+        public static IntegerNumberExpr Create(BigDecimal n)
+        {
+            if (n.Scale > 0)
+                throw new ExprException(string.Format(Properties.Resources.ConvertToIntegerException, n));
+
+            return new IntegerNumberExpr(n, n.ToBigInteger());
+        }
     }
 }

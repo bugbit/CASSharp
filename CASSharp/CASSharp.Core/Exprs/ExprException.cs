@@ -28,28 +28,27 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
-using System.Threading;
 
-namespace CASSharp.Core.CAS
+namespace CASSharp.Core.Exprs
 {
-    public class EvalContext
+    public class ExprException : Exception
     {
-        public CancellationToken CancelToken { get; set; }
-        public Exprs.EPrecisionNumber Precision { get; set; } = Exprs.EPrecisionNumber.BFloat;
-
-        public EvalContext() { }
-
-        public EvalContext(EvalContext c)
+        public ExprException()
         {
-            CancelToken = c.CancelToken;
-            Precision = c.Precision;
         }
 
-        public EvalContext(EvalContext c, Exprs.EPrecisionNumber argPrecision)
+        public ExprException(string message) : base(message)
         {
-            CancelToken = c.CancelToken;
-            Precision = argPrecision;
+        }
+
+        public ExprException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected ExprException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
         }
     }
 }
