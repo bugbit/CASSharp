@@ -48,6 +48,7 @@ namespace CASSharp.Core.Exprs
 
         public static NumberExpr Number(string n) => NumberExpr.Create(n);
         public static NumberExpr Number(BigDecimal n) => new NumberExpr(n);
+        public static NumberExpr Number(BigInteger n) => new IntegerNumberExpr(n, n);
         public static FunctionExpr Function(string argName, Expr[] argArgs) => new FunctionExpr(argName, argArgs);
     }
 }

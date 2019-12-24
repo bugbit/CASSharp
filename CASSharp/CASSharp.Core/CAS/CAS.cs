@@ -245,7 +245,7 @@ namespace CASSharp.Core.CAS
             return false;
         }
 
-        public Exprs.Expr Primep(EvalContext argContext, Exprs.Expr n)
+        public Exprs.Expr PrimeP(EvalContext argContext, Exprs.Expr n)
         {
             if (!Integer(argContext, n, out Exprs.Expr argRet, out BigInteger argInteger))
                 throw new EvalException(string.Format(Properties.Resources.NoExprIntegerException, n));
@@ -253,6 +253,16 @@ namespace CASSharp.Core.CAS
             var pRet = Math.MathEx.PrimeP(argInteger, argContext.CancelToken);
 
             return Exprs.Expr.Boolean(pRet);
+        }
+
+        public Exprs.Expr NextPrime(EvalContext argContext, Exprs.Expr n)
+        {
+            if (!Integer(argContext, n, out Exprs.Expr argRet, out BigInteger argInteger))
+                throw new EvalException(string.Format(Properties.Resources.NoExprIntegerException, n));
+
+            var pRet = Math.MathEx.NextPrime(argInteger, argContext.CancelToken);
+
+            return Exprs.Expr.Number(pRet);
         }
 
         private void VerifNumArgs(int argNumArgs, Exprs.Expr[] argParams)
@@ -281,12 +291,23 @@ namespace CASSharp.Core.CAS
         }
 
         [Function]
-        private Exprs.Expr Primep(EvalContext argContext, Exprs.Expr[] argParams)
+        private Exprs.Expr PrimeP(EvalContext argContext, Exprs.Expr[] argParams)
         {
             VerifNumArgs(1, argParams);
 
             var n = argParams[0];
-            var pRet = Primep(argContext, n);
+            var pRet = PrimeP(argContext, n);
+
+            return pRet;
+        }
+
+        [Function(Name = "next_prime")]
+        private Exprs.Expr NextPrime(EvalContext argContext, Exprs.Expr[] argParams)
+        {
+            VerifNumArgs(1, argParams);
+
+            var n = argParams[0];
+            var pRet = NextPrime(argContext, n);
 
             return pRet;
         }

@@ -77,12 +77,9 @@ namespace CASSharp.Core.Exprs
             return this;
         }
 
-        //public abstract BigNumberExpr BFloat();
-        //public abstract NumberIntegerExpr Integer();
-
         public static NumberExpr Create(string argNumberStr)
         {
-            var n = BigDecimal.Parse(argNumberStr, CultureInfo.InvariantCulture);
+            var n = Math.MathEx.Parse(argNumberStr);
 
             return new NumberExpr(n);
         }
@@ -139,10 +136,9 @@ namespace CASSharp.Core.Exprs
 
         public static IntegerNumberExpr Create(BigDecimal n)
         {
-            if (n.Scale > 0)
-                throw new ExprException(string.Format(Properties.Resources.ConvertToIntegerException, n));
+            var i = Math.MathEx.Integer(n);
 
-            return new IntegerNumberExpr(n, n.ToBigInteger());
+            return new IntegerNumberExpr(n, i);
         }
     }
 }

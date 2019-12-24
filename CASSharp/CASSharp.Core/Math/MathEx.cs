@@ -1,6 +1,7 @@
 ﻿using Deveel.Math;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -12,7 +13,21 @@ namespace CASSharp.Core.Math
     {
         public static int certainty = 20;
 
+        public static BigDecimal Parse(string argNumberStr) => BigDecimal.Parse(argNumberStr, CultureInfo.InvariantCulture);
+
+        public static bool IntegerP(BigDecimal n) => n.Scale <= 0;
+
+        public static BigInteger Integer(BigDecimal n)
+        {
+            if (!IntegerP(n))
+                throw new OverflowException(string.Format(Properties.Resources.ConvertToIntegerException, n));
+
+            return n.ToBigInteger();
+        }
+
         public static bool PrimeP(BigInteger n, CancellationToken argCancelToken) => BigInteger.IsProbablePrime(n, certainty, argCancelToken);
+
+        public static BigInteger NextPrime(BigInteger n, CancellationToken argCancelToken) => BigInteger.NextProbablePrime(n, argCancelToken);
 
         //public static bool Miller(int n, int iteration)
         //{

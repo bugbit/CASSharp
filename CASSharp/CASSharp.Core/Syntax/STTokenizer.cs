@@ -44,7 +44,7 @@ namespace CASSharp.Core.Syntax
         private const string syTerminateHide = "$";
         private const string syBeginParenthesis = "(";
         private const string syEndParenthesis = ")";
-        private static readonly Regex mRegExTokens = new Regex($@"(\s*)(?<{grNumber}>\d+)|(?<{grWord}>[A-Z_%]+\w*)|(?<{grSymbol}>[;$\(\),])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex mRegExTokens = new Regex($@"(\s*)(?<{grNumber}>\d*\.?\d+([eE][-+]?\d+)?)|(?<{grWord}>[A-Z_%]+\w*)|(?<{grSymbol}>[;$\(\),])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private CancellationToken mCancelToken;
         private string[] mLines;
