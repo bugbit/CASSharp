@@ -66,6 +66,7 @@
     <Compile Include="Exprs\EPrecisionNumber.cs" />
     <Compile Include="Exprs\ETypeExpr.cs" />
     <Compile Include="Exprs\Expr.cs" />
+    <Compile Include="Exprs\ExprCollection.cs" />
     <Compile Include="Exprs\ExprException.cs" />
     <Compile Include="Exprs\FunctionExpr.cs" />
     <Compile Include="Exprs\NullExpr.cs" />
