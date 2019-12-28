@@ -289,6 +289,12 @@ MIT LICENSE"
         }
 
         //[Test]
+        //private void ExpressionsTest()
+        //{
+        //    System.Linq.Expressions.Expression<Func<int>> e = () => 2 + 2;
+        //}
+
+        //[Test]
         //private void Test2(ref bool argExit)
         //{
         //    argExit = false;

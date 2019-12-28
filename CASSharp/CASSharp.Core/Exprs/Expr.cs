@@ -1,18 +1,26 @@
 ﻿#region LICENSE
 /*
-    Algebra Software free CAS
-    Copyright © 2018 Óscar Hernández Bañó
-    This file is part of Algebra.
-    Algebra is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    MIT License
+
+    Copyright (c) 2018 Software free CAS Sharp
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
 */
 #endregion
 
@@ -49,6 +57,17 @@ namespace CASSharp.Core.Exprs
         public static NumberExpr Number(string n) => NumberExpr.Create(n);
         public static NumberExpr Number(BigDecimal n) => new NumberExpr(n);
         public static NumberExpr Number(BigInteger n) => new IntegerNumberExpr(n, n);
+        public static ListExpr List(ExprCollection e) => new ListExpr(e);
         public static FunctionExpr Function(string argName, Expr[] argArgs) => new FunctionExpr(argName, argArgs);
+
+        public static bool IsBooleanExpr(Expr e) => e.TypeExpr.HasFlag(ETypeExpr.Constant | ETypeExpr.Boolean);
+        public static bool IsBooleanExpr(Expr e, out BooleanExpr v)
+        {
+            var pIs = IsBooleanExpr(e);
+
+            v = (pIs) ? (BooleanExpr)e : null;
+
+            return pIs;
+        }
     }
 }

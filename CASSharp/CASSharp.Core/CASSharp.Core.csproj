@@ -69,6 +69,7 @@
     <Compile Include="Exprs\ExprCollection.cs" />
     <Compile Include="Exprs\ExprException.cs" />
     <Compile Include="Exprs\FunctionExpr.cs" />
+    <Compile Include="Exprs\ListExpr.cs" />
     <Compile Include="Exprs\NullExpr.cs" />
     <Compile Include="Exprs\NumberExpr.cs" />
     <Compile Include="Extensions\RandomExtensions.cs" />

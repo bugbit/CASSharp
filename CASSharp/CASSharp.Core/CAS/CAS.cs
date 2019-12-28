@@ -48,6 +48,8 @@ namespace CASSharp.Core.CAS
 
         // var fpprec
         public int FPPrec { get; set; } = 16;
+        // var primep_number_of_tests
+        public int PrimePNumberOfTest { get; set; } = 25;
 
         public CAS(ICASPost argPost)
         {
@@ -250,7 +252,7 @@ namespace CASSharp.Core.CAS
             if (!Integer(argContext, n, out Exprs.Expr argRet, out BigInteger argInteger))
                 throw new EvalException(string.Format(Properties.Resources.NoExprIntegerException, n));
 
-            var pRet = Math.MathEx.PrimeP(argInteger, argContext.CancelToken);
+            var pRet = BigInteger.IsProbablePrime(argInteger, PrimePNumberOfTest, argContext.CancelToken);
 
             return Exprs.Expr.Boolean(pRet);
         }
@@ -260,9 +262,17 @@ namespace CASSharp.Core.CAS
             if (!Integer(argContext, n, out Exprs.Expr argRet, out BigInteger argInteger))
                 throw new EvalException(string.Format(Properties.Resources.NoExprIntegerException, n));
 
-            var pRet = Math.MathEx.NextPrime(argInteger, argContext.CancelToken);
+            var pRet = BigInteger.NextProbablePrime(argInteger, argContext.CancelToken);
 
             return Exprs.Expr.Number(pRet);
+        }
+
+        public Exprs.ListExpr Primes(EvalContext argContext, Exprs.Expr start, Exprs.Expr end)
+        {
+            var pExprs = new Exprs.ExprCollection();
+            //var e = (PrimeP(argContext, start)) ? start : NextPrime(argContext, start);
+
+            return Exprs.Expr.List(pExprs);
         }
 
         private void VerifNumArgs(int argNumArgs, Exprs.Expr[] argParams)

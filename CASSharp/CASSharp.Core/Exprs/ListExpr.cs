@@ -32,15 +32,19 @@ using System.Text;
 
 namespace CASSharp.Core.Exprs
 {
-    [DebuggerDisplay("TypeExpr : {TypeExpr} Constant : {Constant}")]
-    sealed public class BooleanExpr : CteExpr<bool>
+    [DebuggerDisplay("TypeExpr : {TypeExpr}")]
+    public class ListExpr : Expr
     {
-        public static readonly BooleanExpr True = new BooleanExpr(true);
-        public static readonly BooleanExpr False = new BooleanExpr(false);
+        public Expr[] TheList { get; }
 
-        public BooleanExpr(bool n) : base(ETypeExpr.Boolean, n) { }
-        public BooleanExpr(BooleanExpr e) : base(e) { }
+        public ListExpr(IEnumerable<Expr> argList) : base(ETypeExpr.List)
+        {
+            TheList = argList.ToArray();
+        }
+        public ListExpr(ListExpr e) : this(e.TheList) { }
 
-        public override Expr Clone() => new BooleanExpr(this);
+        public override Expr Clone() => new ListExpr(this);
+
+        public override string ToString() => "[ " + string.Join(" ", TheList.Select(l => l.ToString())) + " ]";
     }
 }
