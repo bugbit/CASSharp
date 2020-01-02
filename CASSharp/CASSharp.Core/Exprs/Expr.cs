@@ -58,16 +58,7 @@ namespace CASSharp.Core.Exprs
         public static NumberExpr Number(BigDecimal n) => new NumberExpr(n);
         public static NumberExpr Number(BigInteger n) => new IntegerNumberExpr(n, n);
         public static ListExpr List(ExprCollection e) => new ListExpr(e);
+        public static ListExpr List(IEnumerable<Expr> e) => List(new ExprCollection(e));
         public static FunctionExpr Function(string argName, Expr[] argArgs) => new FunctionExpr(argName, argArgs);
-
-        public static bool IsBooleanExpr(Expr e) => e.TypeExpr.HasFlag(ETypeExpr.Constant | ETypeExpr.Boolean);
-        public static bool IsBooleanExpr(Expr e, out BooleanExpr v)
-        {
-            var pIs = IsBooleanExpr(e);
-
-            v = (pIs) ? (BooleanExpr)e : null;
-
-            return pIs;
-        }
     }
 }

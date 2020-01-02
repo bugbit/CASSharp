@@ -247,32 +247,39 @@ namespace CASSharp.Core.CAS
             return false;
         }
 
-        public Exprs.Expr PrimeP(EvalContext argContext, Exprs.Expr n)
+        public BigInteger Integer(EvalContext argContext, Exprs.Expr e)
         {
-            if (!Integer(argContext, n, out Exprs.Expr argRet, out BigInteger argInteger))
-                throw new EvalException(string.Format(Properties.Resources.NoExprIntegerException, n));
+            if (!Integer(argContext, e, out Exprs.Expr argRet, out BigInteger argInteger))
+                throw new EvalException(string.Format(Properties.Resources.NoExprIntegerException, e));
 
-            var pRet = BigInteger.IsProbablePrime(argInteger, PrimePNumberOfTest, argContext.CancelToken);
+            return argInteger;
+        }
+
+        public Exprs.BooleanExpr PrimeP(EvalContext argContext, Exprs.Expr n)
+        {
+            var pInt = Integer(argContext, n);
+
+            var pRet = BigInteger.IsProbablePrime(pInt, PrimePNumberOfTest, argContext.CancelToken);
 
             return Exprs.Expr.Boolean(pRet);
         }
 
-        public Exprs.Expr NextPrime(EvalContext argContext, Exprs.Expr n)
+        public Exprs.NumberExpr NextPrime(EvalContext argContext, Exprs.Expr n)
         {
-            if (!Integer(argContext, n, out Exprs.Expr argRet, out BigInteger argInteger))
-                throw new EvalException(string.Format(Properties.Resources.NoExprIntegerException, n));
+            var pInt = Integer(argContext, n);
 
-            var pRet = BigInteger.NextProbablePrime(argInteger, argContext.CancelToken);
+            var pRet = BigInteger.NextProbablePrime(pInt, argContext.CancelToken);
 
             return Exprs.Expr.Number(pRet);
         }
 
         public Exprs.ListExpr Primes(EvalContext argContext, Exprs.Expr start, Exprs.Expr end)
         {
-            var pExprs = new Exprs.ExprCollection();
-            //var e = (PrimeP(argContext, start)) ? start : NextPrime(argContext, start);
+            var pStartInt = Integer(argContext, start);
+            var pEndInt = Integer(argContext, end);
+            var pPrimes = from n in Math.MathEx.Primes(pStartInt, pEndInt, PrimePNumberOfTest, argContext.CancelToken) select Exprs.Expr.Number(n);
 
-            return Exprs.Expr.List(pExprs);
+            return Exprs.Expr.List(pPrimes);
         }
 
         private void VerifNumArgs(int argNumArgs, Exprs.Expr[] argParams)
@@ -318,6 +325,18 @@ namespace CASSharp.Core.CAS
 
             var n = argParams[0];
             var pRet = NextPrime(argContext, n);
+
+            return pRet;
+        }
+
+        [Function(Name = "primes")]
+        private Exprs.Expr Primes(EvalContext argContext, Exprs.Expr[] argParams)
+        {
+            VerifNumArgs(2, argParams);
+
+            var start = argParams[0];
+            var end = argParams[1];
+            var pRet = Primes(argContext, start, end);
 
             return pRet;
         }

@@ -49,6 +49,18 @@ namespace CASSharp.Core.Math
             return n.ToBigInteger();
         }
 
+        public static IEnumerable<BigInteger> Primes(BigInteger start, BigInteger end, int certainty, CancellationToken argCancelToken)
+        {
+            var n = (BigInteger.IsProbablePrime(start, certainty, argCancelToken)) ? start : BigInteger.NextProbablePrime(start, argCancelToken);
+
+            while (n <= end)
+            {
+                argCancelToken.ThrowIfCancellationRequested();
+                yield return n;
+                n = BigInteger.NextProbablePrime(n, argCancelToken);
+            }
+        }
+
         //public static bool Miller(int n, int iteration)
         //{
         //    if ((n < 2) || (n % 2 == 0)) return (n == 2);
