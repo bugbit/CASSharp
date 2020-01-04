@@ -29,18 +29,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 using Core = CASSharp.Core;
 using CAS = CASSharp.Core.CAS;
+using Exprs = CASSharp.Core.Exprs;
+using ST = CASSharp.Core.Syntax;
 
 using static System.Console;
-using CASSharp.Core.Exprs;
 
 namespace CASSharp.Console.App
 {
-    public class CASConsoleApp : Core.App.CASApp
+    public class CASConsoleApp : Core.App.CASApp, IAutoCompleteHandler
     {
+        private List<string> mPrompt = new List<string>();
+        private CancellationTokenSource mTokenCancel = null;
+
+        public char[] Separators { get; set; } = new char[] { ' ', '.', '/' };
+
         public CASConsoleApp() : base() { }
+
+        public string[] GetSuggestions(string text, int index) => mCAS.Suggestions;
 
         public override void PrintPrompt(string argNameVarPrompt, bool newline)
         {
@@ -61,7 +70,7 @@ namespace CASSharp.Console.App
 
         protected override CAS.ICASPost NewPos() => new Core.App.CASAppPost<CASConsoleApp>(this);
 
-        protected override void PrintExpr(string argNameVarPrompt, Expr e) => WriteLine($"{argNameVarPrompt} {e}");
+        protected override void PrintExpr(string argNameVarPrompt, Exprs.Expr e) => WriteLine($"{argNameVarPrompt} {e}");
 
         protected override void PrintError(string argError)
         {
@@ -83,8 +92,17 @@ namespace CASSharp.Console.App
         protected override void BeforeRun()
         {
             base.BeforeRun();
+            System.ReadLine.AutoCompletionHandler = this;
+            System.ReadLine.HistoryEnabled = true;
+            CancelKeyPress += Console_CancelKeyPress;
             PrintHeader();
             WriteLine();
+        }
+
+        private void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
+        {
+            mTokenCancel?.Cancel();
+            e.Cancel = true;
         }
 
         protected override void RunInternal()
@@ -105,6 +123,39 @@ namespace CASSharp.Console.App
         {
             var pNameVar = mCAS.Vars.NameVarPrompt;
             var pText = System.ReadLine.Read($"{mCAS.GetPromptVar(pNameVar)} ");
+
+            //System.ReadLine.AddHistory(pText);
+            mPrompt.Add(pText);
+            mTokenCancel = new CancellationTokenSource();
+            try
+            {
+                var pRet = mCAS.EvalPrompt(mPrompt.ToArray(), false, mTokenCancel.Token);
+
+                if (pRet == null)
+                    return;
+
+                mPrompt = new List<string>(pRet.LinesNoParse);
+            }
+            catch (ST.STException ex)
+            {
+                PrintError(ex.Message);
+                PrintError(mPrompt[ex.Line]);
+                PrintError($"{new string(' ', ex.Position)}^");
+
+                var pTexts2 = mPrompt.Skip(ex.Line + 1);
+
+                mPrompt = new List<string>(pTexts2);
+            }
+            catch (Exception ex)
+            {
+                PrintException(ex);
+                mPrompt.Clear();
+            }
+            finally
+            {
+                mTokenCancel?.Dispose();
+                mTokenCancel = null;
+            }
         }
 
 #if DEBUG

@@ -44,6 +44,8 @@ namespace CASSharp.Core.CAS
         private CasVars mVars = new CasVars();
         private ICASPost mPost;
 
+        public string[] Suggestions { get; }
+
         public CasVars Vars => mVars;
 
         // var fpprec
@@ -68,6 +70,7 @@ namespace CASSharp.Core.CAS
                     i.Method = (FunctionHandler)Delegate.CreateDelegate(typeof(FunctionHandler), this, m);
                 }
             );
+            Suggestions = mInstructions.Keys.Concat(mFunctions.Keys).ToArray();
         }
 
         public string GetPromptVar(string argNameVar) => $"({argNameVar})";
