@@ -35,12 +35,13 @@ namespace CASSharp.Core.Exprs
     [Flags]
     public enum ETypeExpr
     {
-        None, Null, Constant, List, Function,
+        None, Null, _Number, _Boolean, List, Function,
         // Flags
         Type = 0xFFF,
         Flags = 0xF000,
         // Cte
-        Number = 0x1000,
-        Boolean = 0x2000
+        Constant = 0x1000,
+        Number = _Number | Constant,
+        Boolean = _Boolean | Constant
     }
 }

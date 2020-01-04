@@ -37,7 +37,7 @@ namespace CASSharp.Core.Exprs
     {
         public T Constant { get; }
 
-        public CteExpr(ETypeExpr argTypeExpr, T argCte) : base(ETypeExpr.Constant | (argTypeExpr & ETypeExpr.Flags))
+        public CteExpr(ETypeExpr argTypeExpr, T argCte) : base(argTypeExpr)
         {
             Constant = argCte;
         }
@@ -47,6 +47,5 @@ namespace CASSharp.Core.Exprs
         }
 
         public override string ToString() => Constant?.ToString();
-
     }
 }

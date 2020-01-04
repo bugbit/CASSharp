@@ -26,12 +26,14 @@
 
 using Deveel.Math;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace CASSharp.Core.Math
 {
@@ -51,16 +53,38 @@ namespace CASSharp.Core.Math
 
         public static IEnumerable<BigInteger> Primes(BigInteger start, BigInteger end, int certainty, CancellationToken argCancelToken)
         {
+            var pPrimes = new ConcurrentBag<BigInteger>();
+            var pPart = Partitioner.Create(start, end);
+            var pOptions = new ParallelOptions { CancellationToken = argCancelToken };
+
+            Parallel.ForEach(pPart, pOptions, r => Primes(pPrimes, r.Item1, r.Item2, certainty, argCancelToken));
+
+            return (from n in pPrimes orderby n select n).ToArray();
+
+            //var pPrimes = new List<BigInteger>();
+            //var n = (BigInteger.IsProbablePrime(start, certainty, argCancelToken)) ? start : BigInteger.NextProbablePrime(start, argCancelToken);
+
+            //while (n <= end)
+            //{
+            //    argCancelToken.ThrowIfCancellationRequested();
+            //    pPrimes.Add(n);
+            //    n = BigInteger.NextProbablePrime(n + 1, argCancelToken);
+            //}
+
+            //return pPrimes;
+        }
+
+        private static void Primes(ConcurrentBag<BigInteger> argPrimes, BigInteger start, BigInteger end, int certainty, CancellationToken argCancelToken)
+        {
             var n = (BigInteger.IsProbablePrime(start, certainty, argCancelToken)) ? start : BigInteger.NextProbablePrime(start, argCancelToken);
 
             while (n <= end)
             {
                 argCancelToken.ThrowIfCancellationRequested();
-                yield return n;
-                n = BigInteger.NextProbablePrime(n, argCancelToken);
+                argPrimes.Add(n);
+                n = BigInteger.NextProbablePrime(n + 1, argCancelToken);
             }
         }
-
         //public static bool Miller(int n, int iteration)
         //{
         //    if ((n < 2) || (n % 2 == 0)) return (n == 2);

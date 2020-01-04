@@ -247,11 +247,12 @@ MIT LICENSE"
                 //"primep(primep(7));",
                 //"primep(22323327887238723872383282342430924309243);",
                 //"primep(148721005001);"
-                "next_prime(1);",
-                "next_prime(0);",
-                "next_prime(2);",
-                "next_prime(148721005001);",
-                "next_prime(22323327887238723872383282342430924309243);",
+                //"next_prime(1);",
+                //"next_prime(0);",
+                //"next_prime(2);",
+                //"next_prime(148721005001);",
+                //"next_prime(22323327887238723872383282342430924309243);",
+                "primes(1,10000000);"
             };
 
             var pTextsE = new List<string>();

@@ -143,12 +143,12 @@ namespace CASSharp.Core.CAS
 
             var pArgs = STBlocktoExprs(argReader);
 
-            return Exprs.Expr.Function(argWord.Text, pArgs);
+            return Exprs.Expr.Function(argWord.Text, pArgs.ToArray());
         }
 
-        public Exprs.Expr[] STBlocktoExprs(ST.STTokensReader argReader)
+        public Exprs.ExprCollection STBlocktoExprs(ST.STTokensReader argReader)
         {
-            var pExprs = new List<Exprs.Expr>();
+            var pExprs = new Exprs.ExprCollection();
 
             if (argReader.Token is ST.STTokenBlock pBlock)
             {
@@ -163,7 +163,7 @@ namespace CASSharp.Core.CAS
                 }
             }
 
-            return pExprs.ToArray();
+            return pExprs;
         }
 
         public Exprs.Expr EvalIn(EvalContext argContext, Exprs.Expr e)
@@ -175,10 +175,19 @@ namespace CASSharp.Core.CAS
 
         public Exprs.Expr Eval(EvalContext argContext, Exprs.Expr e)
         {
-            if (e.TypeExpr.HasFlag(Exprs.ETypeExpr.Number) && (e is Exprs.NumberExpr ne))
-                return ne.ConverTo(argContext.Precision, FPPrec);
-            else if (e.TypeExpr == Exprs.ETypeExpr.Function && e is Exprs.FunctionExpr pFn)
-                return Eval(argContext, pFn);
+            switch (e.TypeExpr)
+            {
+                case Exprs.ETypeExpr.Number:
+                    if (e is Exprs.NumberExpr ne)
+                        return ne.ConverTo(argContext.Precision, FPPrec);
+
+                    break;
+                case Exprs.ETypeExpr.Function:
+                    if (e is Exprs.FunctionExpr pFn)
+                        return Eval(argContext, pFn);
+
+                    break;
+            }
 
             return e;
         }
@@ -227,7 +236,7 @@ namespace CASSharp.Core.CAS
 
             var e2 = e1;
 
-            return (e2.TypeExpr.HasFlag(Exprs.ETypeExpr.Number) && e2 is Exprs.NumberExpr ne) ? ne.ConverTo(argPrecision, FPPrec) : e2;
+            return (e2.TypeExpr == Exprs.ETypeExpr.Number && e2 is Exprs.NumberExpr ne) ? ne.ConverTo(argPrecision, FPPrec) : e2;
         }
 
         public bool Integer(EvalContext argContext, Exprs.Expr e, out Exprs.Expr argRet, out BigInteger argInteger)
@@ -235,7 +244,7 @@ namespace CASSharp.Core.CAS
             var pRet = Approx(argContext, Exprs.EPrecisionNumber.Integer, e);
 
             argRet = pRet;
-            if (pRet.TypeExpr.HasFlag(Exprs.ETypeExpr.Number) && pRet is Exprs.IntegerNumberExpr en)
+            if (pRet.TypeExpr == Exprs.ETypeExpr.Number && pRet is Exprs.IntegerNumberExpr en)
             {
                 argInteger = en.PrecisionValue;
 
