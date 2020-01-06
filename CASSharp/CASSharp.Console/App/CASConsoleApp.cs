@@ -45,11 +45,29 @@ namespace CASSharp.Console.App
         private List<string> mPrompt = new List<string>();
         private CancellationTokenSource mTokenCancel = null;
 
-        public char[] Separators { get; set; } = new char[] { ' ', '.', '/' };
+        public char[] Separators { get; set; } = new char[] { ' ', ',', ';', '(', '[' };
 
         public CASConsoleApp() : base() { }
 
-        public string[] GetSuggestions(string text, int index) => mCAS.Suggestions;
+        public string[] GetSuggestions(string argTxt, int argIdx)
+        {
+            var i0 = argTxt.IndexOfAny(Separators);
+            var i = argTxt.IndexOfAny(Separators, argIdx);
+            var pText = (i == -1) ? argTxt.Substring(argIdx) : argTxt.Substring(argIdx, i - argIdx);
+            var pSuggestions = (i0 < 0 || argIdx < i0) ? mCAS.InstrSuggestions : mCAS.Suggestions;
+            var i2 = Array.BinarySearch(pSuggestions, pText);
+            var i3 = (i2 < 0) ? -i2 - 1 : i2;
+            var pRet = new List<string>();
+
+            foreach (var s in pSuggestions.Skip(i3))
+            {
+                if (!s.StartsWith(pText))
+                    break;
+                pRet.Add(s);
+            }
+
+            return pRet.ToArray();
+        }
 
         public override void PrintPrompt(string argNameVarPrompt, bool newline)
         {

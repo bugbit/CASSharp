@@ -28,6 +28,7 @@
 using Deveel.Math;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -45,6 +46,7 @@ namespace CASSharp.Core.CAS
         private ICASPost mPost;
 
         public string[] Suggestions { get; }
+        public string[] InstrSuggestions { get; }
 
         public CasVars Vars => mVars;
 
@@ -70,7 +72,8 @@ namespace CASSharp.Core.CAS
                     i.Method = (FunctionHandler)Delegate.CreateDelegate(typeof(FunctionHandler), this, m);
                 }
             );
-            Suggestions = mInstructions.Keys.Concat(mFunctions.Keys).ToArray();
+            Suggestions = (from s in mFunctions.Keys orderby s select s).ToArray();
+            InstrSuggestions = (from s in mInstructions.Keys.Concat(mFunctions.Keys) orderby s select s).ToArray();
         }
 
         public string GetPromptVar(string argNameVar) => $"({argNameVar})";
@@ -198,12 +201,18 @@ namespace CASSharp.Core.CAS
         public Exprs.Expr Eval(EvalContext argContext, Exprs.FunctionExpr e, bool argNoExecInstr = true)
         {
             var pName = e.FunctionName;
+#if DEBUG
+            Stopwatch pStopwatch;
+#endif
 
             if (mInstructions.TryGetValue(pName, out InstructionInfo pInstr))
             {
                 if (argNoExecInstr)
                     throw new EvalException(string.Format(Properties.Resources.NoExecInsTrNoStartExprException, pName));
 
+#if DEBUG
+                pStopwatch = Stopwatch.StartNew();
+#endif
                 try
                 {
                     pInstr.Method.Invoke(argContext, e.Args);
@@ -212,11 +221,21 @@ namespace CASSharp.Core.CAS
                 {
                     throw new EvalFunctionException(string.Format(Properties.Resources.EvalFunctionException, pInstr.Name, ex.Message), ex, pInstr);
                 }
+                finally
+                {
+#if DEBUG
+                    pStopwatch.Stop();
+                    Debug.WriteLine($"{pInstr.Name} {pStopwatch.Elapsed.TotalMilliseconds} ms");
+#endif
+                }
 
                 return Exprs.Expr.Null;
             }
             if (mFunctions.TryGetValue(pName, out FunctionInfo pFN))
             {
+#if DEBUG
+                pStopwatch = Stopwatch.StartNew();
+#endif
                 try
                 {
                     return pFN.Method.Invoke(argContext, e.Args);
@@ -224,6 +243,13 @@ namespace CASSharp.Core.CAS
                 catch (Exception ex)
                 {
                     throw new EvalFunctionException(string.Format(Properties.Resources.EvalFunctionException, pFN.Name, ex.Message), ex, pFN);
+                }
+                finally
+                {
+#if DEBUG
+                    pStopwatch.Stop();
+                    Debug.WriteLine($"{pFN.Name} {pStopwatch.Elapsed.TotalMilliseconds} ms");
+#endif
                 }
             }
 
