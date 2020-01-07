@@ -40,10 +40,9 @@ using static System.Console;
 
 namespace CASSharp.Console.App
 {
-    public class CASConsoleApp : Core.App.CASApp, IAutoCompleteHandler
+    public sealed class CASConsoleApp : Core.App.CASApp, IAutoCompleteHandler
     {
         private List<string> mPrompt = new List<string>();
-        private CancellationTokenSource mTokenCancel = null;
 
         public char[] Separators { get; set; } = new char[] { ' ', ',', ';', '(', '[' };
 

@@ -35,8 +35,12 @@ namespace CASSharp.WinForms
 {
     class Program
     {
-        static void Main(string[] args)
+        [STAThread]
+        static int Main(string[] args)
         {
+            var pApp = new App.CASWinFormsApp();
+
+            return pApp.Run(args);
         }
     }
 }

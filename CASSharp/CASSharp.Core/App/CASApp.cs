@@ -42,6 +42,7 @@ namespace CASSharp.Core.App
 
         protected CAS.ICASPost mPost;
         protected CAS.CAS mCAS;
+        protected CancellationTokenSource mTokenCancel = null;
 
         public CASApp()
         {
@@ -85,6 +86,11 @@ namespace CASSharp.Core.App
 
         public virtual void Quit()
         {
+            if (mTokenCancel != null)
+            {
+                mTokenCancel.Dispose();
+                mTokenCancel = null;
+            }
             Environment.Exit(0);
         }
 
