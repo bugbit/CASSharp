@@ -55,6 +55,12 @@
       <Link>Properties\AssemblyGlobalInfo.cs</Link>
     </Compile>
     <Compile Include="App\CASWinFormsApp.cs" />
+    <Compile Include="CntlPrompt.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CntlPrompt.Designer.cs">
+      <DependentUpon>CntlPrompt.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -79,6 +85,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="CntlPrompt.resx">
+      <DependentUpon>CntlPrompt.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmMain.resx">
       <DependentUpon>FrmMain.cs</DependentUpon>
     </EmbeddedResource>
