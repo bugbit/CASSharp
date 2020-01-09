@@ -1,4 +1,31 @@
-﻿namespace CASSharp.WinForms
+﻿#region LICENSE
+/*
+    MIT License
+
+    Copyright (c) 2018 Software free CAS Sharp
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+
+*/
+#endregion
+
+namespace CASSharp.WinForms
 {
     partial class CntlPrompt
     {
@@ -31,7 +58,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CntlPrompt));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.lbNameVar = new System.Windows.Forms.Label();
+            this.lbNameVarPrompt = new System.Windows.Forms.Label();
             this.txtExpr = new FastColoredTextBoxNS.FastColoredTextBox();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtExpr)).BeginInit();
@@ -42,7 +69,7 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.Controls.Add(this.lbNameVar, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.lbNameVarPrompt, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.txtExpr, 1, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
@@ -52,14 +79,15 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(479, 33);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
-            // lbNameVar
+            // lbNameVarPrompt
             // 
-            this.lbNameVar.AutoSize = true;
-            this.lbNameVar.Location = new System.Drawing.Point(3, 0);
-            this.lbNameVar.Name = "lbNameVar";
-            this.lbNameVar.Size = new System.Drawing.Size(35, 13);
-            this.lbNameVar.TabIndex = 0;
-            this.lbNameVar.Text = "label1";
+            this.lbNameVarPrompt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbNameVarPrompt.Location = new System.Drawing.Point(3, 0);
+            this.lbNameVarPrompt.Name = "lbNameVarPrompt";
+            this.lbNameVarPrompt.Size = new System.Drawing.Size(74, 13);
+            this.lbNameVarPrompt.TabIndex = 0;
+            this.lbNameVarPrompt.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // txtExpr
             // 
@@ -119,7 +147,7 @@
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Label lbNameVar;
+        private System.Windows.Forms.Label lbNameVarPrompt;
         private FastColoredTextBoxNS.FastColoredTextBox txtExpr;
     }
 }

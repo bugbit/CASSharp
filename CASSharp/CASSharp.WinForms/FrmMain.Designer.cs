@@ -57,14 +57,12 @@ namespace CASSharp.WinForms
         {
             this.lyBoard = new System.Windows.Forms.FlowLayoutPanel();
             this.lbHeader = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             this.lyBoard.SuspendLayout();
             this.SuspendLayout();
             // 
             // lyBoard
             // 
             this.lyBoard.Controls.Add(this.lbHeader);
-            this.lyBoard.Controls.Add(this.label1);
             this.lyBoard.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lyBoard.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.lyBoard.Location = new System.Drawing.Point(0, 0);
@@ -74,8 +72,7 @@ namespace CASSharp.WinForms
             // 
             // lbHeader
             // 
-            this.lbHeader.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.lbHeader.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lbHeader.AutoSize = true;
             this.lbHeader.Location = new System.Drawing.Point(3, 0);
@@ -84,15 +81,6 @@ namespace CASSharp.WinForms
             this.lbHeader.Size = new System.Drawing.Size(47, 25);
             this.lbHeader.TabIndex = 0;
             this.lbHeader.Text = "label1";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 25);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "label1";
             // 
             // FrmMain
             // 
@@ -112,6 +100,5 @@ namespace CASSharp.WinForms
 
         private System.Windows.Forms.FlowLayoutPanel lyBoard;
         private System.Windows.Forms.Label lbHeader;
-        private System.Windows.Forms.Label label1;
     }
 }

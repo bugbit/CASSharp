@@ -39,14 +39,22 @@ namespace CASSharp.WinForms
 {
     public partial class FrmMain : Form
     {
+        public FrmMain()
+        {
+            InitializeComponent();
+        }
         public void SetHeader(string argText, string argTitle)
         {
             Text = argTitle;
             lbHeader.Text = argText;
         }
-        public FrmMain()
+        public CntlPrompt AddPrompt(string argNameVar)
         {
-            InitializeComponent();
+            var pPrompt = new CntlPrompt() {  NameVarPrompt = argNameVar, Width = Width };
+
+            lyBoard.Controls.Add(pPrompt);
+
+            return pPrompt;
         }
     }
 }

@@ -45,12 +45,15 @@ namespace CASSharp.WinForms.App
 
         protected override void BeforeRun()
         {
+            var pNameVar = mCAS.Vars.NameVarPrompt;
+
             base.BeforeRun();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             mFrm = new FrmMain();
             GetHeader(out string argText, out string argTitle);
             mFrm.SetHeader(argText, argTitle);
+            mFrm.AddPrompt(mCAS.GetPromptVar(pNameVar));
         }
 
         protected override void RunInternal()
