@@ -102,12 +102,13 @@ namespace CASSharp.WinForms
         '\''};
             this.fastColoredTextBox1.AutoIndentCharsPatterns = "^\\s*[\\w\\.]+(\\s\\w+)?\\s*(?<range>=)\\s*(?<range>[^;=]+);\r\n^\\s*(case|default)\\s*[^:]*" +
     "(?<range>:)\\s*(?<range>[^;]+);";
-            this.fastColoredTextBox1.AutoScrollMinSize = new System.Drawing.Size(131, 56);
+            this.fastColoredTextBox1.AutoScrollMinSize = new System.Drawing.Size(27, 14);
             this.fastColoredTextBox1.BackBrush = null;
             this.fastColoredTextBox1.CharHeight = 14;
             this.fastColoredTextBox1.CharWidth = 8;
             this.fastColoredTextBox1.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.fastColoredTextBox1.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.fastColoredTextBox1.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.fastColoredTextBox1.IsReplaceMode = false;
             this.fastColoredTextBox1.Location = new System.Drawing.Point(3, 28);
             this.fastColoredTextBox1.Name = "fastColoredTextBox1";
@@ -116,7 +117,6 @@ namespace CASSharp.WinForms
             this.fastColoredTextBox1.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("fastColoredTextBox1.ServiceColors")));
             this.fastColoredTextBox1.Size = new System.Drawing.Size(785, 239);
             this.fastColoredTextBox1.TabIndex = 1;
-            this.fastColoredTextBox1.Text = "(%i1) primep;\r\n(%o1) Babylon\r\n:D\r\n";
             this.fastColoredTextBox1.Zoom = 100;
             this.fastColoredTextBox1.TextChanged += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.fastColoredTextBox1_TextChanged);
             // 

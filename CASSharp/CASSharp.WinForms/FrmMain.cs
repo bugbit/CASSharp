@@ -46,12 +46,38 @@ namespace CASSharp.WinForms
     {
         EllipseStyle ellipseStyle = new EllipseStyle();
         EllipseStyle2 ellipseStyle2;
+        EllipseStyle3 ellipseStyle3;
+        EllipseStyle3 ellipseStyle4;
 
         public FrmMain()
         {
             InitializeComponent();
             ellipseStyle2 = new EllipseStyle2(fastColoredTextBox1);
-            fastColoredTextBox1.Text += ":D";
+            ellipseStyle3 = new EllipseStyle3(fastColoredTextBox1) { Painter = new MathPainter(fastColoredTextBox1.CharHeight) { LaTeX = @"$${{1}\over{6}}$$" } };
+            ellipseStyle4 = new EllipseStyle3(fastColoredTextBox1) { Painter = new MathPainter(fastColoredTextBox1.CharHeight) { LaTeX = @"$${{23\,x}\over{x+1}}$$" } };
+            fastColoredTextBox1.Text = @"/*
+Prueba
+*/
+(%i1) primep;
+(% o1) :D
+
+
+(% o2) :D
+
+
+";
+
+            var pLines = (int)Math.Ceiling((decimal)ellipseStyle3.Size.Height / fastColoredTextBox1.CharHeight) + 1;
+
+            fastColoredTextBox1.Text += @":E" + new string('\n', pLines);
+
+            var pStart = fastColoredTextBox1.Range.End;
+
+            fastColoredTextBox1.Text += "xx\n";
+
+            new Range(fastColoredTextBox1, pStart, fastColoredTextBox1.Range.End).SetStyle(ellipseStyle4);
+
+            fastColoredTextBox1.Text += "\n\n\n";
         }
         public void SetHeader(string argText, string argTitle)
         {
@@ -76,6 +102,7 @@ namespace CASSharp.WinForms
             //append style for word 'Babylon'
             //e.ChangedRange.SetStyle(ellipseStyle, @"\bBabylon\b", RegexOptions.IgnoreCase);
             e.ChangedRange.SetStyle(ellipseStyle2, @":D", RegexOptions.IgnoreCase);
+            e.ChangedRange.SetStyle(ellipseStyle3, @":E", RegexOptions.IgnoreCase);
         }
     }
 
@@ -123,7 +150,46 @@ namespace CASSharp.WinForms
             // write the bitmap to the graphics
             bitmap.UnlockBits(data);
             gr.DrawImage(bitmap, position);
-            position.Offset(pSize.Width,0);
+            position.Offset(pSize.Width, 0);
+
+            // mPainter.Draw(e.Surface.Canvas, alignment: CSharpMath.Rendering.TextAlignment.Left);
+        }
+    }
+
+    class EllipseStyle3 : TextStyle
+    {
+        public MathPainter Painter { get; set; }
+        public Size Size => (Painter == null) ? new Size() : Painter.Measure.Value.Size.ToSize();
+
+        public EllipseStyle3(FastColoredTextBox parent) : base(null, null, FontStyle.Regular)
+        {
+        }
+
+        public override void Draw(Graphics gr, Point position, Range range)
+        {
+            if (Painter == null)
+                return;
+
+            var pSize = Painter.Measure.Value.Size.ToSize();
+            var bitmap = new Bitmap(pSize.Width, pSize.Height, PixelFormat.Format32bppPArgb);
+            var info = new SKImageInfo(pSize.Width, pSize.Height, SKImageInfo.PlatformColorType, SKAlphaType.Premul);
+            var data = bitmap.LockBits(new Rectangle(0, 0, pSize.Width, pSize.Height), ImageLockMode.WriteOnly, bitmap.PixelFormat);
+
+            // create the surface
+            using (var surface = SKSurface.Create(info, data.Scan0, data.Stride))
+            {
+                // start drawing
+                //                OnPaintSurface(new SKPaintSurfaceEventArgs(surface, info));
+                // mPainter.Draw(e.Surface.Canvas, alignment: CSharpMath.Rendering.TextAlignment.Left);
+                Painter.Draw(surface.Canvas, alignment: CSharpMath.Rendering.TextAlignment.Left);
+
+                surface.Canvas.Flush();
+            }
+
+            // write the bitmap to the graphics
+            bitmap.UnlockBits(data);
+            gr.DrawImage(bitmap, position);
+            //position.Offset(pSize.Width, 0);
 
             // mPainter.Draw(e.Surface.Canvas, alignment: CSharpMath.Rendering.TextAlignment.Left);
         }
