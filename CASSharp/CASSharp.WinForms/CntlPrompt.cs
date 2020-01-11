@@ -45,5 +45,18 @@ namespace CASSharp.WinForms
         }
 
         public string NameVarPrompt { get => lbNameVarPrompt.Text; set => lbNameVarPrompt.Text = value; }
+
+        private void CalcSizeExpr()
+        {
+            var pH = txtExpr.Height;
+            var pHeight = txtExpr.GetAllLinesHeight() + txtExpr.Margin.Vertical + txtExpr.Paddings.Vertical;
+
+            Height += pHeight - pH;
+            txtExpr.Height = pHeight;
+        }
+
+        private void txtExpr_LineInserted(object sender, FastColoredTextBoxNS.LineInsertedEventArgs e) => CalcSizeExpr();
+
+        private void txtExpr_LineRemoved(object sender, FastColoredTextBoxNS.LineRemovedEventArgs e) => CalcSizeExpr();
     }
 }

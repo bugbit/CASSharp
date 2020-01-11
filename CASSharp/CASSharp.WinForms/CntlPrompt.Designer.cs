@@ -57,27 +57,27 @@ namespace CASSharp.WinForms
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CntlPrompt));
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.tbMain = new System.Windows.Forms.TableLayoutPanel();
             this.lbNameVarPrompt = new System.Windows.Forms.Label();
             this.txtExpr = new FastColoredTextBoxNS.FastColoredTextBox();
-            this.tableLayoutPanel1.SuspendLayout();
+            this.tbMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtExpr)).BeginInit();
             this.SuspendLayout();
             // 
-            // tableLayoutPanel1
+            // tbMain
             // 
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.Controls.Add(this.lbNameVarPrompt, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.txtExpr, 1, 0);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 1;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(479, 33);
-            this.tableLayoutPanel1.TabIndex = 0;
+            this.tbMain.ColumnCount = 2;
+            this.tbMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tbMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tbMain.Controls.Add(this.lbNameVarPrompt, 0, 0);
+            this.tbMain.Controls.Add(this.txtExpr, 1, 0);
+            this.tbMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbMain.Location = new System.Drawing.Point(0, 0);
+            this.tbMain.Name = "tbMain";
+            this.tbMain.RowCount = 1;
+            this.tbMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tbMain.Size = new System.Drawing.Size(479, 33);
+            this.tbMain.TabIndex = 0;
             // 
             // lbNameVarPrompt
             // 
@@ -91,6 +91,8 @@ namespace CASSharp.WinForms
             // 
             // txtExpr
             // 
+            this.txtExpr.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtExpr.AutoCompleteBracketsList = new char[] {
         '(',
         ')',
@@ -105,15 +107,12 @@ namespace CASSharp.WinForms
             this.txtExpr.AutoIndentCharsPatterns = "\r\n^\\s*[\\w\\.]+(\\s\\w+)?\\s*(?<range>=)\\s*(?<range>[^;=]+);\r\n^\\s*(case|default)\\s*[^:" +
     "]*(?<range>:)\\s*(?<range>[^;]+);\r\n";
             this.txtExpr.AutoScrollMinSize = new System.Drawing.Size(2, 14);
-            this.txtExpr.AutoSize = true;
             this.txtExpr.BackBrush = null;
             this.txtExpr.BracketsHighlightStrategy = FastColoredTextBoxNS.BracketsHighlightStrategy.Strategy2;
             this.txtExpr.CharHeight = 14;
             this.txtExpr.CharWidth = 8;
             this.txtExpr.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtExpr.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.txtExpr.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtExpr.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.txtExpr.IsReplaceMode = false;
             this.txtExpr.Language = FastColoredTextBoxNS.Language.CSharp;
             this.txtExpr.LeftBracket = '(';
@@ -129,16 +128,17 @@ namespace CASSharp.WinForms
             this.txtExpr.Size = new System.Drawing.Size(393, 27);
             this.txtExpr.TabIndex = 1;
             this.txtExpr.Zoom = 100;
+            this.txtExpr.LineInserted += new System.EventHandler<FastColoredTextBoxNS.LineInsertedEventArgs>(this.txtExpr_LineInserted);
+            this.txtExpr.LineRemoved += new System.EventHandler<FastColoredTextBoxNS.LineRemovedEventArgs>(this.txtExpr_LineRemoved);
             // 
             // CntlPrompt
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.tableLayoutPanel1);
+            this.Controls.Add(this.tbMain);
             this.Name = "CntlPrompt";
             this.Size = new System.Drawing.Size(479, 33);
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
+            this.tbMain.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.txtExpr)).EndInit();
             this.ResumeLayout(false);
 
@@ -146,7 +146,7 @@ namespace CASSharp.WinForms
 
         #endregion
 
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.TableLayoutPanel tbMain;
         private System.Windows.Forms.Label lbNameVarPrompt;
         private FastColoredTextBoxNS.FastColoredTextBox txtExpr;
     }

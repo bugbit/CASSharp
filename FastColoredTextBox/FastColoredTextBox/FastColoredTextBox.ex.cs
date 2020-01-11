@@ -19,6 +19,7 @@ namespace FastColoredTextBoxNS
 
                 if (lineInfo.VisibleState != VisibleState.Visible)
                     continue;
+
                 TextHeight += lineInfo.WordWrapStringsCount * this.CharHeight + lineInfo.bottomPadding;
             }
 

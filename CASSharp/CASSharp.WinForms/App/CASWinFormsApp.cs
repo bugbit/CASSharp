@@ -53,7 +53,7 @@ namespace CASSharp.WinForms.App
             mFrm = new FrmMain();
             GetHeader(out string argText, out string argTitle);
             mFrm.SetHeader(argText, argTitle);
-            mFrm.AddPrompt(mCAS.GetPromptVar(pNameVar));
+            //mFrm.AddPrompt(mCAS.GetPromptVar(pNameVar));
         }
 
         protected override void RunInternal()
