@@ -40,7 +40,7 @@ using CSharpMath.SkiaSharp;
 using System.Drawing.Imaging;
 using SkiaSharp;
 
-namespace CASSharp.WinForms
+namespace CASSharp.WinForms.UI
 {
     public partial class FrmMain : Form
     {
@@ -69,23 +69,21 @@ Prueba
 
             var pLines = (int)Math.Ceiling((decimal)ellipseStyle3.Size.Height / fastColoredTextBox1.CharHeight) + 1;
 
-            fastColoredTextBox1.Text += @":E" + new string('\n', pLines);
-
-            var pStart = fastColoredTextBox1.Range.End;
-
-            fastColoredTextBox1.Text += "xx\n";
-
-            new Range(fastColoredTextBox1, pStart, fastColoredTextBox1.Range.End).SetStyle(ellipseStyle4);
-
-            fastColoredTextBox1.Text += "\n\n\n";
+            fastColoredTextBox1.Text += @"#begintex o1   \r\n\r\n\r\n\r\n#endtex" + new string('\n', pLines);
         }
-        public void SetHeader(string argText, string argTitle)
+        public void PrintHeader(string argText, string argTitle)
         {
+            board.SetHeader(argText);
             Text = argTitle;
             lbHeader.Text = argText;
         }
-        public CntlPrompt AddPrompt(string argNameVar)
+
+        public void PrintPrompt(string argNameVarPrompt, bool newline) => board.PrintPrompt(argNameVarPrompt, newline);
+
+        public CntlPrompt PrintPrompt(string argNameVar)
         {
+
+
             var pPrompt = new CntlPrompt() { NameVarPrompt = argNameVar, Width = Width };
 
             lyBoard.Controls.Add(pPrompt);
@@ -102,7 +100,7 @@ Prueba
             //append style for word 'Babylon'
             //e.ChangedRange.SetStyle(ellipseStyle, @"\bBabylon\b", RegexOptions.IgnoreCase);
             e.ChangedRange.SetStyle(ellipseStyle2, @":D", RegexOptions.IgnoreCase);
-            e.ChangedRange.SetStyle(ellipseStyle3, @":E", RegexOptions.IgnoreCase);
+            e.ChangedRange.SetStyle(ellipseStyle3, @"#begintex (\w+).*?#endtex", RegexOptions.IgnoreCase);
         }
     }
 
@@ -170,7 +168,7 @@ Prueba
             if (Painter == null)
                 return;
 
-            var pSize = Painter.Measure.Value.Size.ToSize();
+            var pSize = Painter.Measure.Value.Size.ToSize() + new Size(4, 4);
             var bitmap = new Bitmap(pSize.Width, pSize.Height, PixelFormat.Format32bppPArgb);
             var info = new SKImageInfo(pSize.Width, pSize.Height, SKImageInfo.PlatformColorType, SKAlphaType.Premul);
             var data = bitmap.LockBits(new Rectangle(0, 0, pSize.Width, pSize.Height), ImageLockMode.WriteOnly, bitmap.PixelFormat);

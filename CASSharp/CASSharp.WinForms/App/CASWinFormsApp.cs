@@ -41,7 +41,7 @@ namespace CASSharp.WinForms.App
 {
     public sealed class CASWinFormsApp : Core.App.CASApp
     {
-        private FrmMain mFrm;
+        private UI.FrmMain mFrm;
 
         protected override void BeforeRun()
         {
@@ -50,10 +50,10 @@ namespace CASSharp.WinForms.App
             base.BeforeRun();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            mFrm = new FrmMain();
+            mFrm = new UI.FrmMain();
             GetHeader(out string argText, out string argTitle);
-            mFrm.SetHeader(argText, argTitle);
-            //mFrm.AddPrompt(mCAS.GetPromptVar(pNameVar));
+            mFrm.PrintHeader(argText, argTitle);
+            mFrm.Load += (s, e) => mFrm.PrintPrompt(mCAS.GetPromptVar(mCAS.Vars.NameVarPrompt), false);
         }
 
         protected override void RunInternal()
