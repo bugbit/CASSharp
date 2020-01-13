@@ -57,36 +57,11 @@ namespace CASSharp.WinForms.UI
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
-            this.lyBoard = new System.Windows.Forms.FlowLayoutPanel();
-            this.lbHeader = new System.Windows.Forms.Label();
             this.fastColoredTextBox1 = new FastColoredTextBoxNS.FastColoredTextBox();
             this.board = new CASSharp.WinForms.UI.BoardTextBox();
-            this.lyBoard.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fastColoredTextBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.board)).BeginInit();
             this.SuspendLayout();
-            // 
-            // lyBoard
-            // 
-            this.lyBoard.Controls.Add(this.lbHeader);
-            this.lyBoard.Controls.Add(this.fastColoredTextBox1);
-            this.lyBoard.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.lyBoard.Location = new System.Drawing.Point(24, 370);
-            this.lyBoard.Name = "lyBoard";
-            this.lyBoard.Size = new System.Drawing.Size(510, 68);
-            this.lyBoard.TabIndex = 0;
-            // 
-            // lbHeader
-            // 
-            this.lbHeader.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbHeader.AutoSize = true;
-            this.lbHeader.Location = new System.Drawing.Point(3, 0);
-            this.lbHeader.Name = "lbHeader";
-            this.lbHeader.Padding = new System.Windows.Forms.Padding(6);
-            this.lbHeader.Size = new System.Drawing.Size(47, 25);
-            this.lbHeader.TabIndex = 0;
-            this.lbHeader.Text = "label1";
             // 
             // fastColoredTextBox1
             // 
@@ -109,13 +84,14 @@ namespace CASSharp.WinForms.UI
             this.fastColoredTextBox1.CharWidth = 8;
             this.fastColoredTextBox1.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.fastColoredTextBox1.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.fastColoredTextBox1.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.fastColoredTextBox1.IsReplaceMode = false;
-            this.fastColoredTextBox1.Location = new System.Drawing.Point(56, 3);
+            this.fastColoredTextBox1.Location = new System.Drawing.Point(86, 319);
             this.fastColoredTextBox1.Name = "fastColoredTextBox1";
             this.fastColoredTextBox1.Paddings = new System.Windows.Forms.Padding(0);
             this.fastColoredTextBox1.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.fastColoredTextBox1.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("fastColoredTextBox1.ServiceColors")));
-            this.fastColoredTextBox1.Size = new System.Drawing.Size(785, 239);
+            this.fastColoredTextBox1.Size = new System.Drawing.Size(785, 45);
             this.fastColoredTextBox1.TabIndex = 1;
             this.fastColoredTextBox1.Zoom = 100;
             this.fastColoredTextBox1.TextChanged += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.fastColoredTextBox1_TextChanged);
@@ -133,29 +109,23 @@ namespace CASSharp.WinForms.UI
         '\"',
         '\'',
         '\''};
-            this.board.AutoIndentCharsPatterns = "\r\n^\\s*[\\w\\.]+(\\s\\w+)?\\s*(?<range>=)\\s*(?<range>[^;=]+);\r\n^\\s*(case|default)\\s*[^:" +
-    "]*(?<range>:)\\s*(?<range>[^;]+);\r\n";
+            this.board.AutoIndentCharsPatterns = "^\\s*[\\w\\.]+(\\s\\w+)?\\s*(?<range>=)\\s*(?<range>[^;=]+);\r\n^\\s*(case|default)\\s*[^:]*" +
+    "(?<range>:)\\s*(?<range>[^;]+);";
             this.board.AutoScrollMinSize = new System.Drawing.Size(2, 14);
             this.board.BackBrush = null;
-            this.board.BracketsHighlightStrategy = FastColoredTextBoxNS.BracketsHighlightStrategy.Strategy2;
             this.board.CharHeight = 14;
             this.board.CharWidth = 8;
             this.board.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.board.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.board.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.board.IsReplaceMode = false;
-            this.board.LeftBracket = '(';
-            this.board.LeftBracket2 = '{';
-            this.board.Location = new System.Drawing.Point(3, 12);
+            this.board.Location = new System.Drawing.Point(12, 51);
             this.board.Name = "board";
             this.board.Paddings = new System.Windows.Forms.Padding(0);
-            this.board.RightBracket = ')';
-            this.board.RightBracket2 = '}';
             this.board.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.board.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("board.ServiceColors")));
-            this.board.ShowLineNumbers = false;
-            this.board.Size = new System.Drawing.Size(795, 286);
-            this.board.TabIndex = 0;
+            this.board.Size = new System.Drawing.Size(776, 150);
+            this.board.TabIndex = 2;
             this.board.Zoom = 100;
             // 
             // FrmMain
@@ -163,12 +133,10 @@ namespace CASSharp.WinForms.UI
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.lyBoard);
             this.Controls.Add(this.board);
+            this.Controls.Add(this.fastColoredTextBox1);
             this.Name = "FrmMain";
             this.Text = "FrmMain";
-            this.lyBoard.ResumeLayout(false);
-            this.lyBoard.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fastColoredTextBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.board)).EndInit();
             this.ResumeLayout(false);
@@ -176,9 +144,6 @@ namespace CASSharp.WinForms.UI
         }
 
         #endregion
-
-        private System.Windows.Forms.FlowLayoutPanel lyBoard;
-        private System.Windows.Forms.Label lbHeader;
         private FastColoredTextBoxNS.FastColoredTextBox fastColoredTextBox1;
         private BoardTextBox board;
     }

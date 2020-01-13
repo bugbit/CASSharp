@@ -99,12 +99,6 @@
     <Compile Include="UI\BoardTextBox.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CntlPrompt.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="CntlPrompt.Designer.cs">
-      <DependentUpon>CntlPrompt.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\FrmMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -130,9 +124,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="CntlPrompt.resx">
-      <DependentUpon>CntlPrompt.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\FrmMain.resx">
       <DependentUpon>FrmMain.cs</DependentUpon>
       <SubType>Designer</SubType>

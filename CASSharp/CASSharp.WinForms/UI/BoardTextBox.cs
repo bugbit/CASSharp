@@ -46,10 +46,6 @@ namespace CASSharp.WinForms.UI
         public BoardTextBox()
         {
             InitializeComponent();
-            Language = Language.Custom;
-            AddStyle(BlueStyle);
-            AddStyle(GreenStyle);
-            TextChanged += BoardTextBox_TextChanged;
         }
 
         public void SetHeader(string argText)
@@ -99,7 +95,11 @@ namespace CASSharp.WinForms.UI
         private void InitializeComponent()
         {
             ShowLineNumbers = false;
-            Language = Language.CSharp;
+            Language = Language.Custom;
+            ShowFoldingLines = true;
+            AddStyle(BlueStyle);
+            AddStyle(GreenStyle);
+            TextChanged += BoardTextBox_TextChanged;
         }
 
         bool CharIsHyperlink(Place place)
@@ -122,6 +122,11 @@ namespace CASSharp.WinForms.UI
             e.ChangedRange.SetStyle(GreenStyle, @"//.*$", RegexOptions.Multiline);
             e.ChangedRange.SetStyle(GreenStyle, @"(/\*.*?\*/)|(/\*.*)", RegexOptions.Singleline);
             e.ChangedRange.SetStyle(GreenStyle, @"(/\*.*?\*/)|(.*\*/)", RegexOptions.Singleline | RegexOptions.RightToLeft);
+
+            //clear folding markers
+            e.ChangedRange.ClearFoldingMarkers();
+
+            e.ChangedRange.SetFoldingMarkers(@"/\*", @"\*/");//allow to collapse comment block
         }
     }
 }

@@ -75,21 +75,9 @@ Prueba
         {
             board.SetHeader(argText);
             Text = argTitle;
-            lbHeader.Text = argText;
         }
 
         public void PrintPrompt(string argNameVarPrompt, bool newline) => board.PrintPrompt(argNameVarPrompt, newline);
-
-        public CntlPrompt PrintPrompt(string argNameVar)
-        {
-
-
-            var pPrompt = new CntlPrompt() { NameVarPrompt = argNameVar, Width = Width };
-
-            lyBoard.Controls.Add(pPrompt);
-
-            return pPrompt;
-        }
 
         private void fastColoredTextBox1_TextChanged(object sender, TextChangedEventArgs e)
         {
