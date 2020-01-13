@@ -32,6 +32,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -40,12 +41,14 @@ namespace CASSharp.WinForms.UI
     public class BoardTextBox : FastColoredTextBox
     {
         TextStyle BlueStyle = new TextStyle(Brushes.Blue, null, FontStyle.Underline);
+        TextStyle GreenStyle = new TextStyle(Brushes.Green, null, FontStyle.Italic);
 
         public BoardTextBox()
         {
             InitializeComponent();
             Language = Language.Custom;
             AddStyle(BlueStyle);
+            AddStyle(GreenStyle);
             TextChanged += BoardTextBox_TextChanged;
         }
 
@@ -111,8 +114,14 @@ namespace CASSharp.WinForms.UI
 
         private void BoardTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            e.ChangedRange.ClearStyle(BlueStyle);
+            e.ChangedRange.ClearStyle(BlueStyle, GreenStyle);
+
+            // Hyperlink
             e.ChangedRange.SetStyle(BlueStyle, @"(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?");
+            //comment highlighting
+            e.ChangedRange.SetStyle(GreenStyle, @"//.*$", RegexOptions.Multiline);
+            e.ChangedRange.SetStyle(GreenStyle, @"(/\*.*?\*/)|(/\*.*)", RegexOptions.Singleline);
+            e.ChangedRange.SetStyle(GreenStyle, @"(/\*.*?\*/)|(.*\*/)", RegexOptions.Singleline | RegexOptions.RightToLeft);
         }
     }
 }
