@@ -71,6 +71,9 @@ Prueba
 
             fastColoredTextBox1.Text += @"#begintex o1   \r\n\r\n\r\n\r\n#endtex" + new string('\n', pLines);
         }
+
+        public string[] InstructionsNames { get => board.InstructionsNames; set => board.InstructionsNames = value; }
+
         public void PrintHeader(string argText, string argTitle)
         {
             board.SetHeader(argText);

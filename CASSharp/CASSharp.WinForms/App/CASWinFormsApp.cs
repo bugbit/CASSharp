@@ -51,6 +51,7 @@ namespace CASSharp.WinForms.App
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             mFrm = new UI.FrmMain();
+            mFrm.InstructionsNames = mCAS.InstructionsNames;
             GetHeader(out string argText, out string argTitle);
             mFrm.PrintHeader(argText, argTitle);
             mFrm.Load += (s, e) => mFrm.PrintPrompt(mCAS.GetPromptVar(mCAS.Vars.NameVarPrompt), false);

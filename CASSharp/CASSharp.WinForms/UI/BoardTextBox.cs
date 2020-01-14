@@ -40,8 +40,23 @@ namespace CASSharp.WinForms.UI
 {
     public class BoardTextBox : FastColoredTextBox
     {
-        TextStyle BlueStyle = new TextStyle(Brushes.Blue, null, FontStyle.Underline);
+        TextStyle HyperlinkStyle = new TextStyle(Brushes.Blue, null, FontStyle.Underline);
         TextStyle GreenStyle = new TextStyle(Brushes.Green, null, FontStyle.Italic);
+        TextStyle MagentaStyle = new TextStyle(Brushes.Magenta, null, FontStyle.Regular);
+        TextStyle BlueStyle = new TextStyle(Brushes.Blue, null, FontStyle.Regular);
+
+        private string[] mInstructionsNames;
+        private string mInstructionsNamesRegEx;
+
+        public string[] InstructionsNames
+        {
+            get => mInstructionsNames;
+            set
+            {
+                mInstructionsNames = value;
+                mInstructionsNamesRegEx = string.Join("|", mInstructionsNames);
+            }
+        }
 
         public BoardTextBox()
         {
@@ -102,14 +117,14 @@ namespace CASSharp.WinForms.UI
             LeftBracket2 = '[';
             RightBracket2 = ']';
             Language = Language.Custom;
-            AddStyle(BlueStyle);
+            AddStyle(HyperlinkStyle);
             AddStyle(GreenStyle);
             TextChanged += BoardTextBox_TextChanged;
         }
 
         bool CharIsHyperlink(Place place)
         {
-            var mask = GetStyleIndexMask(new Style[] { BlueStyle });
+            var mask = GetStyleIndexMask(new Style[] { HyperlinkStyle });
             if (place.iChar < GetLineLength(place.iLine))
                 if ((this[place].style & mask) != 0)
                     return true;
@@ -119,14 +134,19 @@ namespace CASSharp.WinForms.UI
 
         private void BoardTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            e.ChangedRange.ClearStyle(BlueStyle, GreenStyle);
+            e.ChangedRange.ClearStyle(HyperlinkStyle, GreenStyle, MagentaStyle, BlueStyle);
 
             // Hyperlink
-            e.ChangedRange.SetStyle(BlueStyle, @"(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?");
+            e.ChangedRange.SetStyle(HyperlinkStyle, @"(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?");
             //comment highlighting
             e.ChangedRange.SetStyle(GreenStyle, @"//.*$", RegexOptions.Multiline);
             e.ChangedRange.SetStyle(GreenStyle, @"(/\*.*?\*/)|(/\*.*)", RegexOptions.Singleline);
             e.ChangedRange.SetStyle(GreenStyle, @"(/\*.*?\*/)|(.*\*/)", RegexOptions.Singleline | RegexOptions.RightToLeft);
+            //number highlighting
+            e.ChangedRange.SetStyle(MagentaStyle, @"\b\d+[\.]?\d*([eE]\-?\d+)?[lLdDfF]?\b|\b0x[a-fA-F\d]+\b");
+
+            // instruccions
+            e.ChangedRange.SetStyle(BlueStyle, $@"\b({mInstructionsNamesRegEx})\b|#region\b|#endregion\b");
 
             //clear folding markers
             e.ChangedRange.ClearFoldingMarkers();

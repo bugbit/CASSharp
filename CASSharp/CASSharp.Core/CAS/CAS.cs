@@ -45,6 +45,7 @@ namespace CASSharp.Core.CAS
         private CasVars mVars = new CasVars();
         private ICASPost mPost;
 
+        public string[] InstructionsNames { get; }
         public string[] Suggestions { get; }
         public string[] InstrSuggestions { get; }
 
@@ -72,8 +73,9 @@ namespace CASSharp.Core.CAS
                     i.Method = (FunctionHandler)Delegate.CreateDelegate(typeof(FunctionHandler), this, m);
                 }
             );
+            InstructionsNames = mInstructions.Keys.ToArray();
             Suggestions = (from s in mFunctions.Keys orderby s select s).ToArray();
-            InstrSuggestions = (from s in mInstructions.Keys.Concat(mFunctions.Keys) orderby s select s).ToArray();
+            InstrSuggestions = (from s in InstructionsNames.Concat(mFunctions.Keys) orderby s select s).ToArray();
         }
 
         public string GetPromptVar(string argNameVar) => $"({argNameVar})";
