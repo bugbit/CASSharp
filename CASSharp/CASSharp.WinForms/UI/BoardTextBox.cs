@@ -73,9 +73,10 @@ namespace CASSharp.WinForms.UI
             base.OnMouseMove(e);
 
             var p = PointToPlace(e.Location);
+
             if (CharIsHyperlink(p))
                 Cursor = Cursors.Hand;
-            else
+            else if (FindVisualMarkerForPoint(e.Location) == null)
                 Cursor = Cursors.IBeam;
         }
 
@@ -94,9 +95,13 @@ namespace CASSharp.WinForms.UI
 
         private void InitializeComponent()
         {
-            ShowLineNumbers = false;
-            Language = Language.Custom;
+            ShowLineNumbers = true;
             ShowFoldingLines = true;
+            LeftBracket = '(';
+            RightBracket = ')';
+            LeftBracket2 = '[';
+            RightBracket2 = ']';
+            Language = Language.Custom;
             AddStyle(BlueStyle);
             AddStyle(GreenStyle);
             TextChanged += BoardTextBox_TextChanged;
