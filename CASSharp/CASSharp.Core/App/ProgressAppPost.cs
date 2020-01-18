@@ -29,15 +29,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
-using CASSharp.Core.Exprs;
 
-namespace CASSharp.WinForms.App
+namespace CASSharp.Core.App
 {
-    class CASWinFormsAppPost : Core.App.CASAppPost<CASWinFormsApp>
+    public class ProgressAppPost
     {
-        public CASWinFormsAppPost(CASWinFormsApp argApp) : base(argApp)
+        private readonly TaskScheduler mScheduler;
+
+        public ProgressAppPost()
         {
+            mScheduler = TaskScheduler.FromCurrentSynchronizationContext();
         }
+
+        public void Post(Action argAction) => Task.Factory.StartNew(argAction, CancellationToken.None, TaskCreationOptions.None, mScheduler).Wait();
+
+        public void PostContinue(Task t, Action<Task> argAction) => t.ContinueWith(tt => Post(() => argAction.Invoke(tt)));
     }
 }

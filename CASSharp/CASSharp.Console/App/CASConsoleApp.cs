@@ -138,8 +138,7 @@ namespace CASSharp.Console.App
 
         private void Prompt()
         {
-            var pNameVar = mCAS.Vars.NameVarPrompt;
-            var pText = System.ReadLine.Read($"{mCAS.GetPromptVar(pNameVar)} ");
+            var pText = System.ReadLine.Read($"{NamePromptVar} ");
 
             //System.ReadLine.AddHistory(pText);
             mPrompt.Add(pText);

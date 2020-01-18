@@ -42,6 +42,8 @@ using SkiaSharp;
 
 using CAS = CASSharp.Core.CAS;
 
+using Exprs = CASSharp.Core.Exprs;
+
 namespace CASSharp.WinForms.UI
 {
     public partial class FrmMain : Form
@@ -89,6 +91,8 @@ Prueba
         }
 
         public void PrintPrompt(string argNameVarPrompt, bool newline) => board.PrintPrompt(argNameVarPrompt, newline);
+
+        public void PrintExprOut(string argNameVarPrompt, Exprs.Expr e) => board.PrintExprOut(argNameVarPrompt, e);
 
         private void fastColoredTextBox1_TextChanged(object sender, TextChangedEventArgs e)
         {

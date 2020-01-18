@@ -46,7 +46,9 @@ namespace CASSharp.WinForms.App
 
         //protected override void PrintExpr(string argNameVarPrompt, Exprs.Expr e)=>mFrm.pri
 
-        public async Task EvalPrompt(string[] argText)
+        public override void PrintExprOut(string argNameVarPrompt, Exprs.Expr e) => mFrm.PrintExprOut(argNameVarPrompt, e);
+
+        public Task EvalPrompt(string[] argText)
         {
             var pToken = mTokenCancel;
 
@@ -55,14 +57,18 @@ namespace CASSharp.WinForms.App
 
             mTokenCancel = pToken = new CancellationTokenSource();
 
-            try
-            {
-                var pRet = await Task.Run(() => mCAS.EvalPrompt(argText, true, pToken.Token));
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(mFrm, ex.Message, mFrm.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            var pTask = Task.Run(() => mCAS.EvalPrompt(argText, true, pToken.Token)).ContinueWith
+            (
+                t =>
+                {
+                    if (t.Exception != null)
+                    {
+                        MessageBox.Show(mFrm, t.Exception.Message, mFrm.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            );
+
+            return pTask;
         }
 
         protected override CAS.ICASPost NewPos() => new CASWinFormsAppPost(this);
@@ -81,7 +87,7 @@ namespace CASSharp.WinForms.App
             };
             GetHeader(out string argText, out string argTitle);
             mFrm.PrintHeader(argText, argTitle);
-            mFrm.Load += (s, e) => mFrm.PrintPrompt(mCAS.GetPromptVar(mCAS.Vars.NameVarPrompt), false);
+            mFrm.Load += (s, e) => mFrm.PrintPrompt(NamePromptVar, false);
         }
 
         protected override void RunInternal()

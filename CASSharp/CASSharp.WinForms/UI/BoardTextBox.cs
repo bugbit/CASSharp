@@ -42,11 +42,15 @@ namespace CASSharp.WinForms.UI
 {
     public class BoardTextBox : FastColoredTextBox
     {
-        TextStyle HyperlinkStyle = new TextStyle(Brushes.Blue, null, FontStyle.Underline);
-        TextStyle GreenStyle = new TextStyle(Brushes.Green, null, FontStyle.Italic);
-        TextStyle MagentaStyle = new TextStyle(Brushes.Magenta, null, FontStyle.Regular);
-        TextStyle BlueStyle = new TextStyle(Brushes.Blue, null, FontStyle.Regular);
-        TextStyle BoldStyle = new TextStyle(null, null, FontStyle.Bold | FontStyle.Underline);
+        private Core.App.ProgressAppPost mPost;
+
+        private TextStyle HyperlinkStyle = new TextStyle(Brushes.Blue, null, FontStyle.Underline);
+        private TextStyle NameVarStyle = new TextStyle(Brushes.Gray, null, FontStyle.Regular);
+        private LaTexStyle mLaTextStyle = new LaTexStyle();
+        private TextStyle GreenStyle = new TextStyle(Brushes.Green, null, FontStyle.Italic);
+        private TextStyle MagentaStyle = new TextStyle(Brushes.Magenta, null, FontStyle.Regular);
+        private TextStyle BlueStyle = new TextStyle(Brushes.Blue, null, FontStyle.Regular);
+        private TextStyle WordsStyle = new TextStyle(Brushes.Maroon, null, FontStyle.Bold);
 
         private string[] mInstructionsNames;
         private string mInstructionsNamesRegEx;
@@ -75,6 +79,7 @@ namespace CASSharp.WinForms.UI
 
         public BoardTextBox()
         {
+            mPost = new Core.App.ProgressAppPost();
             InitializeComponent();
         }
 
@@ -93,7 +98,7 @@ namespace CASSharp.WinForms.UI
 
         public void PrintExprOut(string argNameVarPrompt, Exprs.Expr e)
         {
-            Write($"{argNameVarPrompt} e");
+            Write($"{argNameVarPrompt} {e}", true);
         }
 
         public override void OnTextChanging(ref string text)
@@ -117,7 +122,7 @@ namespace CASSharp.WinForms.UI
             base.OnTextChanged();
         }
 
-        protected async override void OnKeyDown(KeyEventArgs e)
+        protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
 
@@ -131,7 +136,14 @@ namespace CASSharp.WinForms.UI
 
                     if (pLastLine != null && pLastLine.LastOrDefault() == ';')
                     {
-                        await CASApp.EvalPrompt(pPrompt);
+                        mIsPromptMode = false;
+
+                        mPost.PostContinue(CASApp.EvalPrompt(pPrompt), t =>
+                        {
+                            if (t.IsCompleted || t.IsCanceled)
+                                PrintPrompt($"\n{CASApp.NamePromptVar}", false);
+                            mIsPromptMode = true;
+                        });
 
                         e.Handled = true;
                     }
@@ -174,6 +186,8 @@ namespace CASSharp.WinForms.UI
             RightBracket2 = ']';
             Language = Language.Custom;
             AddStyle(HyperlinkStyle);
+            AddStyle(NameVarStyle);
+            AddStyle(mLaTextStyle);
             AddStyle(GreenStyle);
             AddStyle(BlueStyle);
             TextChanged += BoardTextBox_TextChanged;
@@ -202,10 +216,14 @@ namespace CASSharp.WinForms.UI
 
         private void BoardTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            e.ChangedRange.ClearStyle(HyperlinkStyle, GreenStyle, MagentaStyle, BlueStyle, BoldStyle);
+            e.ChangedRange.ClearStyle(HyperlinkStyle, NameVarStyle, GreenStyle, MagentaStyle, BlueStyle, WordsStyle);
 
             // Hyperlink
             e.ChangedRange.SetStyle(HyperlinkStyle, @"(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?");
+            // NameVar
+            e.ChangedRange.SetStyle(NameVarStyle, @"\(%\w+\)?");
+            // latex
+            e.ChangedRange.SetStyle(mLaTextStyle, @"#begintex (\w+).*?#endtex", RegexOptions.IgnoreCase);
             //comment highlighting
             e.ChangedRange.SetStyle(GreenStyle, @"//.*$", RegexOptions.Multiline);
             e.ChangedRange.SetStyle(GreenStyle, @"(/\*.*?\*/)|(/\*.*)", RegexOptions.Singleline);
@@ -213,7 +231,7 @@ namespace CASSharp.WinForms.UI
             //number highlighting
             e.ChangedRange.SetStyle(MagentaStyle, @"\b\d+[\.]?\d*([eE]\-?\d+)?[lLdDfF]?\b|\b0x[a-fA-F\d]+\b");
             // words
-            e.ChangedRange.SetStyle(BoldStyle, @"\b\w+\b");
+            e.ChangedRange.SetStyle(WordsStyle, @"\b\w+\b");
 
             // instruccions
             e.ChangedRange.SetStyle(BlueStyle, $@"\b({mInstructionsNamesRegEx})\b|#region\b|#endregion\b");
@@ -234,6 +252,7 @@ namespace CASSharp.WinForms.UI
                 AppendText(argText);
                 if (argNewLine)
                     AppendText("\n");
+                GoEnd();
                 mStartReadPlace = Range.End;
             }
             finally

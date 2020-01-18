@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App\CASAppPost.cs" />
+    <Compile Include="App\ProgressAppPost.cs" />
     <Compile Include="App\TestAttribute.cs" />
     <Compile Include="CAS\CAS.cs" />
     <Compile Include="App\CASApp.cs" />

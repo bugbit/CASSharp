@@ -44,6 +44,8 @@ namespace CASSharp.Core.App
         protected CAS.CAS mCAS;
         protected CancellationTokenSource mTokenCancel = null;
 
+        public string NamePromptVar => mCAS.GetPromptVar(mCAS.Vars.NameVarPrompt);
+
         public CASApp()
         {
             mPost = NewPos();

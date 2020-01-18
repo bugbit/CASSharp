@@ -27,17 +27,25 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CASSharp.Core.Exprs;
 
-namespace CASSharp.WinForms.App
+using CSharpMath.SkiaSharp;
+
+using FastColoredTextBoxNS;
+
+namespace CASSharp.WinForms.UI
 {
-    class CASWinFormsAppPost : Core.App.CASAppPost<CASWinFormsApp>
+    class LaTexStyle : TextStyle
     {
-        public CASWinFormsAppPost(CASWinFormsApp argApp) : base(argApp)
+        private Dictionary<string, MathPainter> mPainters = new Dictionary<string, MathPainter>();
+
+        public LaTexStyle(Brush foreBrush = null, Brush backgroundBrush = null, FontStyle fontStyle = FontStyle.Regular) : base(foreBrush, backgroundBrush, fontStyle)
         {
         }
+
+        public void Add(string argKey, MathPainter argPainter) => mPainters[argKey] = argPainter;
     }
 }
