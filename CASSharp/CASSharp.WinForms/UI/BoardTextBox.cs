@@ -36,6 +36,8 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using Exprs = CASSharp.Core.Exprs;
+
 namespace CASSharp.WinForms.UI
 {
     public class BoardTextBox : FastColoredTextBox
@@ -44,9 +46,16 @@ namespace CASSharp.WinForms.UI
         TextStyle GreenStyle = new TextStyle(Brushes.Green, null, FontStyle.Italic);
         TextStyle MagentaStyle = new TextStyle(Brushes.Magenta, null, FontStyle.Regular);
         TextStyle BlueStyle = new TextStyle(Brushes.Blue, null, FontStyle.Regular);
+        TextStyle BoldStyle = new TextStyle(null, null, FontStyle.Bold | FontStyle.Underline);
 
         private string[] mInstructionsNames;
         private string mInstructionsNamesRegEx;
+        private volatile bool mIsPromptMode;
+        private volatile bool mIsUpdating;
+        private Place mStartReadPlace;
+        private AutocompleteMenu mPopupMenu;
+
+        public App.CASWinFormsApp CASApp { get; set; }
 
         public string[] InstructionsNames
         {
@@ -54,9 +63,15 @@ namespace CASSharp.WinForms.UI
             set
             {
                 mInstructionsNames = value;
-                mInstructionsNamesRegEx = string.Join("|", mInstructionsNames);
+                mInstructionsNamesRegEx = (mInstructionsNames != null) ? string.Join("|", mInstructionsNames) : string.Empty;
             }
         }
+
+        public string[] FunctionsNames { get; set; }
+
+        public string[] Prompt => new Range(this, mStartReadPlace, Range.End).Text.TrimEnd('\r').Split('\n');
+
+        public Place InstruccionEnd => new Range(this, mStartReadPlace, Range.End).GetFragment(@"\w+").End;
 
         public BoardTextBox()
         {
@@ -65,22 +80,63 @@ namespace CASSharp.WinForms.UI
 
         public void SetHeader(string argText)
         {
-            Text += $"/*\n{argText}\n\n*/\n\n";
+            Write($"/*\n{argText}\n\n*/\n\n");
         }
 
         public void PrintPrompt(string argNameVarPrompt, bool newline)
         {
             if (newline)
-                Text += argNameVarPrompt + '\n';
+                Write(argNameVarPrompt, newline);
             else
-            {
-                Text += argNameVarPrompt + ' ';
-            }
+                Write(argNameVarPrompt + ' ');
         }
 
-        public override void OnTextChanged()
+        public void PrintExprOut(string argNameVarPrompt, Exprs.Expr e)
         {
+            Write($"{argNameVarPrompt} e");
+        }
+
+        public override void OnTextChanging(ref string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return;
+
+            if (mIsPromptMode)
+            {
+                if (Selection.Start < mStartReadPlace || Selection.End < mStartReadPlace)
+                    GoEnd();//move caret to entering position
+
+                if (Selection.Start == mStartReadPlace || Selection.End == mStartReadPlace)
+                    if (text == "\b") //backspace
+                    {
+                        text = ""; //cancel deleting of last char of readonly text
+                        return;
+                    }
+            }
+
             base.OnTextChanged();
+        }
+
+        protected async override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+
+            if (e.KeyCode == Keys.Enter)
+            {
+                var pPrompt = Prompt;
+
+                if (pPrompt != null)
+                {
+                    var pLastLine = pPrompt.LastOrDefault();
+
+                    if (pLastLine != null && pLastLine.LastOrDefault() == ';')
+                    {
+                        await CASApp.EvalPrompt(pPrompt);
+
+                        e.Handled = true;
+                    }
+                }
+            }
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
@@ -119,10 +175,22 @@ namespace CASSharp.WinForms.UI
             Language = Language.Custom;
             AddStyle(HyperlinkStyle);
             AddStyle(GreenStyle);
+            AddStyle(BlueStyle);
             TextChanged += BoardTextBox_TextChanged;
+
+            //create autocomplete popup menu
+            mPopupMenu = new AutocompleteMenu(this);
+            mPopupMenu.ForeColor = Color.White;
+            mPopupMenu.BackColor = Color.Gray;
+            mPopupMenu.SelectedColor = Color.Purple;
+            mPopupMenu.SearchPattern = @"[\w\.]";
+            mPopupMenu.AllowTabKey = true;
+            mPopupMenu.AlwaysShowTooltip = true;
+            //assign DynamicCollection as items source
+            mPopupMenu.Items.SetAutocompleteItems(new AutocompleteItems(mPopupMenu, this));
         }
 
-        bool CharIsHyperlink(Place place)
+        private bool CharIsHyperlink(Place place)
         {
             var mask = GetStyleIndexMask(new Style[] { HyperlinkStyle });
             if (place.iChar < GetLineLength(place.iLine))
@@ -134,7 +202,7 @@ namespace CASSharp.WinForms.UI
 
         private void BoardTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            e.ChangedRange.ClearStyle(HyperlinkStyle, GreenStyle, MagentaStyle, BlueStyle);
+            e.ChangedRange.ClearStyle(HyperlinkStyle, GreenStyle, MagentaStyle, BlueStyle, BoldStyle);
 
             // Hyperlink
             e.ChangedRange.SetStyle(HyperlinkStyle, @"(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?");
@@ -144,6 +212,8 @@ namespace CASSharp.WinForms.UI
             e.ChangedRange.SetStyle(GreenStyle, @"(/\*.*?\*/)|(.*\*/)", RegexOptions.Singleline | RegexOptions.RightToLeft);
             //number highlighting
             e.ChangedRange.SetStyle(MagentaStyle, @"\b\d+[\.]?\d*([eE]\-?\d+)?[lLdDfF]?\b|\b0x[a-fA-F\d]+\b");
+            // words
+            e.ChangedRange.SetStyle(BoldStyle, @"\b\w+\b");
 
             // instruccions
             e.ChangedRange.SetStyle(BlueStyle, $@"\b({mInstructionsNamesRegEx})\b|#region\b|#endregion\b");
@@ -152,6 +222,25 @@ namespace CASSharp.WinForms.UI
             e.ChangedRange.ClearFoldingMarkers();
 
             e.ChangedRange.SetFoldingMarkers(@"/\*", @"\*/");//allow to collapse comment block
+        }
+
+        private void Write(string argText, bool argNewLine = false)
+        {
+            mIsPromptMode = false;
+            mIsUpdating = true;
+            try
+            {
+                GoEnd();
+                AppendText(argText);
+                if (argNewLine)
+                    AppendText("\n");
+                mStartReadPlace = Range.End;
+            }
+            finally
+            {
+                mIsUpdating = false;
+                mIsPromptMode = true;
+            }
         }
     }
 }

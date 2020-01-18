@@ -84,6 +84,8 @@ namespace CASSharp.Core.App
             return 0;
         }
 
+        public void CancelEval() => mTokenCancel?.Cancel();
+
         public virtual void Quit()
         {
             if (mTokenCancel != null)

@@ -84,20 +84,22 @@ namespace CASSharp.WinForms.UI
             this.fastColoredTextBox1.CharWidth = 8;
             this.fastColoredTextBox1.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.fastColoredTextBox1.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.fastColoredTextBox1.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.fastColoredTextBox1.IsReplaceMode = false;
-            this.fastColoredTextBox1.Location = new System.Drawing.Point(86, 319);
+            this.fastColoredTextBox1.Location = new System.Drawing.Point(3, 417);
             this.fastColoredTextBox1.Name = "fastColoredTextBox1";
             this.fastColoredTextBox1.Paddings = new System.Windows.Forms.Padding(0);
             this.fastColoredTextBox1.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.fastColoredTextBox1.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("fastColoredTextBox1.ServiceColors")));
-            this.fastColoredTextBox1.Size = new System.Drawing.Size(785, 45);
+            this.fastColoredTextBox1.Size = new System.Drawing.Size(487, 21);
             this.fastColoredTextBox1.TabIndex = 1;
             this.fastColoredTextBox1.Zoom = 100;
             this.fastColoredTextBox1.TextChanged += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.fastColoredTextBox1_TextChanged);
             // 
             // board
             // 
+            this.board.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.board.AutoCompleteBracketsList = new char[] {
         '(',
         ')',
@@ -111,20 +113,25 @@ namespace CASSharp.WinForms.UI
         '\''};
             this.board.AutoIndentCharsPatterns = "^\\s*[\\w\\.]+(\\s\\w+)?\\s*(?<range>=)\\s*(?<range>[^;=]+);\r\n^\\s*(case|default)\\s*[^:]*" +
     "(?<range>:)\\s*(?<range>[^;]+);";
-            this.board.AutoScrollMinSize = new System.Drawing.Size(2, 14);
+            this.board.AutoScrollMinSize = new System.Drawing.Size(27, 14);
             this.board.BackBrush = null;
             this.board.CharHeight = 14;
             this.board.CharWidth = 8;
             this.board.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.board.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.board.Font = new System.Drawing.Font("Courier New", 9.75F);
+            this.board.InstructionsNames = null;
             this.board.IsReplaceMode = false;
-            this.board.Location = new System.Drawing.Point(12, 51);
+            this.board.LeftBracket = '(';
+            this.board.LeftBracket2 = '[';
+            this.board.Location = new System.Drawing.Point(3, 2);
             this.board.Name = "board";
             this.board.Paddings = new System.Windows.Forms.Padding(0);
+            this.board.RightBracket = ')';
+            this.board.RightBracket2 = ']';
             this.board.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.board.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("board.ServiceColors")));
-            this.board.Size = new System.Drawing.Size(776, 150);
+            this.board.ShowFoldingLines = true;
+            this.board.Size = new System.Drawing.Size(794, 409);
             this.board.TabIndex = 2;
             this.board.Zoom = 100;
             // 

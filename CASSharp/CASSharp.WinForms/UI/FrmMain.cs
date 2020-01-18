@@ -40,18 +40,24 @@ using CSharpMath.SkiaSharp;
 using System.Drawing.Imaging;
 using SkiaSharp;
 
+using CAS = CASSharp.Core.CAS;
+
 namespace CASSharp.WinForms.UI
 {
     public partial class FrmMain : Form
     {
+        private App.CASWinFormsApp mCASApp;
+
         EllipseStyle ellipseStyle = new EllipseStyle();
         EllipseStyle2 ellipseStyle2;
         EllipseStyle3 ellipseStyle3;
         EllipseStyle3 ellipseStyle4;
 
-        public FrmMain()
+        public FrmMain(App.CASWinFormsApp argCASApp = null)
         {
+            mCASApp = argCASApp;
             InitializeComponent();
+            board.CASApp = mCASApp;
             ellipseStyle2 = new EllipseStyle2(fastColoredTextBox1);
             ellipseStyle3 = new EllipseStyle3(fastColoredTextBox1) { Painter = new MathPainter(fastColoredTextBox1.CharHeight) { LaTeX = @"$${{1}\over{6}}$$" } };
             ellipseStyle4 = new EllipseStyle3(fastColoredTextBox1) { Painter = new MathPainter(fastColoredTextBox1.CharHeight) { LaTeX = @"$${{23\,x}\over{x+1}}$$" } };
@@ -73,6 +79,8 @@ Prueba
         }
 
         public string[] InstructionsNames { get => board.InstructionsNames; set => board.InstructionsNames = value; }
+
+        public string[] FunctionsNames { get => board.FunctionsNames; set => board.FunctionsNames = value; }
 
         public void PrintHeader(string argText, string argTitle)
         {

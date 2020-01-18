@@ -36,12 +36,36 @@ using Core = CASSharp.Core;
 using CAS = CASSharp.Core.CAS;
 using Exprs = CASSharp.Core.Exprs;
 using ST = CASSharp.Core.Syntax;
+using System.Threading;
 
 namespace CASSharp.WinForms.App
 {
     public sealed class CASWinFormsApp : Core.App.CASApp
     {
         private UI.FrmMain mFrm;
+
+        //protected override void PrintExpr(string argNameVarPrompt, Exprs.Expr e)=>mFrm.pri
+
+        public async Task EvalPrompt(string[] argText)
+        {
+            var pToken = mTokenCancel;
+
+            if (pToken != null && !pToken.IsCancellationRequested)
+                pToken.Cancel();
+
+            mTokenCancel = pToken = new CancellationTokenSource();
+
+            try
+            {
+                var pRet = await Task.Run(() => mCAS.EvalPrompt(argText, true, pToken.Token));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(mFrm, ex.Message, mFrm.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        protected override CAS.ICASPost NewPos() => new CASWinFormsAppPost(this);
 
         protected override void BeforeRun()
         {
@@ -50,8 +74,11 @@ namespace CASSharp.WinForms.App
             base.BeforeRun();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            mFrm = new UI.FrmMain();
-            mFrm.InstructionsNames = mCAS.InstructionsNames;
+            mFrm = new UI.FrmMain(this)
+            {
+                InstructionsNames = mCAS.InstructionsNames,
+                FunctionsNames = mCAS.Suggestions
+            };
             GetHeader(out string argText, out string argTitle);
             mFrm.PrintHeader(argText, argTitle);
             mFrm.Load += (s, e) => mFrm.PrintPrompt(mCAS.GetPromptVar(mCAS.Vars.NameVarPrompt), false);
