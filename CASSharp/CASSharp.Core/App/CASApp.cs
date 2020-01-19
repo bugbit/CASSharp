@@ -88,6 +88,8 @@ namespace CASSharp.Core.App
 
         public void CancelEval() => mTokenCancel?.Cancel();
 
+        public void Eval(Action<CAS.CAS, CAS.EvalContext> argEval) => mCAS.Eval(argEval, mTokenCancel.Token);
+
         public virtual void Quit()
         {
             if (mTokenCancel != null)

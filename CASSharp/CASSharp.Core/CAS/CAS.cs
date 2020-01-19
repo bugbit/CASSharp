@@ -37,7 +37,7 @@ using ST = CASSharp.Core.Syntax;
 
 namespace CASSharp.Core.CAS
 {
-    public sealed class CAS
+    public sealed partial class CAS
     {
         private readonly Dictionary<string, InstructionInfo> mInstructions;
         private readonly Dictionary<string, FunctionInfo> mFunctions;
@@ -80,6 +80,13 @@ namespace CASSharp.Core.CAS
 
         public string GetPromptVar(string argNameVar) => $"({argNameVar})";
         public string GetPromptInVarAct() => GetPromptVar(mVars.NameVarPrompt);
+
+        public void Eval(Action<CAS, EvalContext> argEval, CancellationToken argCancelToken)
+        {
+            var pContext = new EvalContext { CancelToken = argCancelToken };
+
+            argEval(this, pContext);
+        }
 
         public EvalPromptResult EvalPrompt(string[] argLines, bool argEvalIfExprsInCompleted, CancellationToken argCancelToken)
         {
@@ -369,7 +376,7 @@ namespace CASSharp.Core.CAS
             return pRet;
         }
 
-        [Function(Name = "primes")]
+        [Function]
         private Exprs.Expr Primes(EvalContext argContext, Exprs.Expr[] argParams)
         {
             VerifNumArgs(2, argParams);

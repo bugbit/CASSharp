@@ -25,6 +25,7 @@
 */
 #endregion
 
+using CSharpMath.SkiaSharp;
 using FastColoredTextBoxNS;
 using System;
 using System.Collections.Generic;
@@ -98,7 +99,25 @@ namespace CASSharp.WinForms.UI
 
         public void PrintExprOut(string argNameVarPrompt, Exprs.Expr e)
         {
-            Write($"{argNameVarPrompt} {e}", true);
+            //Write($"{argNameVarPrompt} {e}", true);
+
+            string pLaTex = null;
+
+            CASApp.Eval((a, c) => pLaTex = a.Tex(c, e));
+
+            var pPainter = new MathPainter(CharHeight) { LaTeX = pLaTex };
+            var pSize = mLaTextStyle.CalcSize(pPainter);
+            var pId = mLaTextStyle.Add(pPainter);
+            var pTexText = $"{pId}#tex";
+            var pW = (pSize.Width / CharWidth);
+            var pSpace = (pTexText.Length >= pW) ? 1 : pW - pTexText.Length;
+            var pLines = (int)Math.Ceiling((decimal)pSize.Height / CharHeight) + 1;
+            //var pForm = FindForm();
+
+            //if (pForm.Width < pSize.Width)
+            //    pForm.Width = pSize.Width;
+
+            Write($"{argNameVarPrompt} {pTexText}{new string(' ', pSpace)}{new string('\n', pLines)}", true);
         }
 
         public override void OnTextChanging(ref string text)
@@ -223,7 +242,7 @@ namespace CASSharp.WinForms.UI
             // NameVar
             e.ChangedRange.SetStyle(NameVarStyle, @"\(%\w+\)?");
             // latex
-            e.ChangedRange.SetStyle(mLaTextStyle, @"#begintex (\w+).*?#endtex", RegexOptions.IgnoreCase);
+            e.ChangedRange.SetStyle(mLaTextStyle, @"\d+#tex", RegexOptions.IgnoreCase);
             //comment highlighting
             e.ChangedRange.SetStyle(GreenStyle, @"//.*$", RegexOptions.Multiline);
             e.ChangedRange.SetStyle(GreenStyle, @"(/\*.*?\*/)|(/\*.*)", RegexOptions.Singleline);

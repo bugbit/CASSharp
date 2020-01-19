@@ -21,28 +21,25 @@
     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
-
 */
 #endregion
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
 namespace CASSharp.Core.Exprs
 {
-    [Flags]
-    public enum ETypeExpr
+    [DebuggerDisplay("TypeExpr : {TypeExpr} Constant : {Constant}")]
+    public sealed class StringExpr : CteExpr<string>
     {
-        None, Null, _Number, _Boolean, _String, List, Function,
-        // Flags
-        Type = 0xFFF,
-        Flags = 0xF000,
-        // Cte
-        Constant = 0x1000,
-        Number = _Number | Constant,
-        Boolean = _Boolean | Constant,
-        String = _String | Constant
+        public StringExpr(string s) : base(ETypeExpr.String, s) { }
+        public StringExpr(StringExpr e) : base(e) { }
+
+        public override Expr Clone() => new StringExpr(this);
+
+        public override string ToString() => $"\"{Constant}\"";
     }
 }

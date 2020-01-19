@@ -53,6 +53,7 @@ namespace CASSharp.Core.Exprs
         public static Expr Null => NullExpr.Value;
 
         public static BooleanExpr Boolean(bool argBool) => (argBool) ? BooleanExpr.True : BooleanExpr.False;
+        public static StringExpr String(string s) => new StringExpr(s);
 
         public static NumberExpr Number(string n) => NumberExpr.Create(n);
         public static NumberExpr Number(BigDecimal n) => new NumberExpr(n);

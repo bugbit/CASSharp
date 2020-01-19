@@ -21,7 +21,6 @@
     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
-
 */
 #endregion
 
@@ -30,19 +29,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CASSharp.Core.Exprs
+namespace CASSharp.Core.CAS
 {
-    [Flags]
-    public enum ETypeExpr
+    public partial class CAS
     {
-        None, Null, _Number, _Boolean, _String, List, Function,
-        // Flags
-        Type = 0xFFF,
-        Flags = 0xF000,
-        // Cte
-        Constant = 0x1000,
-        Number = _Number | Constant,
-        Boolean = _Boolean | Constant,
-        String = _String | Constant
+        public string Tex(EvalContext argContext, Exprs.Expr e)
+        {
+            argContext.CancelToken.ThrowIfCancellationRequested();
+            switch (e.TypeExpr)
+            {
+                case Exprs.ETypeExpr.List:
+                    return Tex(argContext, (Exprs.ListExpr)e);
+                default:
+                    return e.ToString();
+            }
+        }
+
+        public string Tex(EvalContext argContext, Exprs.ListExpr e) => @"\left[" + string.Join(",", e.TheList.Select(l => Tex(argContext, l))) + @"\right]";
+
+        [Function]
+        private Exprs.Expr Tex(EvalContext argContext, Exprs.Expr[] argParams)
+        {
+            VerifNumArgs(1, argParams);
+
+            var n = argParams[0];
+            var pRet = Tex(argContext, n);
+
+            return Exprs.Expr.String(pRet);
+        }
     }
 }

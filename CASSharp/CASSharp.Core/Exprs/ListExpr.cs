@@ -45,6 +45,6 @@ namespace CASSharp.Core.Exprs
 
         public override Expr Clone() => new ListExpr(this);
 
-        public override string ToString() => "[ " + string.Join(" ", TheList.Select(l => l.ToString())) + " ]";
+        public override string ToString() => "[ " + string.Join(",", TheList.Select(l => l.ToString())) + " ]";
     }
 }

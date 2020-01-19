@@ -45,6 +45,7 @@
     <Compile Include="App\TestAttribute.cs" />
     <Compile Include="CAS\CAS.cs" />
     <Compile Include="App\CASApp.cs" />
+    <Compile Include="CAS\CAS.tex.cs" />
     <Compile Include="CAS\CasVars.cs" />
     <Compile Include="CAS\EvalContext.cs" />
     <Compile Include="CAS\EvalException.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="Exprs\ListExpr.cs" />
     <Compile Include="Exprs\NullExpr.cs" />
     <Compile Include="Exprs\NumberExpr.cs" />
+    <Compile Include="Exprs\StringExpr.cs" />
     <Compile Include="Extensions\RandomExtensions.cs" />
     <Compile Include="Math\MathEx.cs" />
     <Compile Include="Properties\AssemblyConstants.cs" />
